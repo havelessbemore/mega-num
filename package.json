@@ -1,0 +1,40 @@
+{
+  "name": "bignum",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "typings": "build/src/index.d.ts",
+  "directories": {
+    "lib": "./build"
+  },
+  "scripts": {
+    "prepublish": "tsc && npm run lint && babel build --out-dir build",
+    "lint": "tslint 'src/**/*.ts'",
+    "dist": "webpack --display-error-details",
+    "server": "webpack-dev-server --hot --inline --progress",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Michael Rojas",
+    "email": "mrojas1212@gmail.com"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.9.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.0",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "json-loader": "^0.5.4",
+    "markdown-loader": "^0.1.7",
+    "ts-loader": "^0.8.2",
+    "tslint": "^3.10.2",
+    "typescript": "^1.8.10",
+    "typings": "^1.0.4",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  }
+}

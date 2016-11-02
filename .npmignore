@@ -1,0 +1,8 @@
+# Typescript Source
+src/**
+typings/**
+node_modules
+dist/**
+
+# Logs
+*.log
