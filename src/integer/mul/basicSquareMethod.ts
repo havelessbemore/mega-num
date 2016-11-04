@@ -3,35 +3,39 @@
   Overwrites A
 
   Explanation:
-      a  b  c  d  e  f  g
+      a   b   c   d   e   f   g   _   _   _   _   _   _   _
     *
-      a  b  c  d  e  f  g
-    -----------------------------------------------------
-                          ag bg cg dg eg fg gg
-                       af bf cf df ef ff fg
-                    ae be ce de ee ef eg
-                 ad bd cd dd de df dg
-              ac bc cc cd ce cf cg
-           ab bb bc bd be bf bg
-        aa ab ac ad ae af ag
-    -----------------------------------------------------
-                               2ag 2bg 2cg 2dg 2eg 2fg gg
-                           2af 2bf 2cf 2df 2ef ff
-                       2ae 2be 2ce 2de ee
-                   2ad 2bd 2cd dd
-               2ac 2bc cc
-           2ab bb
-        aa
-    -----------------------------------------------------
-      h i  j   k   l   m   n   o   p   q   r   s   t   u
+      a   b   c   d   e   f   g
+    -------------------------------------------------------
+                                 ag  bg  cg  dg  eg  fg  gg
+                             af  bf  cf  df  ef  ff  fg
+                         ae  be  ce  de  ee  ef  eg
+                     ad  bd  cd  dd  de  df  dg
+                 ac  bc  cc  cd  ce  cf  cg
+             ab  bb  bc  bd  be  bf  bg
+         aa  ab  ac  ad  ae  af  ag
+    -------------------------------------------------------
+                                2ag 2bg 2cg 2dg 2eg 2fg  gg
+                            2af 2bf 2cf 2df 2ef  ff
+                        2ae 2be 2ce 2de  ee
+                    2ad 2bd 2cd  dd
+                2ac 2bc  cc
+            2ab  bb
+         aa
+    -------------------------------------------------------
+      h   i   j   k   l   m   n   o   p   q   r   s   t   u
 */
 export default function BasicSquareMethod(A: number[], len: number, base: number): number {
 
   //Move digits to the left
-  let newLen: number = 2*len;
-  for(let i: number = len, j: number = newLen; i > 0; A[i] = 0){
-    A[--j] = A[--i];
+  let newLen: number = len << 1;
+  for(let i: number = 0, j: number = len; i < len; A[j++] = A[i++]){
   }
+
+  //Zero original digits
+  for(let i: number = 0; i < len; A[i++] = 0){
+  }
+  
   //console.log("Start", A);
 
   //For every digit

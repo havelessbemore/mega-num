@@ -20,9 +20,10 @@ export default function BasicSubtractionMethod(A: number[], lenA: number, B: num
 
   //Subtract borrow
   if(borrow > 0){
-    for(borrow = base - 1; i < lenA && A[i] === 0; A[i++] = borrow){
+    for(borrow = base - 1; A[i] === 0; A[i++] = borrow){
     }
     A[i] = A[i] - 1;
+    ++i;
   }
 
   //Find the new length

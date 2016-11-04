@@ -4,7 +4,8 @@ import BasicDoubleMethod from './mul/basicDoubleMethod';
 import BasicHalfMethod from './div/basicHalfMethod';
 import BasicSubtractionMethod from './sub/basicSubtractionMethod';
 import ReverseSubtractionMethod from './sub/reverseSubtractionMethod';
-import BasicSquareMethod from './mul/basicSquareMethod';
+//import BasicSquareMethod from './mul/basicSquareMethod';
+import KaratsubaSquareMethod from './mul/karatsubaSquareMethod';
 import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
 
 export default class BigInteger extends BigNumber {
@@ -537,9 +538,12 @@ export default class BigInteger extends BigNumber {
     multiplicand.integer.length = 2*multiplicand.digits;
 
     //Square
-    multiplicand.integer.length = multiplicand.digits = BasicSquareMethod(
+    multiplicand.integer.length = multiplicand.digits = KaratsubaSquareMethod(
       multiplicand.integer, multiplicand.digits, multiplicand.base
     );
+    /*multiplicand.integer.length = multiplicand.digits = BasicSquareMethod(
+      multiplicand.integer, multiplicand.digits, multiplicand.base
+    );*/
 
     return multiplicand;
   }
