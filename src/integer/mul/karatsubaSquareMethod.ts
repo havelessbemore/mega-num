@@ -3,18 +3,20 @@
   Overwrites A
 
   Explanation: https://en.wikipedia.org/wiki/Karatsuba_algorithm
+
+  !function(){console.clear(); let a = (new BigNum.BigInteger(7654321)).mSetBase(10000000); let t0 = performance.now(); for(let i = 16; i > 0; --i){a.mSquare();} let t1 = performance.now(); console.log(a.integer, t1 - t0);}();
+  Optimization Progress: 48520ms -> 6950ms
 */
 export default function KaratsubaSquareMethod(A: number[], len: number, base: number): number {
-  //console.log("Start", print(A, 0, 0, len, A.length));
-  //console.log("Finish", print(A, 0, 0, len, A.length));
+  A[len] = 0;
   return square(A, 0, len, base);
 }
 
 function square(A: number[], min: number, max: number, base: number): number {
-  const len: number = max - min;
+  let halfLen: number = max - min;
 
   //Base case
-  if(len < 2){
+  if(halfLen < 2){
     A[min] = A[min] * A[min];
     if(A[min] < base){
       A[max] = 0;
@@ -26,51 +28,36 @@ function square(A: number[], min: number, max: number, base: number): number {
   }
 
   //Split the number in half
-  const halfLen: number = len >> 1;
+  halfLen = (halfLen + 1) >> 1;
   const mid: number = min + halfLen;
-  //console.log("A: ", print(A, min, mid, max, max));
 
   //medium = low + high
-  const medium: number[] = A.slice(mid, max);
-  //console.log("medium = low: ", print(medium, 0, medium.length));
-  let mediumMax: number = add(medium, 0, medium.length, A, min, mid, base);
-  //console.log("medium = medium + high: ", print(medium, 0, mediumMax));
-
-  //medium = medium * medium
-  //console.group("medium = medium * medium...");
-  mediumMax = square(medium, 0, mediumMax, base);
-  //console.groupEnd(); console.log("medium = medium * medium: ", print(medium, 0, mediumMax), mediumMax);
+  const medium: number[] = A.slice(min, mid);
+  let mediumMax: number = add(medium, 0, medium.length, A, mid, max, base);
 
   //Shift high left
-  const highMin = mid + halfLen;
   shift(A, mid, max, halfLen);
-  zero(A, mid, highMin);
-  //console.log("high <--: ", print(A, min, highMin, max + halfLen, max + halfLen));
 
   //high * high
-  //console.group("high = high * high...");
+  const highMin = mid + halfLen;
   max = square(A, highMin, max + halfLen, base);
-  //console.groupEnd(); console.log("high = high * high: ", print(A, highMin, max));
 
   //low * low
-  //console.group("low = low * low...");
   const lowMax: number = square(A, min, mid, base);
-  //console.groupEnd(); console.log("low = low * low: ", print(A, min, lowMax));
+  zero(A, lowMax, highMin);
 
-  //medium = medium - high - low
-  mediumMax = sub(medium, 0, mediumMax, A, highMin, max, base);
-  //console.log("medium = medium - high: ", print(medium, 0, mediumMax), mediumMax);
+  //medium = medium * medium - high - low
+  mediumMax = square(medium, 0, mediumMax, base);
   mediumMax = sub(medium, 0, mediumMax, A, min, lowMax, base);
-  //console.log("medium = medium - low: ", print(medium, 0, mediumMax));
+  mediumMax = sub(medium, 0, mediumMax, A, highMin, max, base);
 
   //A = high*(base^len) + medium*(base ^ halfLen) + low
-  //console.log("A: ", print(A, min, lowMax, highMin, max));
   return add(A, mid, max, medium, 0, mediumMax, base);
-  //console.log("A = A + medium * (base & halfLen): ", print(A, min, mid, max, max));
 }
 
+//Assumes shifts >= max - min
 function shift(A: number[], min: number, max: number, shifts: number): void {
-  for(let c: number = max, n: number = max + shifts; c > min; A[--n] = A[--c]){
+  for(let i: number = min, j: number = min + shifts; i < max; A[j++] = A[i++]){
   }
 }
 
@@ -155,18 +142,4 @@ function sub(A: number[], minA: number, maxA: number, B: number[], minB: number,
 
   //Return length
   return maxA;
-}
-
-function print(A: number[], min: number, low: number, high?: number, max?: number): string{
-  let s: string = "";
-  if(high == null){
-    high = max = low;
-    low = min;
-  }
-  for(; min < low; s = " " + A[min++] + s){}
-  s = " ]" + s;
-  for(; min < high; s = " " + A[min++] + s){}
-  s = " [" + s;
-  for(; min < max; s = " " + A[min++] + s){}
-  return s;
 }

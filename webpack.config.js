@@ -19,27 +19,15 @@ module.exports = [{
     root: [
       path.resolve('.')
     ],
-    modulesDirectories: [
-      "node_modules"
-    ],
     extensions: [
       "", ".webpack.js", ".web.js", ".js", ".ts", ".tsx", ".d.ts"
     ]
   },
 
   module: {
-    noParse: [
-      /node_modules\/json-schema\/lib\/validate\.js/
-    ],
     loaders: [{
       test: /\.tsx?$/,
       loaders: ['babel', 'ts-loader']
-    }, {
-      test: /\.json$/,
-      loader: 'json-loader'
-    }, {
-      test: /\.md$/,
-      loader: 'html!markdown'
     }, {
       test: /\.jsx?$/,
       loader: 'babel',
@@ -49,8 +37,8 @@ module.exports = [{
 
   plugins: [
     new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.DedupePlugin()/*,
+    new webpack.optimize.UglifyJsPlugin()*/
   ],
 
   //Options for ts-loader
@@ -58,19 +46,5 @@ module.exports = [{
     compilerOptions: {
       "declaration": false
     }
-  },
-
-  /*
-  node: {
-    console: false,
-    global: true,
-    process: true,
-    Buffer: true,
-    __filename: 'mock',
-    __dirname: 'mock',
-    net: 'empty',
-    tls: 'empty',
-    fs: 'empty'
   }
-  */
 }];
