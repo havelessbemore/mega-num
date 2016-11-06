@@ -33,15 +33,19 @@
   "files": [
     "src/bigNumber.ts",
     "src/index.ts",
-    "src/integer/add/basicAddMethod.ts",
+    "src/integer/add/basicAdditionMethod.ts",
+    "src/integer/add/reverseAdditionMethod.ts",
     "src/integer/bigInteger.ts",
     "src/integer/div/basicHalfMethod.ts",
     "src/integer/mul/basicDoubleMethod.ts",
     "src/integer/mul/basicMultiplicationMethod.ts",
     "src/integer/mul/basicSquareMethod.ts",
+    "src/integer/mul/karatsubaMultiplicationMethod.ts",
     "src/integer/mul/karatsubaSquareMethod.ts",
     "src/integer/sub/basicSubtractionMethod.ts",
     "src/integer/sub/reverseSubtractionMethod.ts",
+    "src/integer/util.ts",
+    "src/util.ts",
     "typings/globals/node/index.d.ts",
     "typings/index.d.ts"
   ]

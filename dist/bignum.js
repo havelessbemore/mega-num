@@ -92,13 +92,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var bigNumber_1 = __webpack_require__(91);
-	var basicAddMethod_1 = __webpack_require__(92);
-	var basicDoubleMethod_1 = __webpack_require__(93);
-	var basicHalfMethod_1 = __webpack_require__(94);
-	var basicSubtractionMethod_1 = __webpack_require__(95);
-	var reverseSubtractionMethod_1 = __webpack_require__(96);
-	var karatsubaSquareMethod_1 = __webpack_require__(97);
-	var basicMultiplicationMethod_1 = __webpack_require__(98);
+	var basicAdditionMethod_1 = __webpack_require__(92);
+	var reverseAdditionMethod_1 = __webpack_require__(93);
+	var basicDoubleMethod_1 = __webpack_require__(94);
+	var basicHalfMethod_1 = __webpack_require__(95);
+	var basicSubtractionMethod_1 = __webpack_require__(96);
+	var reverseSubtractionMethod_1 = __webpack_require__(97);
+	var karatsubaSquareMethod_1 = __webpack_require__(98);
+	var basicMultiplicationMethod_1 = __webpack_require__(100);
 
 	var BigInteger = function (_bigNumber_1$default) {
 	    (0, _inherits3.default)(BigInteger, _bigNumber_1$default);
@@ -341,7 +342,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return adduend.mNegate().mSubtract(addend).mNegate();
 	            }
 	            adduend.integer.length = adduend.digits < addend.digits ? addend.digits + 1 : adduend.digits + 1;
-	            adduend.integer.length = adduend.digits = basicAddMethod_1.default(adduend.integer, adduend.digits, addend.integer, addend.digits, adduend.base);
+	            adduend.integer.length = adduend.digits = (adduend.digits < addend.digits ? reverseAdditionMethod_1.default : basicAdditionMethod_1.default)(adduend.integer, 0, adduend.digits, addend.integer, 0, addend.digits, adduend.base);
 	            return adduend;
 	        }
 	    }, {
@@ -384,7 +385,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                minuend.mNegate();
 	                minuend.integer.length = minuend.digits = reverseSubtractionMethod_1.default(minuend.integer, minuend.digits, subtrahend.integer, subtrahend.digits, minuend.base);
 	            } else {
-	                minuend.integer.length = minuend.digits = basicSubtractionMethod_1.default(minuend.integer, minuend.digits, subtrahend.integer, subtrahend.digits, minuend.base);
+	                minuend.integer.length = minuend.digits = basicSubtractionMethod_1.default(minuend.integer, 0, minuend.digits, subtrahend.integer, 0, subtrahend.digits, minuend.base);
 	            }
 	            return minuend;
 	        }
@@ -526,7 +527,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'min',
 	        value: function min(a, b) {
-	            return a.compareTo(b) > 0 ? b.clone() : a.clone();
+	            return BigInteger.mMin(a, b).clone();
 	        }
 	    }, {
 	        key: 'mMin',
@@ -536,7 +537,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'max',
 	        value: function max(a, b) {
-	            return a.compareTo(b) < 0 ? b.clone() : a.clone();
+	            return BigInteger.mMax(a, b).clone();
 	        }
 	    }, {
 	        key: 'mMax',
@@ -2168,37 +2169,47 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 
-	function BasicAddMethod(A, lenA, B, lenB, base) {
-	    var minLen = lenB;
-	    if (lenA < lenB) {
-	        minLen = lenA;
-	        do {
-	            A[lenA] = B[lenA];
-	        } while (++lenA < lenB);
-	    }
-	    var i = void 0;
+	function BasicAdditionMethod(A, minA, maxA, B, minB, maxB, base) {
 	    var carry = 0;
-	    for (i = 0; i < minLen; ++i) {
-	        A[i] = A[i] + B[i] + carry;
-	        if (A[i] < base) {
+	    for (; minB < maxB; ++minA, ++minB) {
+	        A[minA] = A[minA] + B[minB] + carry;
+	        if (A[minA] < base) {
 	            carry = 0;
 	        } else {
+	            A[minA] = A[minA] - base;
 	            carry = 1;
-	            A[i] = A[i] - base;
 	        }
 	    }
 	    if (carry > 0) {
-	        for (carry = base - 1; i < lenA && A[i] === carry; A[i++] = 0) {}
-	        A[i] = (0 | A[i]) + 1;
-	        ++i;
+	        for (carry = base - 1; minA < maxA && A[minA] === carry; A[minA++] = 0) {}
+	        if (minA === maxA) {
+	            A[maxA++] = 1;
+	        } else {
+	            A[minA] = A[minA] + 1;
+	        }
 	    }
-	    return i < lenA ? lenA : i;
+	    return maxA;
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = BasicAddMethod;
+	exports.default = BasicAdditionMethod;
 
 /***/ },
 /* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var basicAdditionMethod_1 = __webpack_require__(92);
+	function ReverseAdditionMethod(A, minA, maxA, B, minB, maxB, base) {
+	    var newMaxB = minB - minA + maxA;
+	    for (var b = newMaxB; b < maxB; A[maxA++] = B[b++]) {}
+	    return basicAdditionMethod_1.default(A, minA, maxA, B, minB, newMaxB, base);
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = ReverseAdditionMethod;
+
+/***/ },
+/* 94 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2223,7 +2234,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = basicDoubleMethod;
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2247,38 +2258,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	;
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports) {
 
 	"use strict";
 
-	function BasicSubtractionMethod(A, lenA, B, lenB, base) {
-	    var i = 0;
+	function BasicSubtractionMethod(A, minA, maxA, B, minB, maxB, base) {
+	    var a = minA;
 	    var borrow = 0;
-	    for (; i < lenB; ++i) {
-	        A[i] = A[i] - borrow - B[i];
-	        if (A[i] < 0) {
-	            A[i] = A[i] + base;
+	    for (; minB < maxB; ++a, ++minB) {
+	        A[a] = A[a] - borrow - B[minB];
+	        if (A[a] < 0) {
+	            A[a] = A[a] + base;
 	            borrow = 1;
 	        } else {
 	            borrow = 0;
 	        }
 	    }
 	    if (borrow > 0) {
-	        for (borrow = base - 1; A[i] === 0; A[i++] = borrow) {}
-	        A[i] = A[i] - 1;
-	        ++i;
+	        for (borrow = base - 1; A[a] === 0; A[a++] = borrow) {}
+	        A[a] = A[a] - 1;
+	        ++a;
 	    }
-	    if (i === lenA) {
-	        for (; A[lenA - 1] === 0; --lenA) {}
+	    if (a === maxA) {
+	        for (; maxA > minA && A[maxA - 1] === 0; --maxA) {}
 	    }
-	    return lenA;
+	    return maxA;
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = BasicSubtractionMethod;
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2302,11 +2313,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = reverseSubtractionMethod;
 
 /***/ },
-/* 97 */
-/***/ function(module, exports) {
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
+	var util_1 = __webpack_require__(99);
+	var basicAdditionMethod_1 = __webpack_require__(92);
+	var basicSubtractionMethod_1 = __webpack_require__(96);
 	function KaratsubaSquareMethod(A, len, base) {
 	    A[len] = 0;
 	    return square(A, 0, len, base);
@@ -2327,71 +2341,56 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    halfLen = halfLen + 1 >> 1;
 	    var mid = min + halfLen;
-	    var medium = A.slice(min, mid);
-	    var mediumMax = add(medium, 0, medium.length, A, mid, max, base);
-	    shift(A, mid, max, halfLen);
+	    var medium = new Array(halfLen + 1 << 1);
+	    util_1.copy(medium, 0, A, min, mid);
+	    var mediumMax = basicAdditionMethod_1.default(medium, 0, halfLen, A, mid, max, base);
+	    util_1.basicShiftUp(A, mid, max, halfLen);
 	    var highMin = mid + halfLen;
 	    max = square(A, highMin, max + halfLen, base);
 	    var lowMax = square(A, min, mid, base);
-	    zero(A, lowMax, highMin);
+	    util_1.zero(A, lowMax, highMin);
+	    medium[mediumMax] = 0;
 	    mediumMax = square(medium, 0, mediumMax, base);
-	    mediumMax = sub(medium, 0, mediumMax, A, min, lowMax, base);
-	    mediumMax = sub(medium, 0, mediumMax, A, highMin, max, base);
-	    return add(A, mid, max, medium, 0, mediumMax, base);
-	}
-	function shift(A, min, max, shifts) {
-	    for (var i = min, j = min + shifts; i < max; A[j++] = A[i++]) {}
-	}
-	function zero(A, min, max) {
-	    for (var i = min; i < max; A[i++] = 0) {}
-	}
-	function add(A, minA, maxA, B, minB, maxB, base) {
-	    var a = minA;
-	    var carry = 0;
-	    for (var b = minB; b < maxB; ++a, ++b) {
-	        A[a] = A[a] + B[b] + carry;
-	        if (A[a] < base) {
-	            carry = 0;
-	        } else {
-	            A[a] = A[a] - base;
-	            carry = 1;
-	        }
-	    }
-	    if (carry > 0) {
-	        for (carry = base - 1; a < maxA && A[a] === carry; A[a++] = 0) {}
-	        if (a === maxA) {
-	            A[maxA++] = 1;
-	        } else {
-	            A[a] = A[a] + 1;
-	        }
-	    }
-	    return maxA;
-	}
-	function sub(A, minA, maxA, B, minB, maxB, base) {
-	    var a = minA;
-	    var borrow = 0;
-	    for (var b = minB; b < maxB; ++a, ++b) {
-	        A[a] = A[a] - borrow - B[b];
-	        if (A[a] < 0) {
-	            A[a] = A[a] + base;
-	            borrow = 1;
-	        } else {
-	            borrow = 0;
-	        }
-	    }
-	    if (borrow > 0) {
-	        for (borrow = base - 1; A[a] === 0; A[a++] = borrow) {}
-	        A[a] = A[a] - 1;
-	        ++a;
-	    }
-	    if (a === maxA) {
-	        for (; maxA > minA && A[maxA - 1] === 0; --maxA) {}
-	    }
-	    return maxA;
+	    mediumMax = basicSubtractionMethod_1.default(medium, 0, mediumMax, A, min, lowMax, base);
+	    mediumMax = basicSubtractionMethod_1.default(medium, 0, mediumMax, A, highMin, max, base);
+	    return basicAdditionMethod_1.default(A, mid, max, medium, 0, mediumMax, base);
 	}
 
 /***/ },
-/* 98 */
+/* 99 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	function basicShiftUp(A, min, max, shifts) {
+	    for (var i = min + shifts; min < max; A[i++] = A[min++]) {}
+	}
+	exports.basicShiftUp = basicShiftUp;
+	function reverseShiftUp(A, min, max, shifts) {
+	    var mid = max - shifts;
+	    basicShiftUp(A, mid, max, shifts);
+	    basicShiftUp(A, min, mid, shifts);
+	}
+	exports.reverseShiftUp = reverseShiftUp;
+	function basicShiftDown(A, min, max, shifts) {
+	    for (var i = min - shifts; min < max; A[i++] = A[min++]) {}
+	}
+	exports.basicShiftDown = basicShiftDown;
+	function zero(A, min, max) {
+	    while (min < max) {
+	        A[min++] = 0;
+	    }
+	}
+	exports.zero = zero;
+	function copy(A, minA, B, minB, maxB) {
+	    while (minB < maxB) {
+	        A[minA++] = B[minB++];
+	    }
+	}
+	exports.copy = copy;
+
+/***/ },
+/* 100 */
 /***/ function(module, exports) {
 
 	"use strict";

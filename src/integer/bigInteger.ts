@@ -1,10 +1,10 @@
 import BigNumber from '../bigNumber';
-import BasicAddMethod from './add/basicAddMethod';
+import BasicAdditionMethod from './add/basicAdditionMethod';
+import ReverseAdditionMethod from './add/reverseAdditionMethod';
 import BasicDoubleMethod from './mul/basicDoubleMethod';
 import BasicHalfMethod from './div/basicHalfMethod';
 import BasicSubtractionMethod from './sub/basicSubtractionMethod';
 import ReverseSubtractionMethod from './sub/reverseSubtractionMethod';
-//import BasicSquareMethod from './mul/basicSquareMethod';
 import KaratsubaSquareMethod from './mul/karatsubaSquareMethod';
 import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
 
@@ -206,7 +206,7 @@ export default class BigInteger extends BigNumber {
   }
 
   public static min(a: BigInteger, b: BigInteger): BigInteger {
-    return (a.compareTo(b) > 0) ? b.clone() : a.clone();
+    return BigInteger.mMin(a, b).clone();
   }
 
   public static mMin(a: BigInteger, b: BigInteger): BigInteger {
@@ -214,7 +214,7 @@ export default class BigInteger extends BigNumber {
   }
 
   public static max(a: BigInteger, b: BigInteger): BigInteger {
-    return (a.compareTo(b) < 0) ? b.clone() : a.clone();
+    return BigInteger.mMax(a, b).clone();
   }
 
   public static mMax(a: BigInteger, b: BigInteger): BigInteger {
@@ -256,7 +256,7 @@ export default class BigInteger extends BigNumber {
     //Compare bases
     if(a.base !== b.base){
 
-      //Force a to smaller base
+      //Force a to represent smaller base
       if(a.base > b.base){
         let c: BigInteger = a;
         a = b;
@@ -264,6 +264,7 @@ export default class BigInteger extends BigNumber {
         out = 1;
       }
 
+      //Estimate number of digits of A if converted to B's base
       let ratio: number = Math.log(a.base) / Math.log(b.base);
       if(b.digits < Math.ceil(a.digits * ratio)){
         return -out;
@@ -272,7 +273,7 @@ export default class BigInteger extends BigNumber {
         return out;
       }
 
-      //Convert to same base
+      //Convert A to B's base
       a = a.clone();
       BigInteger.toBase(a, b.base);
     }
@@ -314,6 +315,7 @@ export default class BigInteger extends BigNumber {
     let integer: number[] = this.integer;
     for(let len: number = this.digits; len > 0; isEven = isEven === ((integer[--len] & 1) === 0)){
     }
+    
     return isEven;
   }
 
@@ -414,9 +416,11 @@ export default class BigInteger extends BigNumber {
     adduend.integer.length = (adduend.digits < addend.digits) ? addend.digits + 1 : adduend.digits + 1;
 
     //Add
-    adduend.integer.length = adduend.digits = BasicAddMethod(
-      adduend.integer, adduend.digits,
-      addend.integer, addend.digits,
+    adduend.integer.length = adduend.digits = (
+      (adduend.digits < addend.digits) ? ReverseAdditionMethod : BasicAdditionMethod
+    )(
+      adduend.integer, 0, adduend.digits,
+      addend.integer, 0, addend.digits,
       adduend.base
     );
 
@@ -494,8 +498,8 @@ export default class BigInteger extends BigNumber {
     //If A > B
     } else {
       minuend.integer.length = minuend.digits = BasicSubtractionMethod(
-        minuend.integer, minuend.digits,
-        subtrahend.integer, subtrahend.digits,
+        minuend.integer, 0, minuend.digits,
+        subtrahend.integer, 0, subtrahend.digits,
         minuend.base
       );
     }
@@ -541,9 +545,6 @@ export default class BigInteger extends BigNumber {
     multiplicand.integer.length = multiplicand.digits = KaratsubaSquareMethod(
       multiplicand.integer, multiplicand.digits, multiplicand.base
     );
-    /*multiplicand.integer.length = multiplicand.digits = BasicSquareMethod(
-      multiplicand.integer, multiplicand.digits, multiplicand.base
-    );*/
 
     return multiplicand;
   }

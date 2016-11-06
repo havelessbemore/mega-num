@@ -1,17 +1,19 @@
 /*
   f(A, B) = A - B
-  Overwrites A
-  Assumes A >= B
+  Assumes
+     A >= B
+  Note
+     Overwrites A
 */
-export default function BasicSubtractionMethod(A: number[], lenA: number, B: number[], lenB: number, base: number): number {
+export default function BasicSubtractionMethod(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): number {
+  let a: number = minA;
+  let borrow: number = 0;
 
   //Subtract common digits
-  let i: number = 0;
-  let borrow: number = 0;
-  for(; i < lenB; ++i){
-    A[i] = A[i] - borrow - B[i];
-    if(A[i] < 0){
-      A[i] = A[i] + base;
+  for(; minB < maxB; ++a, ++minB){
+    A[a] = A[a] - borrow - B[minB];
+    if(A[a] < 0){
+      A[a] = A[a] + base;
       borrow = 1;
     } else {
       borrow = 0;
@@ -20,17 +22,18 @@ export default function BasicSubtractionMethod(A: number[], lenA: number, B: num
 
   //Subtract borrow
   if(borrow > 0){
-    for(borrow = base - 1; A[i] === 0; A[i++] = borrow){
+    for(borrow = base - 1; A[a] === 0; A[a++] = borrow){
     }
-    A[i] = A[i] - 1;
-    ++i;
+    A[a] = A[a] - 1;
+    ++a;
   }
 
-  //Find the new length
-  if (i === lenA){
-    for(; A[lenA - 1] === 0; --lenA){
+  //Find new length
+  if(a === maxA){
+    for(; maxA > minA && A[maxA-1] === 0; --maxA){
     }
   }
 
-  return lenA;
+  //Return length
+  return maxA;
 }
