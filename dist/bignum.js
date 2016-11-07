@@ -2330,13 +2330,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	function square(A, min, max, base) {
 	    var halfLen = max - min;
 	    if (halfLen < 2) {
-	        A[min] = A[min] * A[min];
-	        if (A[min] < base) {
+	        halfLen = A[min] * A[min];
+	        if (halfLen < base) {
 	            A[max] = 0;
 	        } else {
-	            A[max++] = 0 | A[min] / base;
-	            A[min] = A[min] % base;
+	            A[max++] = 0 | halfLen / base;
+	            halfLen = halfLen % base;
 	        }
+	        A[min] = halfLen;
 	        return max;
 	    }
 	    halfLen = halfLen + 1 >> 1;
@@ -2345,10 +2346,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    util_1.copy(medium, 0, A, min, mid);
 	    var mediumMax = basicAdditionMethod_1.default(medium, 0, halfLen, A, mid, max, base);
 	    util_1.basicShiftUp(A, mid, max, halfLen);
-	    var highMin = mid + halfLen;
-	    max = square(A, highMin, max + halfLen, base);
 	    var lowMax = square(A, min, mid, base);
+	    var highMin = mid + halfLen;
 	    util_1.zero(A, lowMax, highMin);
+	    max = square(A, highMin, max + halfLen, base);
 	    medium[mediumMax] = 0;
 	    mediumMax = square(medium, 0, mediumMax, base);
 	    mediumMax = basicSubtractionMethod_1.default(medium, 0, mediumMax, A, min, lowMax, base);
@@ -2388,6 +2389,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 	exports.copy = copy;
+	function print(A, min, low, high, max) {
+	    var s = "";
+	    if (high == null) {
+	        high = max = low;
+	        low = min;
+	    }
+	    for (; min < low; s = " " + A[min++] + s) {}
+	    s = " ]" + s;
+	    for (; min < high; s = " " + A[min++] + s) {}
+	    s = " [" + s;
+	    for (; min < max; s = " " + A[min++] + s) {}
+	    return s;
+	}
+	exports.print = print;
 
 /***/ },
 /* 100 */

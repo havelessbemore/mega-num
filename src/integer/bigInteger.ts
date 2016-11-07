@@ -315,7 +315,7 @@ export default class BigInteger extends BigNumber {
     let integer: number[] = this.integer;
     for(let len: number = this.digits; len > 0; isEven = isEven === ((integer[--len] & 1) === 0)){
     }
-    
+
     return isEven;
   }
 

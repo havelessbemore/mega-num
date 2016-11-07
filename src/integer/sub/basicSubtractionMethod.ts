@@ -5,7 +5,7 @@
   Note
      Overwrites A
 */
-export default function BasicSubtractionMethod(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): number {
+export default function BasicSubtractionMethod(A: Iterable<number>, minA: number, maxA: number, B: Iterable<number>, minB: number, maxB: number, base: number): number {
   let a: number = minA;
   let borrow: number = 0;
 

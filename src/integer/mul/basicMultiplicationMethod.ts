@@ -16,7 +16,7 @@
       g  h  i  j  k  l
 
 */
-export default function BasicMultiplicationMethod(A: number[], lenA: number, B: number[], lenB: number, base: number): number {
+export default function BasicMultiplicationMethod(A: Iterable<number>, lenA: number, B: Iterable<number>, lenB: number, base: number): number {
   let lenC: number = lenA + lenB;
 
   //Shift A to the left

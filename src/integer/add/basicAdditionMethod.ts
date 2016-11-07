@@ -5,7 +5,7 @@
     A.length >= B.length
     A and B not same array or non-intersecting segments
 */
-export default function BasicAdditionMethod(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): number{
+export default function BasicAdditionMethod(A: Iterable<number>, minA: number, maxA: number, B: Iterable<number>, minB: number, maxB: number, base: number): number{
   let carry: number = 0;
 
   //Add common digits

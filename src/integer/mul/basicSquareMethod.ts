@@ -25,7 +25,7 @@
     -------------------------------------------------------
       h   i   j   k   l   m   n   o   p   q   r   s   t   u
 */
-export default function BasicSquareMethod(A: number[], len: number, base: number): number {
+export default function BasicSquareMethod(A: Iterable<number>, len: number, base: number): number {
 
   //Move digits to the left
   let newLen: number = len << 1;
@@ -35,7 +35,7 @@ export default function BasicSquareMethod(A: number[], len: number, base: number
   //Zero original digits
   for(let i: number = 0; i < len; A[i++] = 0){
   }
-  
+
   //console.log("Start", A);
 
   //For every digit

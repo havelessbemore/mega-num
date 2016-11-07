@@ -45,7 +45,6 @@
     "src/integer/sub/basicSubtractionMethod.ts",
     "src/integer/sub/reverseSubtractionMethod.ts",
     "src/integer/util.ts",
-    "src/util.ts",
     "typings/globals/node/index.d.ts",
     "typings/index.d.ts"
   ]

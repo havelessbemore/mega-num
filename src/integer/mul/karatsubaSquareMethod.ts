@@ -10,25 +10,26 @@ import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
 
   Performance Test:
   !function(){console.clear(); let a = (new BigNum.BigInteger(7654321)).mSetBase(10000000); let t0 = performance.now(); for(let i = 16; i > 0; --i){a.mSquare();} let t1 = performance.now(); console.log(a.integer, t1 - t0);}();
-  Optimization Progress: 48520ms -> 6950ms -> 4ms -> 
+  Optimization Progress: 48520ms -> 6950ms -> 4ms ->
 */
-export default function KaratsubaSquareMethod(A: number[], len: number, base: number): number {
+export default function KaratsubaSquareMethod(A: Iterable<number>, len: number, base: number): number {
   A[len] = 0;
   return square(A, 0, len, base);
 }
 
-function square(A: number[], min: number, max: number, base: number): number {
+function square(A: Iterable<number>, min: number, max: number, base: number): number {
   let halfLen: number = max - min;
 
   //Base case
   if(halfLen < 2){
-    A[min] = A[min] * A[min];
-    if(A[min] < base){
+    halfLen = A[min] * A[min];
+    if(halfLen < base){
       A[max] = 0;
     } else {
-      A[max++] = 0 | (A[min] / base);
-      A[min] = A[min] % base;
+      A[max++] = 0 | (halfLen / base);
+      halfLen = halfLen % base;
     }
+    A[min] = halfLen;
     return max;
   }
 
@@ -37,22 +38,23 @@ function square(A: number[], min: number, max: number, base: number): number {
   const mid: number = min + halfLen;
 
   //medium = low + high
-  const medium: number[] = new Array((halfLen + 1) << 1);
+  const medium: Iterable<number> = new Array((halfLen + 1) << 1);
   copy(medium, 0, A, min, mid);
   let mediumMax: number = BasicAdditionMethod(medium, 0, halfLen, A, mid, max, base);
 
   //Shift high left
   basicShiftUp(A, mid, max, halfLen);
 
-  //high * high
-  const highMin = mid + halfLen;
-  max = square(A, highMin, max + halfLen, base);
-
   //low * low
   const lowMax: number = square(A, min, mid, base);
+
+  const highMin = mid + halfLen;
   zero(A, lowMax, highMin);
 
-  //medium = medium * medium - high - low
+  //high * high
+  max = square(A, highMin, max + halfLen, base);
+
+  //medium = medium * medium - low - high
   medium[mediumMax] = 0;
   mediumMax = square(medium, 0, mediumMax, base);
   mediumMax = BasicSubtractionMethod(medium, 0, mediumMax, A, min, lowMax, base);

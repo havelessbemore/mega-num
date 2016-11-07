@@ -2,7 +2,7 @@
 f(A) = A + A
 Overwrites A
 */
-export default function basicDoubleMethod(A: number[], len: number, base: number): number {
+export default function basicDoubleMethod(A: Iterable<number>, len: number, base: number): number {
   let carry: number = 0;
 
   //Double
