@@ -28,7 +28,7 @@
 export default function BasicSquareMethod(A: Iterable<number>, len: number, base: number): number {
 
   //Move digits to the left
-  let newLen: number = len << 1;
+  let newLen: number = 2*len;
   for(let i: number = 0, j: number = len; i < len; A[j++] = A[i++]){
   }
 

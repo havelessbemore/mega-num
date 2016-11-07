@@ -34,11 +34,11 @@ function square(A: Iterable<number>, min: number, max: number, base: number): nu
   }
 
   //Split the number in half
-  halfLen = (halfLen + 1) >> 1;
+  halfLen = (halfLen + (halfLen & 1)) / 2;
   const mid: number = min + halfLen;
 
   //medium = low + high
-  const medium: Iterable<number> = new Array((halfLen + 1) << 1);
+  const medium: Iterable<number> = new Array(2*halfLen + 2);
   copy(medium, 0, A, min, mid);
   let mediumMax: number = BasicAdditionMethod(medium, 0, halfLen, A, mid, max, base);
 

@@ -2340,9 +2340,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        A[min] = halfLen;
 	        return max;
 	    }
-	    halfLen = halfLen + 1 >> 1;
+	    halfLen = (halfLen + (halfLen & 1)) / 2;
 	    var mid = min + halfLen;
-	    var medium = new Array(halfLen + 1 << 1);
+	    var medium = new Array(2 * halfLen + 2);
 	    util_1.copy(medium, 0, A, min, mid);
 	    var mediumMax = basicAdditionMethod_1.default(medium, 0, halfLen, A, mid, max, base);
 	    util_1.basicShiftUp(A, mid, max, halfLen);
