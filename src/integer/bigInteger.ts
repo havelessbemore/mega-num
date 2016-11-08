@@ -7,7 +7,7 @@ import BasicSubtractionMethod from './sub/basicSubtractionMethod';
 import ReverseSubtractionMethod from './sub/reverseSubtractionMethod';
 import KaratsubaSquareMethod from './mul/karatsubaSquareMethod';
 import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
-import {isNumber, isString} from '../util';
+import {CIPHER, isNumber, isString} from '../util';
 
 export function isBigInteger(n: any): n is BigInteger {
   return n instanceof BigInteger;
@@ -19,14 +19,16 @@ export default class BigInteger extends BigNumber {
   // PROPERTIES
   ///////////////////////
 
-  //TODO: Change back to private
-  public isNegative: boolean;
-  public integer: number[];
-  public digits: number;
+  protected isNegative: boolean;
+  protected integer: number[];
+  protected digits: number;
 
   ////////////////////////
   // CONSTRUCTOR
   ////////////////////////
+
+  public static get ZERO(): BigInteger {return new BigInteger(0)};
+  public static get ONE(): BigInteger {return new BigInteger(1)};
 
   constructor(input: BigInteger | number | string) {
     super();
@@ -79,7 +81,7 @@ export default class BigInteger extends BigNumber {
     }
 
     //Convert to default base
-    BigInteger.toBase(this, BigNumber.DEFAULT_BASE);
+    this.toBase(BigNumber.DEFAULT_BASE);
   }
 
   ////////////////////////
@@ -152,31 +154,30 @@ export default class BigInteger extends BigNumber {
   public mSetBase(base: number): BigInteger {
 
     //Sanitize base
-    base = BigInteger.sanitizeBase(base);
-
-    //Check if already in base
-    if(this.base !== base){
-      BigInteger.toBase(this, base);
-    }
-
-    return this;
-  }
-
-  private static sanitizeBase(base: number){
     base = 0 | base;
 
+    //Check if already in base
+    if(this.base === base){
+      return this;
+    }
+
+    //Check if new base too low
     if(base < BigInteger.MIN_BASE){
       throw RangeError(base + " < BigInteger.MIN_BASE (" + BigInteger.MIN_BASE + ")");
     }
 
+    //Check if new base too high
     if(base > BigInteger.MAX_BASE){
       throw RangeError(base + " > BigInteger.MAX_BASE (" + BigInteger.MAX_BASE + ")");
     }
 
-    return base;
+    //Convert to base
+    this.toBase(base);
+    return this;
   }
 
-  private static toBase(n: BigInteger, newBase: number): void {
+  private toBase(newBase: number): void {
+    const n: BigInteger = this;
     let curInteger: number[] = n.integer;
     let curBase: number = n.base;
     let curDigits: number = n.digits;
@@ -200,6 +201,52 @@ export default class BigInteger extends BigNumber {
     n.base = newBase;
     n.digits = newDigits;
     n.integer = newInteger;
+  }
+
+  ////////////////////////
+  // TO STRING
+  ////////////////////////
+
+  public toString(base: number = this.base, cipher: string[] | ((n: number) => string) = CIPHER, sep: string = ""): string {
+
+    //Set base
+    if(this.base !== base){
+      return this.setBase(base).toString(base, cipher, sep);
+    }
+
+    //Check cipher
+    if(cipher === null || cipher instanceof Array && base > cipher.length){
+      cipher = (n: number) => "" + n;
+    }
+
+    //Check if zero
+    if(this.digits === 0){
+      return (cipher instanceof Array) ? cipher[0] : cipher(0);
+    }
+
+    let s: string;
+    const A: Iterable<number> = this.integer;
+
+    //Print with cipher
+    if(cipher instanceof Array){
+      s = cipher[A[0]];
+      for(let i: number = 1, j: number = this.digits; i < j; s = cipher[A[i++]] + sep + s){
+      }
+
+    //Print with custom function
+    } else {
+      s = cipher(A[0]);
+      for(let i: number = 1, j: number = this.digits; i < j; s = cipher(A[i++]) + sep + s){
+      }
+    }
+
+    //If negative
+    if(this.isNegative){
+      s = "-" + s;
+    }
+
+    //Return string
+    return s;
   }
 
   ////////////////////////
@@ -280,7 +327,7 @@ export default class BigInteger extends BigNumber {
 
       //Convert A to B's base
       a = a.clone();
-      BigInteger.toBase(a, b.base);
+      a.toBase(b.base);
     }
 
     //Compare digits
@@ -325,6 +372,50 @@ export default class BigInteger extends BigNumber {
   }
 
   ////////////////////////
+  // BITWISE
+  ////////////////////////
+
+  public not(): BigInteger {
+    return this.clone().mNot();
+  }
+
+  public mNot(): BigInteger {
+    return this.add(BigInteger.ONE).mNegate();
+  }
+
+  public and(B: BigInteger): BigInteger {
+    return this.clone().mAnd(B);
+  }
+
+  public mAnd(B: BigInteger): BigInteger {
+    throw Error("D");
+  }
+
+  public andNot(B: BigInteger): BigInteger {
+    return this.clone().mAndNot(B);
+  }
+
+  public mAndNot(B: BigInteger): BigInteger {
+    throw Error("D");
+  }
+
+  public or(B: BigInteger): BigInteger {
+    return this.clone().mOr(B);
+  }
+
+  public mOr(B: BigInteger): BigInteger {
+    throw Error("D");
+  }
+
+  public xor(B: BigInteger): BigInteger {
+    return this.clone().mXor(B);
+  }
+
+  public mXor(B: BigInteger): BigInteger {
+    throw Error("D");
+  }
+
+  ////////////////////////
   // GCD
   ////////////////////////
 
@@ -347,7 +438,7 @@ export default class BigInteger extends BigNumber {
       const base: number = A.base;
       BigInteger.clone(A, B);
       if(base !== A.base){
-        BigInteger.toBase(A, base);
+        A.toBase(base);
       }
 
       return A.mAbs();
@@ -358,7 +449,7 @@ export default class BigInteger extends BigNumber {
 
     //Normalize bases
     if(A.base !== B.base){
-      BigInteger.toBase(B, A.base);
+      B.toBase(A.base);
     }
 
     //Calculate GCD
@@ -375,7 +466,7 @@ export default class BigInteger extends BigNumber {
   //See: https://en.wikipedia.org/wiki/Binary_GCD_algorithm
   private _gcd(B: BigInteger): BigInteger {
     let A: BigInteger = this;
-    const C: BigInteger = new BigInteger(1);
+    const C: BigInteger = BigInteger.ONE;
 
     //Remove and record common factors of 2
     while(A.isEven() && B.isEven()){
@@ -434,7 +525,7 @@ export default class BigInteger extends BigNumber {
       let base = adduend.base;
       BigInteger.clone(adduend, addend);
       if(base !== adduend.base){
-        BigInteger.toBase(adduend, base);
+        adduend.toBase(base);
       }
 
       return adduend;
@@ -443,7 +534,7 @@ export default class BigInteger extends BigNumber {
     //Normalize bases
     if (adduend.base !== addend.base){
         addend = addend.clone();
-        BigInteger.toBase(addend, adduend.base);
+        addend.toBase(adduend.base);
     }
 
     //If signs differ
@@ -503,7 +594,7 @@ export default class BigInteger extends BigNumber {
       let base = minuend.base;
       BigInteger.clone(minuend, subtrahend);
       if(base !== minuend.base){
-        BigInteger.toBase(minuend, base);
+        minuend.toBase(base);
       }
 
       return minuend.mNegate();
@@ -512,7 +603,7 @@ export default class BigInteger extends BigNumber {
     //Normalize bases
     if (minuend.base !== subtrahend.base){
         subtrahend = subtrahend.clone();
-        BigInteger.toBase(subtrahend, minuend.base);
+        subtrahend.toBase(minuend.base);
     }
 
     //If signs differ
@@ -671,7 +762,7 @@ export default class BigInteger extends BigNumber {
       let base: number = multiplicand.base;
       BigInteger.clone(multiplicand, multiplier);
       if(multiplicand.base !== base){
-        BigInteger.toBase(multiplicand, base);
+        multiplicand.toBase(base);
       }
       if(multiplicand.integer[0] === 2){
         multiplicand._double();
@@ -687,7 +778,7 @@ export default class BigInteger extends BigNumber {
     //Normalize bases
     if (multiplicand.base !== multiplier.base){
         multiplier = multiplier.clone();
-        BigInteger.toBase(multiplier, multiplicand.base);
+        multiplier.toBase(multiplicand.base);
     }
 
     return multiplicand._multiply(multiplier);
@@ -835,7 +926,7 @@ export default class BigInteger extends BigNumber {
     //Normalize bases
     if(dividend.base !== divisor.base){
       divisor = divisor.clone();
-      BigInteger.toBase(divisor, dividend.base);
+      divisor.toBase(dividend.base);
     }
 
     return dividend._divide(divisor);
