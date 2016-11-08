@@ -9,6 +9,10 @@ import KaratsubaSquareMethod from './mul/karatsubaSquareMethod';
 import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
 import {isNumber, isString} from '../util';
 
+export function isBigInteger(n: any): n is BigInteger {
+  return n instanceof BigInteger;
+}
+
 export default class BigInteger extends BigNumber {
 
   ////////////////////////
@@ -321,59 +325,85 @@ export default class BigInteger extends BigNumber {
   }
 
   ////////////////////////
-  // Double
+  // GCD
   ////////////////////////
 
-  public double(): BigInteger {
-    return this.clone().mDouble();
+  public gcd(B: BigInteger): BigInteger {
+    return this.clone().mGcd(B);
   }
 
-  public mDouble(): BigInteger {
+  public mGcd(B: BigInteger): BigInteger {
+    const A: BigInteger = this;
 
-    //If zero
-    if(this.digits === 0){
-      return this;
+    //If gcd of self or B is zero
+    if(A === B || B.digits === 0){
+      return A.mAbs();
     }
 
-    return this._double();
-  }
+    //If A is zero
+    if(A.digits === 0){
 
-  private _double(): BigInteger {
+      //Copy B and return to original base
+      const base: number = A.base;
+      BigInteger.clone(A, B);
+      if(base !== A.base){
+        BigInteger.toBase(A, base);
+      }
 
-    //Double and set new length
-    this.integer.length = this.digits = BasicDoubleMethod(
-      this.integer, this.digits, this.base
-    );
-
-    return this;
-  }
-
-  ////////////////////////
-  // Half
-  ////////////////////////
-
-  public half(): BigInteger {
-    return this.clone().mHalf();
-  }
-
-  public mHalf(): BigInteger {
-
-    //If zero
-    if(this.digits === 0){
-      return this;
+      return A.mAbs();
     }
 
-    return this._half();
+    //Make a copy of B
+    B = B.clone();
+
+    //Normalize bases
+    if(A.base !== B.base){
+      BigInteger.toBase(B, A.base);
+    }
+
+    //Calculate GCD
+    B = A._gcd(B);
+
+    //Update A to be result
+    if(A !== B){
+      BigInteger.clone(A, B);
+    }
+
+    return A;
   }
 
-  private _half(): BigInteger {
+  //See: https://en.wikipedia.org/wiki/Binary_GCD_algorithm
+  private _gcd(B: BigInteger): BigInteger {
+    let A: BigInteger = this;
+    const C: BigInteger = new BigInteger(1);
 
-    //Half
-    this.integer.length = this.digits = BasicHalfMethod(
-      this.integer, this.digits, this.base, this.isNegative
-    );
+    //Remove and record common factors of 2
+    while(A.isEven() && B.isEven()){
+      A._half();
+      B._half();
+      C._double();
+    }
 
-    return this;
+    //Remove factors of 2 from A
+    while(A.isEven()){
+      A._half();
+    }
+
+    do {
+
+      //Remove factors of 2 from B
+      while(B.isEven()){
+        B._half();
+      }
+
+      //Make sure A <= B. A and B are both odd, so B - A will be even.
+      B._subtract(A).mAbs();
+
+    //Continue until B is zero
+    } while (B.digits !== 0);
+
+    //Restore common factors of 2
+    return A._multiply(C);
   }
 
   ////////////////////////
@@ -430,7 +460,7 @@ export default class BigInteger extends BigNumber {
     const addend: BigInteger = this;
 
     //Make room for addition
-    adduend.integer.length = (adduend.digits < addend.digits) ? addend.digits + 1 : adduend.digits + 1;
+    //adduend.integer.length = (adduend.digits < addend.digits) ? addend.digits + 1 : adduend.digits + 1;
 
     //Add
     adduend.integer.length = adduend.digits = (
@@ -528,6 +558,34 @@ export default class BigInteger extends BigNumber {
     }
 
     return minuend;
+  }
+
+  ////////////////////////
+  // Double
+  ////////////////////////
+
+  public double(): BigInteger {
+    return this.clone().mDouble();
+  }
+
+  public mDouble(): BigInteger {
+
+    //If zero
+    if(this.digits === 0){
+      return this;
+    }
+
+    return this._double();
+  }
+
+  private _double(): BigInteger {
+
+    //Double and set new length
+    this.integer.length = this.digits = BasicDoubleMethod(
+      this.integer, this.digits, this.base
+    );
+
+    return this;
   }
 
   ////////////////////////
@@ -712,6 +770,34 @@ export default class BigInteger extends BigNumber {
   }
 
   ////////////////////////
+  // Half
+  ////////////////////////
+
+  public half(): BigInteger {
+    return this.clone().mHalf();
+  }
+
+  public mHalf(): BigInteger {
+
+    //If zero
+    if(this.digits === 0){
+      return this;
+    }
+
+    return this._half();
+  }
+
+  private _half(): BigInteger {
+
+    //Half
+    this.integer.length = this.digits = BasicHalfMethod(
+      this.integer, this.digits, this.base, this.isNegative
+    );
+
+    return this;
+  }
+
+  ////////////////////////
   // DIVISION
   ////////////////////////
 
@@ -746,10 +832,17 @@ export default class BigInteger extends BigNumber {
       return (divisor.integer[0] === 1) ? dividend : dividend._half();
     }
 
+    //Normalize bases
+    if(dividend.base !== divisor.base){
+      divisor = divisor.clone();
+      BigInteger.toBase(divisor, dividend.base);
+    }
+
+    return dividend._divide(divisor);
+  }
+
+  private _divide(divisor: BigInteger): BigInteger {
+    //const dividend: BigInteger = this;
     throw Error("D");
   }
-}
-
-export function isBigInteger(n: any): n is BigInteger {
-  return n instanceof BigInteger;
 }

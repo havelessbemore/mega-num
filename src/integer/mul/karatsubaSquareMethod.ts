@@ -6,7 +6,7 @@ import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
   f(A) = A * A
   Overwrites A
 
-  Explanation: https://en.wikipedia.org/wiki/Karatsuba_algorithm
+  See: https://en.wikipedia.org/wiki/Karatsuba_algorithm
 
   Performance Test:
   !function(){console.clear(); let a = (new BigNum.BigInteger(7654321)).mSetBase(10000000); let t0 = performance.now(); for(let i = 16; i > 0; --i){a.mSquare();} let t1 = performance.now(); console.log(a.integer, t1 - t0);}();

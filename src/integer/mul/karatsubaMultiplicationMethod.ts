@@ -1,7 +1,8 @@
+/*
 import {basicShiftUp, copy, zero} from '../../util';
 import BasicAdditionMethod from '../add/basicAdditionMethod';
 import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
-
+*/
 /*
   f(A) = A * B
   Overwrites A
@@ -17,6 +18,8 @@ export default function KaratsubaMultiplicationMethod(A: Iterable<number>, lenA:
   return null;
 }
 
+/*
 function multiply(A: Iterable<number>, minA: number, maxA: number, B: Iterable<number>, minB: number, maxB: number, C: Iterable<number>, base: number): number {
   return null;
 }
+*/
