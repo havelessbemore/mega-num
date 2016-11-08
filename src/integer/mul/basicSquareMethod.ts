@@ -36,8 +36,6 @@ export default function BasicSquareMethod(A: Iterable<number>, len: number, base
   for(let i: number = 0; i < len; A[i++] = 0){
   }
 
-  //console.log("Start", A);
-
   //For every digit
   for(let d: number = 0, s: number = len; d < newLen; d = d + 2){
     let digit: number = A[s++];
@@ -77,9 +75,7 @@ export default function BasicSquareMethod(A: Iterable<number>, len: number, base
 
     //Place remaining carry
     A[o] = carry;
-    //console.log(A, d, s - 1);
   }
-  //console.log("Finish", A);
 
   //Return new length
   return A[newLen - 1] === 0 ? newLen - 1 : newLen;

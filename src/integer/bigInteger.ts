@@ -7,6 +7,7 @@ import BasicSubtractionMethod from './sub/basicSubtractionMethod';
 import ReverseSubtractionMethod from './sub/reverseSubtractionMethod';
 import KaratsubaSquareMethod from './mul/karatsubaSquareMethod';
 import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
+import {isNumber, isString} from '../util';
 
 export default class BigInteger extends BigNumber {
 
@@ -334,6 +335,11 @@ export default class BigInteger extends BigNumber {
       return this;
     }
 
+    return this._double();
+  }
+
+  private _double(): BigInteger {
+
     //Double and set new length
     this.integer.length = this.digits = BasicDoubleMethod(
       this.integer, this.digits, this.base
@@ -356,6 +362,11 @@ export default class BigInteger extends BigNumber {
     if(this.digits === 0){
       return this;
     }
+
+    return this._half();
+  }
+
+  private _half(): BigInteger {
 
     //Half
     this.integer.length = this.digits = BasicHalfMethod(
@@ -409,8 +420,14 @@ export default class BigInteger extends BigNumber {
     if (adduend.isNegative !== addend.isNegative){
 
       //Change sign, subtract, change sign again
-      return adduend.mNegate().mSubtract(addend).mNegate();
+      return adduend.mNegate()._subtract(addend).mNegate();
     }
+
+    return adduend._add(addend);
+  }
+
+  private _add(adduend: BigInteger): BigInteger {
+    const addend: BigInteger = this;
 
     //Make room for addition
     adduend.integer.length = (adduend.digits < addend.digits) ? addend.digits + 1 : adduend.digits + 1;
@@ -471,12 +488,18 @@ export default class BigInteger extends BigNumber {
     //If signs differ
     if (minuend.isNegative !== subtrahend.isNegative){
 
-      //Change sign, add, change sign again
-      return minuend.mNegate().mAdd(subtrahend).mNegate();
+      //Add
+      return minuend.mNegate()._add(subtrahend).mNegate();
     }
 
+    return minuend._subtract(subtrahend);
+  }
+
+  private _subtract(subtrahend: BigInteger): BigInteger {
+    const minuend: BigInteger = this;
+
     //Compare A to B
-    let comparison: number = minuend.compareTo(subtrahend);
+    const comparison: number = minuend.compareTo(subtrahend);
 
     //If same number
     if(comparison === 0){
@@ -534,9 +557,15 @@ export default class BigInteger extends BigNumber {
         return multiplicand;
       }
       if(multiplicand.integer[0] === 2){
-        return multiplicand.mDouble();
+        return multiplicand._double();
       }
     }
+
+    return multiplicand._square();
+  }
+
+  private _square(): BigInteger {
+    const multiplicand: BigInteger = this;
 
     //Make room for squaring
     multiplicand.integer.length = 2*multiplicand.digits;
@@ -587,14 +616,14 @@ export default class BigInteger extends BigNumber {
         BigInteger.toBase(multiplicand, base);
       }
       if(multiplicand.integer[0] === 2){
-        multiplicand.mDouble();
+        multiplicand._double();
       }
       return multiplicand;
     }
 
     //If multiplying by 1 or 2
     if(multiplier.digits === 1 && multiplier.integer[0] < 3){
-      return (multiplier.integer[0] === 1) ? multiplicand : multiplicand.mDouble();
+      return (multiplier.integer[0] === 1) ? multiplicand : multiplicand._double();
     }
 
     //Normalize bases
@@ -602,6 +631,12 @@ export default class BigInteger extends BigNumber {
         multiplier = multiplier.clone();
         BigInteger.toBase(multiplier, multiplicand.base);
     }
+
+    return multiplicand._multiply(multiplier);
+  }
+
+  private _multiply(multiplier: BigInteger): BigInteger {
+    const multiplicand: BigInteger = this;
 
     //Make room for multiplication
     multiplicand.integer.length = multiplicand.digits + multiplier.digits;
@@ -619,6 +654,62 @@ export default class BigInteger extends BigNumber {
   ////////////////////////
   // POW
   ////////////////////////
+
+  public pow(power: BigInteger): BigInteger {
+    return this.clone().mPow(power);
+  }
+
+  public mPow(power: BigInteger): BigInteger {
+    const base: BigInteger = this;
+
+    //If raised to zero power
+    if(power.digits === 0){
+
+      //Make one
+      base.toOne();
+      return base;
+    }
+
+    //If raised to negative power
+    if(power.isNegative){
+
+      //Make zero
+      base.toZero();
+      return base;
+    }
+
+    //If negative base and even power
+    if(base.isNegative && power.isEven()){
+
+      //Switch sign
+      base.isNegative = false;
+    }
+
+    //If base is zero or one
+    if(base.digits === 0 || (base.digits === 1 && base.integer[0] === 1)){
+      return base;
+    }
+
+    return this._pow(power);
+  }
+
+  private _pow(power: BigInteger): BigInteger {
+    const base: BigInteger = this;
+
+    //If power is 1
+    if(power.digits === 1 && power.integer[0] === 1){
+      return base;
+    }
+
+    //If power is odd
+    if(power.isOdd()){
+      const baseClone: BigInteger = base.clone();
+      return base._square()._pow(power._half())._multiply(baseClone);
+    }
+
+    //If power is even
+    return base._square()._pow(power._half());
+  }
 
   ////////////////////////
   // DIVISION
@@ -652,25 +743,13 @@ export default class BigInteger extends BigNumber {
 
     //If divisor is one or two
     if(divisor.digits === 1 && divisor.integer[0] < 3){
-      return (divisor.integer[0] === 1) ? dividend : dividend.mHalf();
+      return (divisor.integer[0] === 1) ? dividend : dividend._half();
     }
 
     throw Error("D");
   }
 }
 
-////////////////////////
-// TYPE GUARDS
-////////////////////////
-
-function isBigInteger(n: any): n is BigInteger {
+export function isBigInteger(n: any): n is BigInteger {
   return n instanceof BigInteger;
-}
-
-function isNumber(n: any): n is number {
-  return typeof n === "number";
-}
-
-function isString(s: any): s is number {
-  return typeof s === "string";
 }

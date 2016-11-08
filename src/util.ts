@@ -44,3 +44,15 @@ export function print(A: Iterable<number>, min: number, low: number, high?: numb
   for(; min < max; s = " " + A[min++] + s){}
   return s;
 }
+
+////////////////////////
+// TYPE GUARDS
+////////////////////////
+
+export function isNumber(n: any): n is number {
+  return typeof n === "number";
+}
+
+export function isString(s: any): s is number {
+  return typeof s === "string";
+}

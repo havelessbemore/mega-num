@@ -37,8 +37,8 @@ module.exports = [{
 
   plugins: [
     new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin()/*,
-    new webpack.optimize.UglifyJsPlugin()*/
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin()
   ],
 
   //Options for ts-loader
