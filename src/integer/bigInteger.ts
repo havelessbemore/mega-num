@@ -396,7 +396,7 @@ export default class BigInteger extends BigNumber {
   }
 
   public mAndNot(B: BigInteger): BigInteger {
-    throw Error("D");
+    return this.mAnd(B.not());
   }
 
   public or(B: BigInteger): BigInteger {
