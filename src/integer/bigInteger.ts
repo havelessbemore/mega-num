@@ -253,8 +253,24 @@ export default class BigInteger extends BigNumber {
   // COMPARE
   ////////////////////////
 
+  public lessThan(n: BigInteger): boolean {
+    return this.compareTo(n) < 0;
+  }
+
+  public lessThanEquals(n: BigInteger): boolean {
+    return this.compareTo(n) <= 0;
+  }
+
   public equals(n: BigInteger): boolean {
     return this.compareTo(n) === 0;
+  }
+
+  public greaterThanEquals(n: BigInteger): boolean {
+    return this.compareTo(n) >= 0;
+  }
+
+  public greaterThan(n: BigInteger): boolean {
+    return this.compareTo(n) > 0;
   }
 
   public static min(a: BigInteger, b: BigInteger): BigInteger {
@@ -363,12 +379,12 @@ export default class BigInteger extends BigNumber {
     }
 
     //If odd base
-    let isEven: boolean = true;
-    let integer: number[] = this.integer;
-    for(let len: number = this.digits; len > 0; isEven = isEven === ((integer[--len] & 1) === 0)){
+    let xor: number = 0;
+    const integer: number[] = this.integer;
+    for(let i: number = 0, n: number = this.digits; i < n; xor = xor ^ integer[i++]){
     }
 
-    return isEven;
+    return (xor & 1) === 0;
   }
 
   ////////////////////////
@@ -738,7 +754,7 @@ export default class BigInteger extends BigNumber {
   public mMultiply(multiplier: BigInteger): BigInteger {
     let multiplicand: BigInteger = this;
 
-    //If squaring
+    //If self
     if(multiplicand === multiplier){
       return multiplicand.mSquare();
     }
@@ -839,7 +855,7 @@ export default class BigInteger extends BigNumber {
       return base;
     }
 
-    return this._pow(power);
+    return base._pow(power.clone());
   }
 
   private _pow(power: BigInteger): BigInteger {
@@ -899,15 +915,15 @@ export default class BigInteger extends BigNumber {
   public mDivide(divisor: BigInteger): BigInteger {
     let dividend: BigInteger = this;
 
+    //If divisor is zero
+    if(divisor.digits === 0){
+      throw EvalError("Divide by Zero");
+    }
+
     //If self
     if(dividend === divisor){
       dividend.toOne();
       return dividend;
-    }
-
-    //If divisor is zero
-    if(divisor.digits === 0){
-      throw EvalError("Divide by Zero");
     }
 
     //If dividend is zero
@@ -923,12 +939,29 @@ export default class BigInteger extends BigNumber {
       return (divisor.integer[0] === 1) ? dividend : dividend._half();
     }
 
-    //Normalize bases
+    //If different bases
     if(dividend.base !== divisor.base){
+
+      //Estimate the number of digits of the divisor if converted to the dividend's base
+      //If the dividend is smaller than the divisor the quotient will be zero (less than 1)
+      const ratio: number = Math.log(divisor.base) / Math.log(dividend.base);
+      if(dividend.digits < Math.ceil(divisor.digits *  ratio)){
+        dividend.toZero();
+        return dividend;
+      }
+
+      //Normalize bases
       divisor = divisor.clone();
       divisor.toBase(dividend.base);
     }
 
+    //Check if the dividend is smaller than the divisor
+    if(dividend.digits < divisor.digits){
+      dividend.toZero();
+      return dividend;
+    }
+
+    //Divide
     return dividend._divide(divisor);
   }
 

@@ -7,9 +7,8 @@ export default function basicHalfMethod(integer: Iterable<number>, digits: numbe
   //Halve
   let remainder: number = 0;
   for(let i: number = digits; i-- > 0; integer[i] = integer[i] >> 1){
-    remainder = (remainder === 0) ? 0 : base;
     integer[i] = integer[i] + remainder;
-    remainder = integer[i] & 1;
+    remainder = base & -(integer[i] & 1);
   }
 
   //If there is a remainder (fraction) and number is negative
