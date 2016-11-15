@@ -45,6 +45,12 @@
     "src/integer/sub/basicSubtractionMethod.ts",
     "src/integer/sub/reverseSubtractionMethod.ts",
     "src/util.ts",
+    "test/integer/mul/basicDoubleMethod.ts",
+    "test/integer/mul/basicMultiplicationMethod.ts",
+    "test/integer/mul/basicSquareMethod.ts",
+    "test/integer/mul/karatsubaMultiplicationMethod.ts",
+    "test/integer/mul/karatsubaSquareMethod.ts",
+    "typings/globals/mocha/index.d.ts",
     "typings/globals/node/index.d.ts",
     "typings/index.d.ts"
   ]

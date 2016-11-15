@@ -6,7 +6,8 @@ import BasicHalfMethod from './div/basicHalfMethod';
 import BasicSubtractionMethod from './sub/basicSubtractionMethod';
 import ReverseSubtractionMethod from './sub/reverseSubtractionMethod';
 import KaratsubaSquareMethod from './mul/karatsubaSquareMethod';
-import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
+import KaratsubaMultiplicationMethod from './mul/karatsubaMultiplicationMethod';
+//import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
 import {CIPHER, isNumber, isString} from '../util';
 
 export function isBigInteger(n: any): n is BigInteger {
@@ -207,7 +208,7 @@ export default class BigInteger extends BigNumber {
   // TO STRING
   ////////////////////////
 
-  public toString(base: number = this.base, cipher: string[] | ((n: number) => string) = CIPHER, sep: string = ""): string {
+  public toString(base: number = this.base, cipher: string[] | ((v: number, i: number, n: number) => string) = CIPHER, sep: string = ""): string {
 
     //Set base
     if(this.base !== base){
@@ -216,12 +217,16 @@ export default class BigInteger extends BigNumber {
 
     //Check cipher
     if(cipher === null || cipher instanceof Array && base > cipher.length){
-      cipher = (n: number) => "" + n;
+      const pad: string = new Array(("" + (base-1)).length + 1).join('0');
+      cipher = (v: number, i: number, n: number): string => {
+        const s: string = "" + v;
+        return i+1 === n ? s : pad.substring(s.length) + s;
+      };
     }
 
     //Check if zero
     if(this.digits === 0){
-      return (cipher instanceof Array) ? cipher[0] : cipher(0);
+      return (cipher instanceof Array) ? cipher[0] : cipher(0, 0, 0);
     }
 
     let s: string;
@@ -235,8 +240,9 @@ export default class BigInteger extends BigNumber {
 
     //Print with custom function
     } else {
-      s = cipher(A[0]);
-      for(let i: number = 1, j: number = this.digits; i < j; s = cipher(A[i++]) + sep + s){
+      s = cipher(A[0], 0, this.digits);
+      for(let i: number = 1, j: number = this.digits; i < j; ++i){
+        s = cipher(A[i], i, j) + sep + s;
       }
     }
 
@@ -807,11 +813,16 @@ export default class BigInteger extends BigNumber {
     multiplicand.integer.length = multiplicand.digits + multiplier.digits;
 
     //Multiply
-    multiplicand.integer.length = multiplicand.digits = BasicMultiplicationMethod(
+    multiplicand.integer.length = multiplicand.digits = KaratsubaMultiplicationMethod(
       multiplicand.integer, multiplicand.digits,
       multiplier.integer, multiplier.digits,
       multiplicand.base
     );
+    /*multiplicand.integer.length = multiplicand.digits = BasicMultiplicationMethod(
+      multiplicand.integer, multiplicand.digits,
+      multiplier.integer, multiplier.digits,
+      multiplicand.base
+    );*/
 
     return multiplicand;
   }

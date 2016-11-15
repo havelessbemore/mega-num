@@ -21,6 +21,6 @@ export default function basicDoubleMethod(A: Iterable<number>, len: number, base
     A[len++] = 1;
   }
 
-  //Return new length
+  //Return length
   return len;
 }
