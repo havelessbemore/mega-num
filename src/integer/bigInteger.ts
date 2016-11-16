@@ -1,4 +1,3 @@
-import BigNumber from '../bigNumber';
 import BasicAdditionMethod from './add/basicAdditionMethod';
 import ReverseAdditionMethod from './add/reverseAdditionMethod';
 import BasicDoubleMethod from './mul/basicDoubleMethod';
@@ -14,7 +13,16 @@ export function isBigInteger(n: any): n is BigInteger {
   return n instanceof BigInteger;
 }
 
-export default class BigInteger extends BigNumber {
+export default class BigInteger {
+
+  ////////////////////////
+  // CONSTANTS
+  ////////////////////////
+
+  public static get MIN_BASE(): number {return 2};
+  public static get MAX_BASE(): number {return 94906265}; //2^26 < sqrt(Number.MAX_SAFE_INTEGER) < 2^27
+  protected static get DEFAULT_BASE(): number {return 94906264};
+  protected static get MAX_DIGITS(): number {return 4294967295}; //2^32 - 1
 
   ////////////////////////
   // PROPERTIES
@@ -23,6 +31,7 @@ export default class BigInteger extends BigNumber {
   protected isNegative: boolean;
   protected integer: number[];
   protected digits: number;
+  protected base: number;
 
   ////////////////////////
   // CONSTRUCTOR
@@ -32,8 +41,6 @@ export default class BigInteger extends BigNumber {
   public static get ONE(): BigInteger {return new BigInteger(1)};
 
   constructor(input: BigInteger | number | string) {
-    super();
-
     if(isBigInteger(input)){
       BigInteger.clone(this, input);
     } else if(isNumber(input)){
@@ -47,7 +54,7 @@ export default class BigInteger extends BigNumber {
 
   private convertNumber(input: Number): void {
     let n: number = <number>input;
-    let base: number = BigNumber.DEFAULT_BASE;
+    let base: number = BigInteger.DEFAULT_BASE;
     n = (this.isNegative = n < 0) ? -n : n;
     let digits: number = Math.ceil(Math.log(n) / Math.log(base));
     const integer: number[] = new Array<number>(digits);
@@ -82,7 +89,7 @@ export default class BigInteger extends BigNumber {
     }
 
     //Convert to default base
-    this.toBase(BigNumber.DEFAULT_BASE);
+    this.toBase(BigInteger.DEFAULT_BASE);
   }
 
   ////////////////////////
@@ -147,6 +154,10 @@ export default class BigInteger extends BigNumber {
   ////////////////////////
   // BASE
   ////////////////////////
+
+  public getBase(): number {
+    return this.base;
+  }
 
   public setBase(base: number): BigInteger {
     return this.clone().mSetBase(base);
