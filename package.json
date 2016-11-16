@@ -8,7 +8,7 @@
   "scripts": {
     "lint": "tslint 'src/**/*.ts'",
     "babel": "babel lib --out-dir lib",
-    "dist": "npm run test && npm run lint && npm run babel && webpack --display-error-details",
+    "dist": "tsc && npm run lint && npm run babel && webpack --display-error-details",
     "debug": "tsc && npm run babel && webpack --display-error-details",
     "server": "webpack-dev-server --hot --inline --progress",
     "test": "tsc && mocha --opts mocha.opts",
