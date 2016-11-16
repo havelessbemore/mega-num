@@ -9,10 +9,6 @@ import KaratsubaMultiplicationMethod from './mul/karatsubaMultiplicationMethod';
 //import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
 import {CIPHER, isNumber, isString} from './util';
 
-export function isBigInt(n: any): n is BigInt {
-  return n instanceof BigInt;
-}
-
 export default class BigInt {
 
   ////////////////////////
@@ -36,12 +32,12 @@ export default class BigInt {
   ////////////////////////
   // CONSTRUCTOR
   ////////////////////////
-
+  public static get MINUS_ONE(): BigInt {return new BigInt(-1)};
   public static get ZERO(): BigInt {return new BigInt(0)};
   public static get ONE(): BigInt {return new BigInt(1)};
 
   constructor(input: BigInt | number | string) {
-    if(isBigInt(input)){
+    if(BigInt.isBigInt(input)){
       BigInt.clone(this, input);
     } else if(isNumber(input)){
       this.convertNumber(input);
@@ -50,6 +46,14 @@ export default class BigInt {
     } else {
       throw TypeError("Expecting type BigInt | string | number");
     }
+  }
+
+  public static isBigInt(n: any): n is BigInt {
+    return n instanceof BigInt;
+  }
+
+  public static toBigInt(input: BigInt | number | string): BigInt {
+    return BigInt.isBigInt(input) ? input : new BigInt(input);
   }
 
   private convertNumber(input: Number): void {
@@ -270,44 +274,69 @@ export default class BigInt {
   // COMPARE
   ////////////////////////
 
-  public lessThan(n: BigInt): boolean {
+  public lt(n: BigInt | number | string): boolean {
     return this.compareTo(n) < 0;
   }
 
-  public lessThanEquals(n: BigInt): boolean {
+  public lessThan(n: BigInt | number | string): boolean {
+    return this.lt(n);
+  }
+
+  public lteq(n: BigInt | number | string): boolean {
     return this.compareTo(n) <= 0;
   }
 
-  public equals(n: BigInt): boolean {
+  public lessThanEquals(n: BigInt | number | string): boolean {
+    return this.lteq(n);
+  }
+
+  public eq(n: BigInt | number | string): boolean {
     return this.compareTo(n) === 0;
   }
 
-  public greaterThanEquals(n: BigInt): boolean {
+  public equals(n: BigInt | number | string): boolean {
+    return this.eq(n);
+  }
+
+  public gteq(n: BigInt | number | string): boolean {
     return this.compareTo(n) >= 0;
   }
 
-  public greaterThan(n: BigInt): boolean {
+  public greaterThanEquals(n: BigInt | number | string): boolean {
+    return this.gteq(n);
+  }
+
+  public gt(n: BigInt | number | string): boolean {
     return this.compareTo(n) > 0;
   }
 
-  public static min(a: BigInt, b: BigInt): BigInt {
+  public greaterThan(n: BigInt | number | string): boolean {
+    return this.gt(n);
+  }
+
+  public static min(a: BigInt | number | string, b: BigInt | number | string): BigInt {
     return BigInt.mMin(a, b).clone();
   }
 
-  public static mMin(a: BigInt, b: BigInt): BigInt {
-    return (a.compareTo(b) > 0) ? b : a;
+  public static mMin(a: BigInt | number | string, b: BigInt | number | string): BigInt {
+    const c: BigInt = BigInt.toBigInt(a);
+    const d: BigInt = BigInt.toBigInt(b);
+    return (c.compareTo(d) > 0) ? c : d;
   }
 
-  public static max(a: BigInt, b: BigInt): BigInt {
+  public static max(a: BigInt | number | string, b: BigInt | number | string): BigInt {
     return BigInt.mMax(a, b).clone();
   }
 
-  public static mMax(a: BigInt, b: BigInt): BigInt {
-    return (a.compareTo(b) < 0) ? b : a;
+  public static mMax(a: BigInt | number | string, b: BigInt | number | string): BigInt {
+    const c: BigInt = BigInt.toBigInt(a);
+    const d: BigInt = BigInt.toBigInt(b);
+    return (c.compareTo(d) < 0) ? d : c;
   }
 
-  public compareTo(b: BigInt): number {
+  public compareTo(n: BigInt | number | string): number {
     let a: BigInt = this;
+    let b: BigInt = BigInt.toBigInt(n);
 
     //If self
     if(a === b){
@@ -416,35 +445,35 @@ export default class BigInt {
     return this.add(BigInt.ONE).mNegate();
   }
 
-  public and(B: BigInt): BigInt {
+  public and(B: BigInt | number | string): BigInt {
     return this.clone().mAnd(B);
   }
 
-  public mAnd(B: BigInt): BigInt {
+  public mAnd(B: BigInt | number | string): BigInt {
     throw Error("D");
   }
 
-  public andNot(B: BigInt): BigInt {
+  public andNot(B: BigInt | number | string): BigInt {
     return this.clone().mAndNot(B);
   }
 
-  public mAndNot(B: BigInt): BigInt {
-    return this.mAnd(B.not());
+  public mAndNot(B: BigInt | number | string): BigInt {
+    return this.mAnd(BigInt.toBigInt(B).not());
   }
 
-  public or(B: BigInt): BigInt {
+  public or(B: BigInt | number | string): BigInt {
     return this.clone().mOr(B);
   }
 
-  public mOr(B: BigInt): BigInt {
+  public mOr(B: BigInt | number | string): BigInt {
     throw Error("D");
   }
 
-  public xor(B: BigInt): BigInt {
+  public xor(B: BigInt | number | string): BigInt {
     return this.clone().mXor(B);
   }
 
-  public mXor(B: BigInt): BigInt {
+  public mXor(B: BigInt | number | string): BigInt {
     throw Error("D");
   }
 
@@ -452,12 +481,13 @@ export default class BigInt {
   // GCD
   ////////////////////////
 
-  public gcd(B: BigInt): BigInt {
+  public gcd(B: BigInt | number | string): BigInt {
     return this.clone().mGcd(B);
   }
 
-  public mGcd(B: BigInt): BigInt {
+  public mGcd(N: BigInt | number | string): BigInt {
     const A: BigInt = this;
+    let B: BigInt = BigInt.toBigInt(N);
 
     //If gcd of self or B is zero
     if(A === B || B.digits === 0){
@@ -534,12 +564,13 @@ export default class BigInt {
   // ADDITION
   ////////////////////////
 
-  public add(addend: BigInt): BigInt {
+  public add(addend: BigInt | number | string): BigInt {
     return this.clone().mAdd(addend);
   }
 
-  public mAdd(addend: BigInt): BigInt {
-    let adduend: BigInt = this;
+  public mAdd(n: BigInt | number | string): BigInt {
+    const adduend: BigInt = this;
+    let addend: BigInt = BigInt.toBigInt(n);
 
     //If self
     if(adduend === addend){
@@ -602,12 +633,13 @@ export default class BigInt {
   // SUBTRACTION
   ////////////////////////
 
-  public subtract(subtrahend: BigInt): BigInt {
+  public subtract(subtrahend: BigInt | number | string): BigInt {
     return this.clone().mSubtract(subtrahend);
   }
 
-  public mSubtract(subtrahend: BigInt): BigInt {
-    let minuend: BigInt = this;
+  public mSubtract(n: BigInt | number | string): BigInt {
+    const minuend: BigInt = this;
+    let subtrahend: BigInt = BigInt.toBigInt(n);
 
     //If self
     if(minuend === subtrahend){
@@ -764,12 +796,13 @@ export default class BigInt {
   // MULTIPLICATION
   ////////////////////////
 
-  public multiply(multiplier: BigInt): BigInt {
+  public multiply(multiplier: BigInt | number | string): BigInt {
     return this.clone().mMultiply(multiplier);
   }
 
-  public mMultiply(multiplier: BigInt): BigInt {
-    let multiplicand: BigInt = this;
+  public mMultiply(n: BigInt | number | string): BigInt {
+    const multiplicand: BigInt = this;
+    let multiplier = BigInt.toBigInt(n);
 
     //If self
     if(multiplicand === multiplier){
@@ -842,12 +875,13 @@ export default class BigInt {
   // POW
   ////////////////////////
 
-  public pow(power: BigInt): BigInt {
+  public pow(power: BigInt | number | string): BigInt {
     return this.clone().mPow(power);
   }
 
-  public mPow(power: BigInt): BigInt {
+  public mPow(n: BigInt | number | string): BigInt {
     const base: BigInt = this;
+    let power: BigInt = BigInt.toBigInt(n);
 
     //If raised to zero power
     if(power.digits === 0){
@@ -930,12 +964,13 @@ export default class BigInt {
   // DIVISION
   ////////////////////////
 
-  public divide(divisor: BigInt): BigInt {
+  public divide(divisor: BigInt | number | string): BigInt {
     return this.clone().mDivide(divisor);
   }
 
-  public mDivide(divisor: BigInt): BigInt {
-    let dividend: BigInt = this;
+  public mDivide(n: BigInt | number | string): BigInt {
+    const dividend: BigInt = this;
+    let divisor: BigInt = BigInt.toBigInt(n);
 
     //If divisor is zero
     if(divisor.digits === 0){

@@ -1,1 +1,1 @@
-export {default as BigInt} from './bigInt';
+export {default as Int} from './bigInt';

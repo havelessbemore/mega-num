@@ -10,8 +10,8 @@ module.exports = [{
 
   output: {
     path: path.join(__dirname, "dist"),
-    filename: "bignum.js",
-    library: "BigNum",
+    filename: "big.js",
+    library: "Big",
     libraryTarget: "umd"
   },
 
