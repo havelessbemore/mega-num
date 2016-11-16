@@ -1,4 +1,4 @@
-//import {print} from '../../util';
+//import {print} from '../util';
 /*
   f(A, B) = A * B
   Overwrites A

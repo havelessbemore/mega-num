@@ -1,5 +1,5 @@
 import assert = require('assert');
-import KaratsubaSquareMethod from '../../../src/integer/mul/karatsubaSquareMethod';
+import KaratsubaSquareMethod from '../../src/mul/karatsubaSquareMethod';
 
 describe('KaratsubaSquareMethod', function(){
   it('should return 1^2 in base 10', function(){

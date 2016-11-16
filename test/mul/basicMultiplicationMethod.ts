@@ -1,5 +1,5 @@
 import assert = require('assert');
-import BasicMultiplicationMethod from '../../../src/integer/mul/basicMultiplicationMethod';
+import BasicMultiplicationMethod from '../../src/mul/basicMultiplicationMethod';
 
 describe('BasicMultiplicationMethod', function(){
 

@@ -1,5 +1,5 @@
 import assert = require('assert');
-import KaratsubaMultiplicationMethod from '../../../src/integer/mul/karatsubaMultiplicationMethod';
+import KaratsubaMultiplicationMethod from '../../src/mul/karatsubaMultiplicationMethod';
 
 describe('KaratsubaMultiplicationMethod', function(){
 

@@ -1,4 +1,4 @@
-import {/*print, */basicShiftUp, copy, zero} from '../../util';
+import {basicShiftUp, copy, zero} from '../util';
 import BasicAdditionMethod from '../add/basicAdditionMethod';
 import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
 /*

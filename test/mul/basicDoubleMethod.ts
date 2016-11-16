@@ -1,5 +1,5 @@
 import assert = require('assert');
-import BasicDoubleMethod from '../../../src/integer/mul/basicDoubleMethod';
+import BasicDoubleMethod from '../../src/mul/basicDoubleMethod';
 
 describe('BasicDoubleMethod', function(){
 

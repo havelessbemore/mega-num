@@ -1,5 +1,5 @@
 import assert = require('assert');
-import BasicSquareMethod from '../../../src/integer/mul/basicSquareMethod';
+import BasicSquareMethod from '../../src/mul/basicSquareMethod';
 
 describe('BasicSquareMethod', function(){
   it('should return 1^2 in base 10', function(){

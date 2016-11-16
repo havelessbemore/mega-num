@@ -1,4 +1,4 @@
-import {basicShiftUp, copy, zero} from '../../util';
+import {basicShiftUp, copy, zero} from '../util';
 import BasicAdditionMethod from '../add/basicAdditionMethod';
 import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
 /*
@@ -10,7 +10,7 @@ import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
   See: https://en.wikipedia.org/wiki/Karatsuba_algorithm
 
   Performance Test:
-  !function(){console.clear(); let a = (new BigNum.BigInteger(7654321)).mSetBase(10000000); let t0 = performance.now(); for(let i = 16; i > 0; --i){a.mSquare();} let t1 = performance.now(); console.log(a.integer, t1 - t0);}();
+  !function(){console.clear(); let a = (new BigNum.BigInt(7654321)).mSetBase(10000000); let t0 = performance.now(); for(let i = 16; i > 0; --i){a.mSquare();} let t1 = performance.now(); console.log(a.integer, t1 - t0);}();
   Optimization Progress: 48520ms -> 6950ms -> 4s -> 3s
 */
 export default function KaratsubaSquareMethod(A: Iterable<number>, len: number, base: number): number {

@@ -39,7 +39,10 @@ jspm_packages
 .DS_Store
 
 # Build files
-build
+/lib
 
 # Node Modules
 node_modules
+
+# Coverage files
+/coverage

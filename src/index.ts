@@ -1,5 +1,1 @@
-import BigInteger from './integer/bigInteger';
-
-export {
-  BigInteger
-}
+export {default as BigInt} from './bigInt';
