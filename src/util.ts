@@ -47,6 +47,14 @@ export function print(A: Iterable<number>, min: number, low: number, high?: numb
   return s;
 }
 
+export function min(a: number, b: number): number {
+  return (a > b) ? b : a;
+}
+
+export function max(a: number, b: number): number {
+  return (a < b) ? b : a;
+}
+
 ////////////////////////
 // TYPE GUARDS
 ////////////////////////

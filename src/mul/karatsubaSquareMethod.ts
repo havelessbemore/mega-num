@@ -1,17 +1,12 @@
 import {basicShiftUp, copy, zero} from '../util';
 import BasicAdditionMethod from '../add/basicAdditionMethod';
 import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
+
 /*
   f(A) = A * A
   Overwrites A
-
   Assumes A > 0
-
   See: https://en.wikipedia.org/wiki/Karatsuba_algorithm
-
-  Performance Test:
-  !function(){console.clear(); let a = (new BigNum.BigInt(7654321)).mSetBase(10000000); let t0 = performance.now(); for(let i = 16; i > 0; --i){a.mSquare();} let t1 = performance.now(); console.log(a.integer, t1 - t0);}();
-  Optimization Progress: 48520ms -> 6950ms -> 4s -> 3s
 */
 export default function KaratsubaSquareMethod(A: Iterable<number>, len: number, base: number): number {
   return square(A, 0, len, base);
@@ -56,11 +51,11 @@ function square(A: Iterable<number>, min: number, max: number, base: number): nu
   //console.groupEnd(); console.log("low = low*low: ", print(A, min, lowMax));
 
   //Fill unused space with zero
-  const highMin = mid + halfLen;
-  zero(A, lowMax, highMin);
+  zero(A, lowMax, max);
 
   //high * high
   //console.group("high = high*high: ");
+  const highMin = mid + halfLen;
   max = square(A, highMin, max + halfLen, base);
   //console.groupEnd(); console.log("high = high*high: ", print(A, highMin, max));
 

@@ -482,10 +482,10 @@ export default class BigInt {
   ////////////////////////
 
   public gcd(B: BigInt | number | string): BigInt {
-    return this.clone().mGcd(B);
+    return this.clone().mgcd(B);
   }
 
-  public mGcd(N: BigInt | number | string): BigInt {
+  public mgcd(N: BigInt | number | string): BigInt {
     const A: BigInt = this;
     let B: BigInt = BigInt.toBigInt(N);
 
@@ -558,6 +558,52 @@ export default class BigInt {
 
     //Restore common factors of 2
     return A._multiply(C);
+  }
+
+  ////////////////////////
+  // LCM
+  ////////////////////////
+
+  public lcm(B: BigInt | number | string): BigInt {
+    return this.clone().mlcm(B);
+  }
+
+  //See: https://en.wikipedia.org/wiki/Least_common_multiple
+  public mlcm(N: BigInt | number | string): BigInt {
+    const A: BigInt = this;
+    let B: BigInt = BigInt.toBigInt(N);
+
+    //If lcm of self
+    if(A === B){
+      return A;
+    }
+
+    //If A is zero or B is zero
+    if(A.digits === 0 || B.digits === 0){
+      A.toZero();
+      return A;
+    }
+
+    //If B is one
+    if(B.digits === 1 && B.integer[0] === 1){
+      return A.mAbs();
+    }
+
+    //If A is one
+    if(A.digits === 1 && A.integer[0] === 1){
+
+      //Turn A into B
+      const base: number = A.base;
+      BigInt.clone(A, B);
+      if(base !== A.base){
+        A.toBase(base);
+      }
+
+      return A.mAbs();
+    }
+
+    //Calculate and return LCM
+    return A.mDivide(A.gcd(B)).mMultiply(B).mAbs();
   }
 
   ////////////////////////
