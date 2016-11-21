@@ -745,8 +745,8 @@ export default class BigInt {
     if(comparison < 0){
       minuend.mNegate();
       minuend.integer.length = minuend.digits = ReverseSubtractionMethod(
-        minuend.integer, minuend.digits,
-        subtrahend.integer, subtrahend.digits,
+        minuend.integer, 0, minuend.digits,
+        subtrahend.integer, 0, subtrahend.digits,
         minuend.base
       );
 
