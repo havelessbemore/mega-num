@@ -7,7 +7,7 @@ import ReverseSubtractionMethod from './sub/reverseSubtractionMethod';
 import KaratsubaSquareMethod from './mul/karatsubaSquareMethod';
 import KaratsubaMultiplicationMethod from './mul/karatsubaMultiplicationMethod';
 //import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
-import {CIPHER, isNumber, isString} from './util';
+import {CIPHER, compare, isNumber, isString} from './util';
 
 export default class BigInt {
 
@@ -365,47 +365,35 @@ export default class BigInt {
       return (a.integer[0] < b.integer[0]) ? -1 : 1;
     }
 
+    //If same base
+    if(a.base === b.base){
+      return compare(a.integer, 0, a.digits, b.integer, 0, b.digits);
+    }
+
     let out: number = -1; // Assume a < b
 
-    //Compare bases
-    if(a.base !== b.base){
-
-      //Force a to represent smaller base
-      if(a.base > b.base){
-        let c: BigInt = a;
-        a = b;
-        b = c;
-        out = 1;
-      }
-
-      //Estimate number of digits of A if converted to B's base
-      let ratio: number = Math.log(a.base) / Math.log(b.base);
-      if(b.digits < Math.ceil(a.digits * ratio)){
-        return -out;
-      }
-      if(b.digits > Math.ceil((a.digits + 1) * ratio)){
-        return out;
-      }
-
-      //Convert A to B's base
-      a = a.clone();
-      a.toBase(b.base);
+    //Force a to represent smaller base
+    if(a.base > b.base){
+      let c: BigInt = a;
+      a = b;
+      b = c;
+      out = 1;
     }
 
-    //Compare digits
-    if(a.digits !== b.digits){
-      return (a.digits < b.digits) ? out : -out;
+    //Estimate number of digits of A if converted to B's base
+    let ratio: number = Math.log(a.base) / Math.log(b.base);
+    if(b.digits < Math.ceil(a.digits * ratio)){
+      return -out;
+    }
+    if(b.digits > Math.ceil((a.digits + 1) * ratio)){
+      return out;
     }
 
-    //Compare numbers
-    for(let i: number = a.digits; i-- > 0;){
-      if(a.integer[i] !== b.integer[i]){
-        return (a.integer[i] < b.integer[i]) ? out: -out;
-      }
-    }
+    //Convert A to B's base
+    a = a.clone();
+    a.toBase(b.base);
 
-    //Both numbers are equal
-    return 0;
+    return out * compare(a.integer, 0, a.digits, b.integer, 0, b.digits);
   }
 
   public isOdd(): boolean {

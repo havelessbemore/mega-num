@@ -2,11 +2,11 @@
   f(A) = A / 2
   Overwrites A
 */
-export default function basicHalfMethod(integer: Iterable<number>, digits: number, base: number, isNegative: boolean){
+export default function basicHalfMethod(integer: Iterable<number>, len: number, base: number, isNegative: boolean){
 
   //Halve
   let remainder: number = 0;
-  for(let i: number = digits; i-- > 0; integer[i] = integer[i] >> 1){
+  for(let i: number = len; i-- > 0; integer[i] = integer[i] >>> 1){
     integer[i] = integer[i] + remainder;
     remainder = base & -(integer[i] & 1);
   }
@@ -23,5 +23,5 @@ export default function basicHalfMethod(integer: Iterable<number>, digits: numbe
   }
 
   //Return new length
-  return (integer[digits - 1] === 0) ? digits - 1 : digits;
+  return (integer[len - 1] === 0) ? len - 1 : len;
 };

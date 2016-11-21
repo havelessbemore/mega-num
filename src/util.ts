@@ -71,3 +71,22 @@ export function isNumber(n: any): n is number {
 export function isString(s: any): s is number {
   return typeof s === "string";
 }
+
+export function compare(A: Iterable<number>, minA: number, maxA: number, B: Iterable<number>, minB: number, maxB: number): number {
+
+  //Compare number of digits
+  const d: number = maxA - minA - maxB + minB;
+  if(d !== 0){
+    return d < 0 ? -1 : 1;
+  }
+
+  //Compare digits
+  while(maxA > minA){
+    if(A[--maxA] !== B[--maxB]){
+      return A[maxA] < B[maxB] ? -1 : 1;
+    }
+  }
+
+  //Numbers are equal
+  return 0;
+}

@@ -25,6 +25,38 @@ describe('BasicDoubleMethod', function(){
     () => test([7], [4,1], 10)
   );
 
+  it('should return 99*2 in base 10',
+    () => test([9,9], [8,9,1], 10)
+  );
+
+  it('should return 123*2 in base 10',
+    () => test([3,2,1], [6,4,2], 10)
+  );
+
+  it('should return 321*2 in base 179',
+    () => test([142, 1], [105, 3], 179)
+  );
+
+  it('should return 13579*2 in base 2',
+    () => test([1,1,0,1,0,0,0,0,1,0,1,0,1,1], [0,1,1,0,1,0,0,0,0,1,0,1,0,1,1], 2)
+  );
+
+  it('should return 13579*2 in base 3',
+    () => test([1,2,2,1,2,1,0,0,2], [2,1,2,0,2,0,1,0,1,1], 3)
+  );
+
+  it('should return 13579*2 in base 10',
+    () => test([9,7,5,3,1], [8,5,1,7,2], 10)
+  );
+
+  it('should return 13579*2 in base 11',
+    () => test([5,2,2,10], [10,4,4,9,1], 11)
+  );
+
+  it('should return 987654*2 in base 179',
+    () => test([111, 147, 30], [43, 116, 61], 179)
+  );
+
   it('should return 1234567*2 in base 10',
     () => test([7,6,5,4,3,2,1], [4,3,1,9,6,4,2], 10)
   );
