@@ -1,3 +1,5 @@
+import {basicShiftUp, zero} from '../util';
+
 /*
   f(A) = A * A
   Overwrites A
@@ -28,15 +30,11 @@
 export default function BasicSquareMethod(A: Iterable<number>, len: number, base: number): number {
 
   //Move digits to the left
-  let newLen: number = 2*len;
-  for(let i: number = 0, j: number = len; i < len; A[j++] = A[i++]){
-  }
-
-  //Zero original digits
-  for(let i: number = 0; i < len; A[i++] = 0){
-  }
+  basicShiftUp(A, 0, len, len);
+  zero(A, 0, len);
 
   //For every digit
+  const newLen: number = 2*len;
   for(let d: number = 0, s: number = len; d < newLen; d = d + 2){
     let digit: number = A[s++];
 

@@ -1,4 +1,5 @@
-//import {print} from '../util';
+import {reverseShiftUp, zero} from '../util';
+
 /*
   f(A, B) = A * B
   Overwrites A
@@ -18,19 +19,14 @@
 
 */
 export default function BasicMultiplicationMethod(A: Iterable<number>, lenA: number, B: Iterable<number>, lenB: number, base: number): number {
-  const lenC: number = lenA + lenB;
-  //console.log("A: ", print(A, 0, lenA), "B: ", print(B, 0, lenB));
 
   //Shift A to the left
-  for(let a: number = lenA, c: number = lenC; a > 0; A[--c] = A[--a]){
-  }
-  for(let i: number = 0; i < lenB; A[i++] = 0){
-  }
-  //console.log("Shift A: ", print(A, 0, lenC));
+  reverseShiftUp(A, 0, lenA, lenB);
+  zero(A, 0, lenB);
 
   //For each digit in multiplicand
+  const lenC: number = lenA + lenB;
   for(let a: number = lenB; a < lenC; ++a){
-    //console.log(A[a] + "*" + print(B, 0, lenB) + ": ");
     let carry: number = 0;
     let i: number = a - lenB;
 
@@ -48,10 +44,8 @@ export default function BasicMultiplicationMethod(A: Iterable<number>, lenA: num
 
     //Add remaining carry
     A[i] = carry;
-    //console.log(print(A, 0, i+1, i+1, lenC));
   }
 
   //Return new length
   return (A[lenC - 1] === 0) ? lenC - 1 : lenC;
-  //console.log("Out: ", print(A, 0, lenC), "" + lenC);
 }

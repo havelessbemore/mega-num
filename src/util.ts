@@ -12,6 +12,11 @@ export function basicShiftUp(A: Iterable<number>, min: number, max: number, shif
   }
 }
 
+export function reverseShiftUp(A: Iterable<number>, min: number, max: number, shifts: number): void {
+  for(let i: number = max + shifts; max > min; A[--i] = A[--max]){
+  }
+}
+
 //Assumes shifts <= min
 export function basicShiftDown(A: Iterable<number>, min: number, max: number, shifts: number): void {
   for(let i: number = min - shifts; min < max; A[i++] = A[min++]){
