@@ -245,7 +245,7 @@ export default class BigInt {
     }
 
     let s: string;
-    const A: Iterable<number> = this.integer;
+    const A: number[] = this.integer;
 
     //Print with cipher
     if(cipher instanceof Array){

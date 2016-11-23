@@ -3,7 +3,7 @@
   Overwrites A
   Assumes B > A
 */
-export default function reverseSubtractionMethod(A: Iterable<number>, minA: number, maxA: number, B: Iterable<number>, minB: number, maxB: number, base: number): number {
+export default function reverseSubtractionMethod(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): number {
 
   //Subtract common digits
   let borrow: number = 0;

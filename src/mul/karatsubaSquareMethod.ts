@@ -8,11 +8,11 @@ import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
   Assumes A > 0
   See: https://en.wikipedia.org/wiki/Karatsuba_algorithm
 */
-export default function KaratsubaSquareMethod(A: Iterable<number>, len: number, base: number): number {
+export default function KaratsubaSquareMethod(A: number[], len: number, base: number): number {
   return square(A, 0, len, base);
 }
 
-function square(A: Iterable<number>, min: number, max: number, base: number): number {
+function square(A: number[], min: number, max: number, base: number): number {
   let halfLen: number = max - min;
   
   //Base case
@@ -33,7 +33,7 @@ function square(A: Iterable<number>, min: number, max: number, base: number): nu
   const mid: number = min + halfLen;
 
   //medium = low + high
-  const medium: Iterable<number> = new Array(2*halfLen + 2);
+  const medium: number[] = new Array(2*halfLen + 2);
   copy(medium, 0, A, min, mid);
   let mediumMax: number = BasicAdditionMethod(medium, 0, halfLen, A, mid, max, base);
 

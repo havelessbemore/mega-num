@@ -10,11 +10,11 @@ import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
   Assumes A and B are not the same array
   Explanation: https://en.wikipedia.org/wiki/Karatsuba_algorithm
 */
-export default function KaratsubaMultiplicationMethod(A: Iterable<number>, lenA: number, B: Iterable<number>, lenB: number, base: number): number {
+export default function KaratsubaMultiplicationMethod(A: number[], lenA: number, B: number[], lenB: number, base: number): number {
   return multiply(A, 0, lenA, B, 0, lenB, base);
 }
 
-function multiply(A: Iterable<number>, minA: number, maxA: number, B: Iterable<number>, minB: number, maxB: number, base: number): number {
+function multiply(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): number {
   let halfLen: number = max(maxA - minA, maxB - minB);
 
   //Base case
@@ -37,12 +37,12 @@ function multiply(A: Iterable<number>, minA: number, maxA: number, B: Iterable<n
   const midB: number = min(minB + halfLen, maxB);
 
   //mediumB = lowB + highB
-  const mediumB: Iterable<number> = new Array(midB - minB + 1);
+  const mediumB: number[] = new Array(midB - minB + 1);
   copy(mediumB, 0, B, minB, midB);
   const mediumMaxB: number = BasicAdditionMethod(mediumB, 0, midB - minB, B, midB, maxB, base);
 
   //medium = lowA + highA
-  const medium: Iterable<number> = new Array(midA - minA + 1 + mediumMaxB);
+  const medium: number[] = new Array(midA - minA + 1 + mediumMaxB);
   copy(medium, 0, A, minA, midA);
   let mediumMax: number = BasicAdditionMethod(medium, 0, midA - minA, A, midA, maxA, base);
 

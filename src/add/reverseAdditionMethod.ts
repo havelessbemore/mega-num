@@ -7,7 +7,7 @@ import BasicAdditionMethod from './basicAdditionMethod';
     A < B
     A and B not same array or non-intersecting segments
 */
-export default function ReverseAdditionMethod(A: Iterable<number>, minA: number, maxA: number, B: Iterable<number>, minB: number, maxB: number, base: number): number{
+export default function ReverseAdditionMethod(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): number{
 
   //Add extra digits to A
   const newMaxB: number = minB - minA + maxA;
