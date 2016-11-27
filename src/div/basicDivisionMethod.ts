@@ -40,23 +40,6 @@ function divide(X: number[], maxX: number, Y: number[], maxY: number, base: numb
     //3.2 While q[i−t−1] * (y[t]b + y[t−1]) > x[i]b^2 + x[i−1]b + x[i−2]
     Q[iMt] = divThreeHalvesByTwo(X[i], X[i-1], X[i-2], Y[t], Y[t-1], base);
 
-    /*
-    //3.1 If x[i] = y[t] then set q[i−t−1] ← b − 1; otherwise set q[i−t−1] ← (x[i]b + x[i−1]) / y[t]
-    Q[iMt] = (X[i] === Y[t]) ? base - 1 : 0 | ((X[i]*base + X[i-1]) / Y[t]);
-
-    //pre-3.2 q[i-t-1] * (y[t]b + y[t-1])
-    let maxQY: number = mul(Y, t-1, 2, Q[iMt], QY, base);
-    zero(QY, maxQY, 3);
-
-    //3.2 While q[i−t−1] * (y[t]b + y[t−1]) > x[i]b^2 + x[i−1]b + x[i−2]
-    while(compare(QY, 0, 3, X, i-2, i+1) > 0){
-
-      //q[i−t−1] ← q[i−t−1] − 1
-      --Q[iMt];
-      maxQY = BasicSubtractionMethod(QY, 0, maxQY, Y, t-1, t+1, base);
-    }
-    */
-
     //3.3 x ← x − q[i−t−1] * yb^(i−t−1)
     //3.4 If x < 0 then set x ← x + yb^(i−t−1) and q[i−t−1] ← q[i−t−1] − 1
     let maxQY: number = mul(Y, 0, maxY, Q[iMt], QY, base);
@@ -64,8 +47,11 @@ function divide(X: number[], maxX: number, Y: number[], maxY: number, base: numb
       --Q[iMt];
       maxQY = BasicSubtractionMethod(QY, 0, maxQY, Y, 0, maxY, base);
     }
-    for(maxX = BasicSubtractionMethod(X, iMt, maxX, QY, 0, maxQY, base); maxX > 0 && X[maxX - 1] === 0; --maxX){
-      --i;
+    maxX = BasicSubtractionMethod(X, iMt, maxX, QY, 0, maxQY, base);
+
+    //Get new length
+    while(maxX > 0 && X[maxX - 1] === 0){
+      --maxX;
     }
   }
 
