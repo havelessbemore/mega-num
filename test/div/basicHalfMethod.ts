@@ -2,8 +2,8 @@ import assert = require('assert');
 import BasicHalfMethod from '../../src/div/basicHalfMethod';
 
 function test(A: number[], B: number[], base: number, isNegative: boolean = false): void {
-  const len: number = A.length = BasicHalfMethod(A, A.length, base, isNegative);
-  assert.equal(len, B.length);
+  [A.length] = BasicHalfMethod(A, A.length, base, isNegative);
+  assert.equal(A.length, B.length);
   assert.deepEqual(A, B);
 }
 

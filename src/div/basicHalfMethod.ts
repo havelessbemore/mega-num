@@ -2,7 +2,7 @@
   f(A) = A / 2
   Overwrites A
 */
-export default function basicHalfMethod(integer: number[], len: number, base: number, isNegative: boolean){
+export default function basicHalfMethod(integer: number[], len: number, base: number, isNegative: boolean): [number, number] {
 
   //Halve
   let remainder: number = 0;
@@ -23,5 +23,5 @@ export default function basicHalfMethod(integer: number[], len: number, base: nu
   }
 
   //Return new length
-  return (integer[len - 1] === 0) ? len - 1 : len;
+  return [(integer[len - 1] === 0) ? len - 1 : len, remainder];
 };

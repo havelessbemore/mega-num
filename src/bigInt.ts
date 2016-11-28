@@ -6,7 +6,8 @@ import BasicSubtractionMethod from './sub/basicSubtractionMethod';
 import ReverseSubtractionMethod from './sub/reverseSubtractionMethod';
 import KaratsubaSquareMethod from './mul/karatsubaSquareMethod';
 import KaratsubaMultiplicationMethod from './mul/karatsubaMultiplicationMethod';
-//import BasicMultiplicationMethod from './mul/basicMultiplicationMethod';
+import BasicDivisionMethod from './div/basicDivisionMethod';
+import SimpleDivisionMethod from './div/simpleDivisionMethod';
 import {CIPHER, compare, isNumber, isString} from './util';
 
 export default class BigInt {
@@ -956,42 +957,48 @@ export default class BigInt {
       return base;
     }
 
-    //If power is odd
-    if(power.isOdd()){
+    //Divide the power in half
+    let remainder: BigInt;
+    [, remainder] = power._half();
+
+    //If power was odd
+    if(remainder.digits > 0){
       const baseClone: BigInt = base.clone();
-      return base._square()._pow(power._half())._multiply(baseClone);
+      return base._square()._pow(power)._multiply(baseClone);
     }
 
-    //If power is even
-    return base._square()._pow(power._half());
+    //If power was even
+    return base._square()._pow(power);
   }
 
   ////////////////////////
   // Half
   ////////////////////////
 
-  public half(): BigInt {
+  public half(): [BigInt, BigInt] {
     return this.clone().mHalf();
   }
 
-  public mHalf(): BigInt {
+  public mHalf(): [BigInt, BigInt] {
 
     //If zero
     if(this.digits === 0){
-      return this;
+      return [this, BigInt.ZERO];
     }
 
     return this._half();
   }
 
-  private _half(): BigInt {
+  private _half(): [BigInt, BigInt] {
+    let remainder: number;
 
     //Half
-    this.integer.length = this.digits = BasicHalfMethod(
+    [this.digits, remainder] = BasicHalfMethod(
       this.integer, this.digits, this.base, this.isNegative
     );
+    this.integer.length = this.digits;
 
-    return this;
+    return [this, remainder === 0 ? BigInt.ZERO : BigInt.ONE];
   }
 
   ////////////////////////
@@ -1002,7 +1009,23 @@ export default class BigInt {
     return this.clone().mDivide(divisor);
   }
 
-  public mDivide(n: BigInt | number | string): BigInt {
+  public mDivide(divisor: BigInt | number | string): BigInt {
+    return this.mDivideAndRemainder(divisor)[0];
+  }
+
+  public remainder(divisor: BigInt | number | string): BigInt {
+    return this.clone().mRemainder(divisor);
+  }
+
+  public mRemainder(divisor: BigInt | number | string): BigInt {
+    return this.mDivideAndRemainder(divisor)[1];
+  }
+
+  public divideAndRemainder(divisor: BigInt | number | string): [BigInt, BigInt] {
+    return this.clone().mDivideAndRemainder(divisor);
+  }
+
+  public mDivideAndRemainder(n: BigInt | number | string): [BigInt, BigInt] {
     const dividend: BigInt = this;
     let divisor: BigInt = BigInt.toBigInt(n);
 
@@ -1014,12 +1037,12 @@ export default class BigInt {
     //If self
     if(dividend === divisor){
       dividend.toOne();
-      return dividend;
+      return [dividend, BigInt.ZERO];
     }
 
     //If dividend is zero
     if(dividend.digits === 0){
-      return dividend;
+      return [dividend, BigInt.ZERO];
     }
 
     //Divide signs
@@ -1027,18 +1050,19 @@ export default class BigInt {
 
     //If divisor is one or two
     if(divisor.digits === 1 && divisor.integer[0] < 3){
-      return (divisor.integer[0] === 1) ? dividend : dividend._half();
+      return (divisor.integer[0] === 1) ? [dividend, BigInt.ZERO] : dividend._half();
     }
 
     //If different bases
     if(dividend.base !== divisor.base){
 
-      //Estimate the number of digits of the divisor if converted to the dividend's base
+      //Estimate the least number of digits of the divisor if converted to the dividend's base
       //If the dividend is smaller than the divisor the quotient will be zero (less than 1)
       const ratio: number = Math.log(divisor.base) / Math.log(dividend.base);
       if(dividend.digits < Math.ceil(divisor.digits *  ratio)){
+        const remainder: BigInt = dividend.clone();
         dividend.toZero();
-        return dividend;
+        return [dividend, remainder];
       }
 
       //Normalize bases
@@ -1048,16 +1072,34 @@ export default class BigInt {
 
     //Check if the dividend is smaller than the divisor
     if(dividend.digits < divisor.digits){
+      const remainder: BigInt = dividend.clone();
       dividend.toZero();
-      return dividend;
+      return [dividend, remainder];
     }
 
     //Divide
-    return dividend._divide(divisor);
+    return dividend._divideAndRemainder(divisor);
   }
 
-  private _divide(divisor: BigInt): BigInt {
-    //const dividend: BigInt = this;
-    throw Error("D");
+  private _divideAndRemainder(divisor: BigInt): [BigInt, BigInt] {
+    const dividend: BigInt = this;
+    const remainder: BigInt = BigInt.ZERO;
+
+    [
+      dividend.integer, remainder.integer,
+      dividend.digits, remainder.digits
+    ] = (divisor.digits < 2) ?
+      SimpleDivisionMethod(
+        dividend.integer, dividend.digits,
+        divisor.integer[0], dividend.base
+      ) :
+      BasicDivisionMethod(
+        dividend.integer, dividend.digits,
+        divisor.integer, divisor.digits,
+        dividend.base
+      );
+    dividend.integer.length = dividend.digits;
+    remainder.integer.length = remainder.digits;
+    return [dividend, remainder];
   }
 }

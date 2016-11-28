@@ -36,6 +36,7 @@
     "src/bigInt.ts",
     "src/div/basicDivisionMethod.ts",
     "src/div/basicHalfMethod.ts",
+    "src/div/simpleDivisionMethod.ts",
     "src/index.ts",
     "src/mul/basicDoubleMethod.ts",
     "src/mul/basicMultiplicationMethod.ts",

@@ -8,13 +8,10 @@ import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
   Assumes A.length >= B.length >= 2
   See: http://cacr.uwaterloo.ca/hac/about/chap14.pdf
 */
-export default function BasicDivisionMethod(A: number[], lenA: number, B: number[], lenB: number, base: number): [number[], number[], number, number] {
-  return divide(A, lenA, B, lenB, base);
-}
 
 //INPUT: positive integers x = (xn ··· x1x0)b, y = (yt ··· y1y0)b with n ≥ t ≥ 1, yt != 0.
 //OUTPUT: the quotient q = (qn−t ··· q1q0)b and remainder r = (rt ··· r1r0)b such that x = qy + r, 0 ≤ r < y.
-function divide(X: number[], maxX: number, Y: number[], maxY: number, base: number): [number[], number[], number, number] {
+export default function BasicDivisionMethod(X: number[], maxX: number, Y: number[], maxY: number, base: number): [number[], number[], number, number] {
 
   //1. Initialize the quotient
   const nMt: number = maxX - maxY;
