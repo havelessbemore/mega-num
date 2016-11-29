@@ -39,7 +39,7 @@ export default class BigInt {
 
   constructor(input: BigInt | number | string) {
     if(BigInt.isBigInt(input)){
-      BigInt.clone(this, input);
+      this._assign(input);
     } else if(isNumber(input)){
       this.convertNumber(input);
     } else if(isString(input)){
@@ -137,11 +137,17 @@ export default class BigInt {
     return new BigInt(this);
   }
 
-  private static clone(clone: BigInt, original: BigInt): void {
-    clone.isNegative = original.isNegative;
-    clone.integer = original.integer.slice(0);
-    clone.base = original.base;
-    clone.digits = original.digits;
+  public mAssign(source: BigInt | number | string): BigInt {
+    return this._assign(BigInt.toBigInt(source));
+  }
+
+  private _assign(source: BigInt): BigInt {
+    const target: BigInt = this;
+    target.isNegative = source.isNegative;
+    target.integer = source.integer.slice(0);
+    target.base = source.base;
+    target.digits = source.digits;
+    return target;
   }
 
   private toZero(): void {
@@ -488,7 +494,7 @@ export default class BigInt {
 
       //Copy B and return to original base
       const base: number = A.base;
-      BigInt.clone(A, B);
+      A._assign(B);
       if(base !== A.base){
         A.toBase(base);
       }
@@ -507,12 +513,8 @@ export default class BigInt {
     //Calculate GCD
     B = A._gcd(B);
 
-    //Update A to be result
-    if(A !== B){
-      BigInt.clone(A, B);
-    }
-
-    return A;
+    //Update A to be result if needed
+    return (A === B) ? A : A._assign(B);
   }
 
   //See: https://en.wikipedia.org/wiki/Binary_GCD_algorithm
@@ -583,7 +585,7 @@ export default class BigInt {
 
       //Turn A into B
       const base: number = A.base;
-      BigInt.clone(A, B);
+      A._assign(B);
       if(base !== A.base){
         A.toBase(base);
       }
@@ -622,7 +624,7 @@ export default class BigInt {
 
       //Copy addend and return to original base
       let base = adduend.base;
-      BigInt.clone(adduend, addend);
+      adduend._assign(addend);
       if(base !== adduend.base){
         adduend.toBase(base);
       }
@@ -692,7 +694,7 @@ export default class BigInt {
 
       //Copy subtrahend and return to original base
       let base = minuend.base;
-      BigInt.clone(minuend, subtrahend);
+      minuend._assign(subtrahend);
       if(base !== minuend.base){
         minuend.toBase(base);
       }
@@ -861,7 +863,7 @@ export default class BigInt {
     //If 1 or 2
     if(multiplicand.digits === 1 && multiplicand.integer[0] < 3){
       let base: number = multiplicand.base;
-      BigInt.clone(multiplicand, multiplier);
+      multiplicand._assign(multiplier);
       if(multiplicand.base !== base){
         multiplicand.toBase(base);
       }
