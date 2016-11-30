@@ -7,8 +7,8 @@ export default function basicHalfMethod(integer: number[], len: number, base: nu
   //Halve
   let remainder: number = 0;
   for(let i: number = len; i-- > 0; integer[i] = integer[i] >>> 1){
-    integer[i] = integer[i] + remainder;
-    remainder = base & -(integer[i] & 1);
+    integer[i] = integer[i] + (base & -remainder);
+    remainder = integer[i] & 1;
   }
 
   //If there is a remainder (fraction) and number is negative
@@ -17,7 +17,7 @@ export default function basicHalfMethod(integer: number[], len: number, base: nu
     //Round "up"
     //e.g. Math.floor(-99 / 2) = -50
     let i: number = 0;
-    for(remainder = base - 1; integer[i] === remainder; integer[i++] = 0){
+    for(--base; integer[i] === base; integer[i++] = 0){
     }
     integer[i] = integer[i] + 1;
   }
