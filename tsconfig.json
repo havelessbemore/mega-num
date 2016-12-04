@@ -50,6 +50,7 @@
     "test/add/reverseAdditionMethod.ts",
     "test/div/basicDivisionMethod.ts",
     "test/div/basicHalfMethod.ts",
+    "test/div/simpleDivisionMethod.ts",
     "test/mul/basicDoubleMethod.ts",
     "test/mul/basicMultiplicationMethod.ts",
     "test/mul/basicSquareMethod.ts",

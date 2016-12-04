@@ -11,9 +11,7 @@ function test(A: number[], B: number[], C: number[], D: number[], base: number):
 
   //Divide
   [Q, R, maxQ, maxR] = BasicDivisionMethod(A, A.length, B, B.length, base);
-
-  console.log("Q: ", print(Q, 0, 0, maxQ, Q.length),"R: ", print(R, 0, 0, maxR, R.length));
-
+  
   //Confirm B was not changed
   assert.equal(B.length, BB.length);
   assert.deepEqual(B, BB);
@@ -79,7 +77,7 @@ describe('BasicDivisionMethod', function(){
       [0,1,1,1,1,1], [1,1,0,1,1,0,1,0,1,0,1,1,0,0,1,1,0,0,0,1,1], 2
     )
   );
-  
+
   it('should return 961,748,941 / 15,485,863 in base 3',
     () => test(
       [1,1,0,2,1,1,0,2,2,0,0,2,0,0,0,1,1,1,2], [1,1,1,1,2,1,2,0,2,0,1,0,2,0,0,1],

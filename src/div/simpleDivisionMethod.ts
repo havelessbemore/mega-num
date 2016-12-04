@@ -6,9 +6,6 @@
   Assumes no leading zeros
 */
 export default function SimpleDivisionMethod(A: number[], lenA: number, B: number, base: number): [number[], number[], number, number] {
-  if(B === 1){
-    return [A, [], lenA, 0];
-  }
 
   let remainder: number = 0;
   for(let a: number = lenA; a-- > 0; A[a] = 0 | (A[a] / B)){
