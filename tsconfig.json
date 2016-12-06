@@ -33,7 +33,7 @@
   "files": [
     "src/add/basicAdditionMethod.ts",
     "src/add/reverseAdditionMethod.ts",
-    "src/bigInt.ts",
+    "src/bigMint.ts",
     "src/div/basicDivisionMethod.ts",
     "src/div/basicHalfMethod.ts",
     "src/div/simpleDivisionMethod.ts",

@@ -1,4 +1,4 @@
-export default function SimpleMultiplicationMethod(A: number[], minA: number, maxA: number, multiplier: number, B: number[], minB: number, base: number): number {
+export default function SimpleMultiplicationMethod(A: number[], minA: number, maxA: number, multiplier: number, base: number, B: number[] = A, minB: number = minA): number {
 
   //Multiply multiplicand by multiplier
   let carry: number = 0;

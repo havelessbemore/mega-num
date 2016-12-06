@@ -40,7 +40,7 @@ export default function BasicDivisionMethod(X: number[], maxX: number, Y: number
 
     //3.3 x ← x − q[i−t−1] * yb^(i−t−1)
     //3.4 If x < 0 then set x ← x + yb^(i−t−1) and q[i−t−1] ← q[i−t−1] − 1
-    let maxQY: number = (Q[iMt] === 0) ? 0 : SimpleMultiplicationMethod(Y, 0, maxY, Q[iMt], QY, 0, base);
+    let maxQY: number = (Q[iMt] === 0) ? 0 : SimpleMultiplicationMethod(Y, 0, maxY, Q[iMt], base, QY, 0);
     if(compare(QY, 0, maxQY, X, iMt, maxX) > 0){
       --Q[iMt];
       maxQY = BasicSubtractionMethod(QY, 0, maxQY, Y, 0, maxY, base);
