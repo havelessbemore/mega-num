@@ -202,11 +202,10 @@ export default class BigInt {
     }
 
     //Convert to base
-    this.toBase(base);
-    return this;
+    return this.toBase(base);
   }
 
-  private toBase(newBase: number): void {
+  private toBase(newBase: number): BigInt {
     const n: BigInt = this;
     let curInteger: number[] = n.integer;
     let curBase: number = n.base;
@@ -231,6 +230,8 @@ export default class BigInt {
     n.base = newBase;
     n.digits = newDigits;
     n.integer = newInteger;
+
+    return n;
   }
 
   ////////////////////////
@@ -404,8 +405,7 @@ export default class BigInt {
     }
 
     //Convert A to B's base
-    a = a.clone();
-    a.toBase(b.base);
+    a = a.clone().toBase(b.base);
 
     return out * compare(a.integer, 0, a.digits, b.integer, 0, b.digits);
   }
@@ -641,8 +641,7 @@ export default class BigInt {
 
     //Normalize bases
     if (adduend.base !== addend.base){
-        addend = addend.clone();
-        addend.toBase(adduend.base);
+        addend = addend.clone().toBase(adduend.base);
     }
 
     //If signs differ
@@ -711,8 +710,7 @@ export default class BigInt {
 
     //Normalize bases
     if (minuend.base !== subtrahend.base){
-        subtrahend = subtrahend.clone();
-        subtrahend.toBase(minuend.base);
+        subtrahend = subtrahend.clone().toBase(minuend.base);
     }
 
     //If signs differ
@@ -887,8 +885,7 @@ export default class BigInt {
 
     //Normalize bases
     if (multiplicand.base !== multiplier.base){
-        multiplier = multiplier.clone();
-        multiplier.toBase(multiplicand.base);
+        multiplier = multiplier.clone().toBase(multiplicand.base);
     }
 
     return multiplicand._multiply(multiplier);
@@ -1075,8 +1072,7 @@ export default class BigInt {
       }
 
       //Normalize bases
-      divisor = divisor.clone();
-      divisor.toBase(dividend.base);
+      divisor = divisor.clone().toBase(dividend.base);
     }
 
     //Check if the dividend is smaller than the divisor

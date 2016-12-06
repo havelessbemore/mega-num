@@ -43,6 +43,7 @@
     "src/mul/basicSquareMethod.ts",
     "src/mul/karatsubaMultiplicationMethod.ts",
     "src/mul/karatsubaSquareMethod.ts",
+    "src/mul/simpleMultiplicationMethod.ts",
     "src/sub/basicSubtractionMethod.ts",
     "src/sub/reverseSubtractionMethod.ts",
     "src/util.ts",

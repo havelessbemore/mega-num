@@ -1,5 +1,6 @@
 import {compare, zero} from '../util';
 import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
+import SimpleMultiplicationMethod from '../mul/simpleMultiplicationMethod';
 
 /*
   f(A, B) = A / B
@@ -39,7 +40,7 @@ export default function BasicDivisionMethod(X: number[], maxX: number, Y: number
 
     //3.3 x ← x − q[i−t−1] * yb^(i−t−1)
     //3.4 If x < 0 then set x ← x + yb^(i−t−1) and q[i−t−1] ← q[i−t−1] − 1
-    let maxQY: number = mul(Y, 0, maxY, Q[iMt], QY, base);
+    let maxQY: number = (Q[iMt] === 0) ? 0 : SimpleMultiplicationMethod(Y, 0, maxY, Q[iMt], QY, 0, base);
     if(compare(QY, 0, maxQY, X, iMt, maxX) > 0){
       --Q[iMt];
       maxQY = BasicSubtractionMethod(QY, 0, maxQY, Y, 0, maxY, base);
@@ -70,34 +71,4 @@ function divThreeHalvesByTwo(a1: number, a2: number, a3: number, b1: number, b2:
     q = (r < 0) ? q - 2 : q - 1;
   }
   return q;
-}
-
-function mul(A: number[], minA: number, lenA: number, multiplier: number, B: number[], base: number): number {
-
-  //Check if multiplying by zero
-  if(multiplier === 0){
-    return 0;
-  }
-
-  //Multiply multiplicand by multiplier
-  let b: number = 0;
-  let carry: number = 0;
-  while(b < lenA){
-    B[b] = A[minA++] * multiplier + carry;
-    if(B[b] < base){
-      carry = 0;
-    } else {
-      carry = 0 | (B[b] / base);
-      B[b] = B[b] % base;
-    }
-    ++b;
-  }
-
-  //Add remaining carry
-  if(carry > 0){
-    B[b++] = carry;
-  }
-
-  //Return length
-  return b;
 }
