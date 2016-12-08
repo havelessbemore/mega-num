@@ -1,5 +1,4 @@
 import assert = require('assert');
-import {print} from '../../src/util';
 import SimpleDivisionMethod from '../../src/div/simpleDivisionMethod';
 
 function test(A: number[], B: number, C: number[], D: number[], base: number): void {

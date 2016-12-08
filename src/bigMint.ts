@@ -17,17 +17,10 @@ export default class BigMint {
   // CONSTANTS
   ////////////////////////
 
-  public static get MIN_BASE(): number {return 2};
-  public static get MAX_BASE(): number {return 94906265}; //2^26 < sqrt(Number.MAX_SAFE_INTEGER) < 2^27
-  protected static get DEFAULT_BASE(): number {return 94906264};
-  protected static get MAX_DIGITS(): number {return 4294967295}; //2^32 - 1
-
-  /*TODO
   public static readonly MIN_BASE: number = 2;
   public static readonly MAX_BASE: number = 94906265; //2^26 < sqrt(Number.MAX_SAFE_INTEGER) < 2^27
   protected static readonly DEFAULT_BASE: number = 94906264;
   protected static readonly MAX_DIGITS: number = 4294967295; //2^32 - 1
-  */
 
   ////////////////////////
   // PROPERTIES
@@ -66,6 +59,7 @@ export default class BigMint {
   }
 
   private convertNumber(n: number): void {
+    const base: number = this.base = BigMint.DEFAULT_BASE;
 
     //If n is between [-1, 1]
     if((n >>> 1) === 0){
@@ -81,14 +75,12 @@ export default class BigMint {
     }
 
     n = (this.isNegative = n < 0) ? -n : n;
-    const base: number = BigMint.DEFAULT_BASE;
     const digits: number = Math.ceil(Math.log(n) / Math.log(base));
     const integer: number[] = new Array<number>(digits);
     for(let i: number = 0; n != 0; ++i){
       integer[i] = n % base;
       n = (n - integer[i]) / base;
     }
-    this.base = base;
     this.digits = digits;
     this.integer = integer;
   }
@@ -440,25 +432,28 @@ export default class BigMint {
   // BITWISE
   ////////////////////////
 
-  public not(): BigMint {
-    return this.add(BigMint.ONE).negate();
-  }
+  //public not(): BigMint {
+  //  return this.add(BigMint.ONE).negate();
+  //}
 
-  public and(B: BigMint | number | string): BigMint {
-    throw Error("D");
-  }
+  //TODO
+  //public and(B: BigMint | number | string): BigMint {
+  //  throw Error("D");
+  //}
 
-  public andNot(B: BigMint | number | string): BigMint {
-    return this.and(this.tryClone(B).not());
-  }
+  //public andNot(B: BigMint | number | string): BigMint {
+  //  return this.and(this.tryClone(B).not());
+  //}
 
-  public or(B: BigMint | number | string): BigMint {
-    throw Error("D");
-  }
+  //TODO
+  //public or(B: BigMint | number | string): BigMint {
+  //  throw Error("D");
+  //}
 
-  public xor(B: BigMint | number | string): BigMint {
-    throw Error("D");
-  }
+  //TODO
+  //public xor(B: BigMint | number | string): BigMint {
+  //  throw Error("D");
+  //}
 
   ////////////////////////
   // GCD

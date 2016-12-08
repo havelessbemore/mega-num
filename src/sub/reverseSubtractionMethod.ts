@@ -8,32 +8,35 @@ export default function reverseSubtractionMethod(A: number[], minA: number, maxA
   //Subtract common digits
   let borrow: number = 0;
   for(; minA < maxA; ++minA){
-    A[minA] = B[minA] - borrow - A[minA];
-    if (A[minA] < 0){
-      A[minA] = A[minA] + base;
+    let v: number = B[minB++] - borrow - A[minA];
+    if (v < 0){
+      v = v + base;
       borrow = 1;
     } else {
       borrow = 0;
     }
+    A[minA] = v;
   }
 
   //Subtract borrow
   if(borrow > 0){
-    for(borrow = base - 1; B[minA] === 0; A[minA++] = borrow){
+    for(borrow = base - 1; B[minB] === 0; ++minB){
+      A[minA++] = borrow;
     }
-    A[minA] = B[minA] - 1;
-    ++minA;
+    A[minA++] = B[minB++] - 1;
   }
 
   //Copy extra digits
-  while(minA < maxB){
-    A[minA] = B[minA];
-    ++minA;
-  }
+  if(minB < maxB){
+    do {
+      A[minA++] = B[minB++];
+    } while (minB < maxB);
 
   //Check for new length
-  while(A[minA-1] === 0){
-    --minA;
+  } else {
+    while(A[minA-1] === 0){
+      --minA;
+    }
   }
 
   return minA;

@@ -1,5 +1,7 @@
+/*
 import assert = require('assert');
-import BasicDivisionMethod from '../../src/div/basicDivisionMethod';
+import {print} from '../../src/util';
+import BurnikelZieglerDivisionMethod from '../../src/div/burnikelZieglerDivisionMethod';
 
 function test(A: number[], B: number[], C: number[], D: number[], base: number): void {
   let Q: number[];
@@ -9,7 +11,7 @@ function test(A: number[], B: number[], C: number[], D: number[], base: number):
   const BB: number[] = B.slice();
 
   //Divide
-  [Q, R, maxQ, maxR] = BasicDivisionMethod(A, A.length, B, B.length, base);
+  [Q, R, maxQ, maxR] = BurnikelZieglerDivisionMethod(A, A.length, B, B.length, base);
 
   //Confirm B was not changed
   assert.equal(B.length, BB.length);
@@ -26,7 +28,7 @@ function test(A: number[], B: number[], C: number[], D: number[], base: number):
   assert.deepEqual(R, D);
 }
 
-describe('BasicDivisionMethod', function(){
+describe('BurnikelZieglerDivisionMethod', function(){
 
   it('should return 10 / 10 in base 10',
     () => test(
@@ -112,3 +114,4 @@ describe('BasicDivisionMethod', function(){
     )
   );
 });
+*/

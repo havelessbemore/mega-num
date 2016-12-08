@@ -6,14 +6,11 @@
       "always-prefix": false
     },
     "no-arg": true,
-    "no-duplicate-key": true,
     "no-duplicate-variable": true,
     "no-eval": true,
     "no-invalid-this": true,
     "no-switch-case-fall-through": true,
-    "no-unreachable": true,
     "no-unused-expression": true,
-    "no-unused-variable": true,
     "no-use-before-declare": true,
     "no-var-keyword": true
   }
