@@ -42,7 +42,7 @@ export default class BigMint {
     if(BigMint.isBigMint(input)){
       this._assign(input);
     } else if(isNumber(input)){
-      this.convertNumber(input);
+      this.convertString('' + input);
     } else if(isString(input)){
       this.convertString(input);
     } else {
@@ -56,33 +56,6 @@ export default class BigMint {
 
   public static toBigMint(input: BigMint | number | string): BigMint {
     return BigMint.isBigMint(input) ? input : new BigMint(input);
-  }
-
-  private convertNumber(n: number): void {
-    const base: number = this.base = BigMint.DEFAULT_BASE;
-
-    //If n is between [-1, 1]
-    if((n >>> 1) === 0){
-      if(n === 0){
-        this.toZero();
-      } else {
-        this.toOne();
-        if(n < 0){
-          this.isNegative = true;
-        }
-      }
-      return;
-    }
-
-    n = (this.isNegative = n < 0) ? -n : n;
-    const digits: number = Math.ceil(Math.log(n) / Math.log(base));
-    const integer: number[] = new Array<number>(digits);
-    for(let i: number = 0; n != 0; ++i){
-      integer[i] = n % base;
-      n = (n - integer[i]) / base;
-    }
-    this.digits = digits;
-    this.integer = integer;
   }
 
   private convertString(s: String): void {

@@ -13,7 +13,7 @@
     "server": "webpack-dev-server --hot --inline --progress",
     "test": "ntsc && mocha --opts mocha.opts",
     "test:auto": "mocha --opts mocha.opts --watch",
-    "coverage": "ntsc && istanbul cover _mocha lib/test/**/*.js && remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html"
+    "coverage": "ntsc && istanbul cover _mocha lib/test/*.js lib/test/**/*.js && remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html"
   },
   "license": "MIT",
   "author": {
