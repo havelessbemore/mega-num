@@ -15,18 +15,21 @@ module.exports = [{
     libraryTarget: "umd"
   },
 
+  devtool: 'source-map',
+
   resolve: {
     root: [
       path.resolve('.')
     ],
     extensions: [
-      "", ".webpack.js", ".web.js", ".js", ".ts", ".tsx", ".d.ts"
+      '.ts', '.js', '.tsx', '.jsx', ''
     ]
   },
 
   module: {
     loaders: [{
       test: /\.tsx?$/,
+      exclude: /node_modules/,
       loaders: ['babel', 'ts-loader']
     }, {
       test: /\.jsx?$/,

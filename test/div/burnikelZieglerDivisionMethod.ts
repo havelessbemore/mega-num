@@ -1,5 +1,5 @@
 /*
-import assert = require('assert');
+import {assert} from 'chai';
 import {print} from '../../src/util';
 import BurnikelZieglerDivisionMethod from '../../src/div/burnikelZieglerDivisionMethod';
 

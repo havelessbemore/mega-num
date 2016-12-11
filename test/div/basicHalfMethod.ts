@@ -1,4 +1,4 @@
-import assert = require('assert');
+import {assert} from 'chai';
 import BasicHalfMethod from '../../src/div/basicHalfMethod';
 
 function test(A: number[], B: number[], C: number, base: number, isNegative: boolean = false): void {

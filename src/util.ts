@@ -18,10 +18,10 @@ export function reverseShiftUp(A: number[], min: number, max: number, shifts: nu
 }
 
 //Assumes shifts <= min
-export function basicShiftDown(A: number[], min: number, max: number, shifts: number): void {
-  for(let i: number = min - shifts; min < max; A[i++] = A[min++]){
-  }
-}
+//export function basicShiftDown(A: number[], min: number, max: number, shifts: number): void {
+//  for(let i: number = min - shifts; min < max; A[i++] = A[min++]){
+//  }
+//}
 
 //Converts indices between [min, max) to 0
 export function zero(A: number[], min: number, max: number): void {
@@ -30,7 +30,7 @@ export function zero(A: number[], min: number, max: number): void {
   }
 }
 
-//Assumes A and B not same array or A and B do not intersect
+//Assumes A and B not same array or sections A and B do not intersect
 export function copy(A: number[], minA: number, B: number[], minB: number, maxB: number): void {
   while(minB < maxB){
     A[minA++] = B[minB++];
@@ -72,6 +72,10 @@ export function isString(s: any): s is number {
   return typeof s === "string";
 }
 
+//Assumes valid inputs
+//Assumes maxA >= minA
+//Assumes maxB >= minB
+//Assumes numbers are in same base
 export function compare(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number): number {
 
   //Compare number of digits

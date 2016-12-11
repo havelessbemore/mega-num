@@ -1,4 +1,4 @@
-import assert = require('assert');
+import {assert} from 'chai';
 import BasicAdditionMethod from '../../src/add/basicAdditionMethod';
 
 function test(A: number[], B: number[], C: number[], base: number): void {

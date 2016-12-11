@@ -19,17 +19,17 @@ export default class BigMint {
 
   public static readonly MIN_BASE: number = 2;
   public static readonly MAX_BASE: number = 94906265; //2^26 < sqrt(Number.MAX_SAFE_INTEGER) < 2^27
-  protected static readonly DEFAULT_BASE: number = 94906264;
-  protected static readonly MAX_DIGITS: number = 4294967295; //2^32 - 1
+  private static readonly DEFAULT_BASE: number = 94906264;
+  //private static readonly MAX_DIGITS: number = 4294967295; //2^32 - 1
 
   ////////////////////////
   // PROPERTIES
   ///////////////////////
 
-  protected isNegative: boolean;
-  protected integer: number[];
-  protected digits: number;
-  protected base: number;
+  private base: number;
+  private digits: number;
+  private integer: number[];
+  private isNegative: boolean;
 
   ////////////////////////
   // CONSTRUCTOR
@@ -134,11 +134,11 @@ export default class BigMint {
     return new BigMint(this);
   }
 
-  protected tryClone(v: BigMint | number | string): BigMint {
-    return BigMint.isBigMint(v) ? v.clone() : new BigMint(v);
-  }
+  //private tryClone(v: BigMint | number | string): BigMint {
+  //  return BigMint.isBigMint(v) ? v.clone() : new BigMint(v);
+  //}
 
-  protected copy(source: BigMint): BigMint {
+  private copy(source: BigMint): BigMint {
     this.isNegative = source.isNegative;
     this.integer = source.integer;
     this.digits = source.digits;
@@ -150,7 +150,7 @@ export default class BigMint {
     return this._assign(BigMint.toBigMint(source), keepBase);
   }
 
-  protected _assign(source: BigMint, keepBase: boolean = false): BigMint {
+  private _assign(source: BigMint, keepBase: boolean = false): BigMint {
     const originalBase: number = this.base;
     const target: BigMint = this.copy(source);
     target.integer = target.integer.slice(0);
@@ -160,14 +160,14 @@ export default class BigMint {
     return target;
   }
 
-  protected toZero(): BigMint {
+  private toZero(): BigMint {
     this.isNegative = false;
     this.integer = [];
     this.digits = 0;
     return this;
   }
 
-  protected toOne(): BigMint {
+  private toOne(): BigMint {
     this.isNegative = false;
     this.integer = [1];
     this.digits = 1;
@@ -206,7 +206,7 @@ export default class BigMint {
     return this.toBase(base);
   }
 
-  protected toBase(newBase: number): BigMint {
+  private toBase(newBase: number): BigMint {
     const n: BigMint = this;
     const curInteger: number[] = n.integer;
     const curBase: number = n.base;
@@ -504,7 +504,7 @@ export default class BigMint {
   }
 
   //See: https://en.wikipedia.org/wiki/Binary_GCD_algorithm
-  protected _gcd(B: BigMint): BigMint {
+  private _gcd(B: BigMint): BigMint {
     let A: BigMint = this;
     const C: BigMint = BigMint.ONE;
 
@@ -729,7 +729,7 @@ export default class BigMint {
     return [this, remainder === 0 ? BigMint.ZERO : BigMint.ONE];
   }
 
-  protected _half(): number {
+  private _half(): number {
     let remainder: number;
 
     //Half
@@ -862,7 +862,7 @@ export default class BigMint {
     return base._pow((n === power) ? power.clone() : power);
   }
 
-  protected _pow(power: BigMint): BigMint {
+  private _pow(power: BigMint): BigMint {
     const base: BigMint = this;
 
     //If power is 1

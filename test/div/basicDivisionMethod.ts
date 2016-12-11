@@ -1,4 +1,4 @@
-import assert = require('assert');
+import {assert} from 'chai';
 import BasicDivisionMethod from '../../src/div/basicDivisionMethod';
 
 function test(A: number[], B: number[], C: number[], D: number[], base: number): void {

@@ -1,4 +1,4 @@
-import assert = require('assert');
+import {assert} from 'chai';
 import BasicSquareMethod from '../../src/mul/basicSquareMethod';
 
 function test(A: number[], B: number[], base: number): void {

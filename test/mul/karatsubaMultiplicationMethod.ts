@@ -1,4 +1,4 @@
-import assert = require('assert');
+import {assert} from 'chai';
 import KaratsubaMultiplicationMethod from '../../src/mul/karatsubaMultiplicationMethod';
 
 function test(A: number[], B: number[], C: number[], base: number): void {

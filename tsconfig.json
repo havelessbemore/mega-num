@@ -52,6 +52,7 @@
     "src/util.ts",
     "test/add/basicAdditionMethod.ts",
     "test/add/reverseAdditionMethod.ts",
+    "test/bigMint.ts",
     "test/div/basicDivisionMethod.ts",
     "test/div/basicHalfMethod.ts",
     "test/div/burnikelZieglerDivisionMethod.ts",
@@ -63,8 +64,10 @@
     "test/mul/karatsubaSquareMethod.ts",
     "test/sub/basicSubtractionMethod.ts",
     "test/sub/reverseSubtractionMethod.ts",
+    "typings/globals/chai/index.d.ts",
     "typings/globals/mocha/index.d.ts",
     "typings/globals/node/index.d.ts",
+    "typings/globals/sinon/index.d.ts",
     "typings/index.d.ts"
   ]
 }

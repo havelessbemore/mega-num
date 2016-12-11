@@ -1,4 +1,4 @@
-import assert = require('assert');
+import {assert} from 'chai';
 import ReverseAdditionMethod from '../../src/add/reverseAdditionMethod';
 
 function test(A: number[], B: number[], C: number[], base: number): void {
