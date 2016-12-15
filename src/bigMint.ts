@@ -84,39 +84,11 @@ export default class BigMint {
   }
 
   ////////////////////////
-  // SIGN
-  ////////////////////////
-
-  public abs(): BigMint {
-
-    //Make number positive
-    this.isNegative = false;
-
-    return this;
-  };
-
-  public signum(): number {
-    return this.isNegative ? -1 : this.digits === 0 ? 0 : 1;
-  };
-
-  ////////////////////////
   // UPDATE
   ////////////////////////
 
   public clone(): BigMint {
     return new BigMint(this);
-  }
-
-  //private tryClone(v: BigMint | number | string): BigMint {
-  //  return BigMint.isBigMint(v) ? v.clone() : new BigMint(v);
-  //}
-
-  private copy(source: BigMint): BigMint {
-    this.isNegative = source.isNegative;
-    this.integer = source.integer;
-    this.digits = source.digits;
-    this.base = source.base;
-    return this;
   }
 
   public assign(source: BigMint | number | string, keepBase: boolean = false): BigMint {
@@ -131,6 +103,14 @@ export default class BigMint {
       target.toBase(originalBase);
     }
     return target;
+  }
+
+  private copy(source: BigMint): BigMint {
+    this.isNegative = source.isNegative;
+    this.integer = source.integer;
+    this.digits = source.digits;
+    this.base = source.base;
+    return this;
   }
 
   private toZero(): BigMint {
@@ -180,10 +160,9 @@ export default class BigMint {
   }
 
   private toBase(newBase: number): BigMint {
-    const n: BigMint = this;
-    const curInteger: number[] = n.integer;
-    const curBase: number = n.base;
-    const curDigits: number = n.digits;
+    const curInteger: number[] = this.integer;
+    const curBase: number = this.base;
+    const curDigits: number = this.digits;
     const newInteger: number[] = new Array(Math.ceil(
       curDigits * Math.log(curBase) / Math.log(newBase)
     ));
@@ -196,16 +175,15 @@ export default class BigMint {
         remainder = remainder*curBase + curInteger[i];
         curInteger[i] = (remainder < newBase) ? 0 : 0 | (remainder / newBase);
       }
-      for(newInteger[newDigits] = remainder; curInteger[len - 1] < 1; --len){
+      for(newInteger[newDigits] = remainder; len > 0 && curInteger[len - 1] < 1; --len){
       }
     }
 
     newInteger.length = newDigits;
-    n.base = newBase;
-    n.digits = newDigits;
-    n.integer = newInteger;
-
-    return n;
+    this.base = newBase;
+    this.digits = newDigits;
+    this.integer = newInteger;
+    return this;
   }
 
   ////////////////////////
@@ -351,7 +329,8 @@ export default class BigMint {
       return compare(a.integer, 0, a.digits, b.integer, 0, b.digits);
     }
 
-    let out: number = -1; // Assume a < b
+    // Assume a < b
+    let out: number = -1;
 
     //Force a to represent smaller base
     if(a.base > b.base){
@@ -370,35 +349,9 @@ export default class BigMint {
       return out;
     }
 
-    //Convert A to B's base
+    //Convert A to B's base and compare numbers
     a = a.clone().toBase(b.base);
-
     return out * compare(a.integer, 0, a.digits, b.integer, 0, b.digits);
-  }
-
-  public isOdd(): boolean {
-    return !this.isEven();
-  }
-
-  public isEven(): boolean {
-
-    //If zero
-    if(this.digits === 0){
-      return true;
-    }
-
-    //If even base
-    if((this.base & 1) === 0){
-      return (this.integer[0] & 1) === 0;
-    }
-
-    //If odd base
-    let xor: number = 0;
-    const integer: number[] = this.integer;
-    for(let i: number = 0, n: number = this.digits; i < n; xor = xor ^ integer[i++]){
-    }
-
-    return (xor & 1) === 0;
   }
 
   ////////////////////////
@@ -428,132 +381,10 @@ export default class BigMint {
   //  throw Error("D");
   //}
 
-  ////////////////////////
-  // GCD
-  ////////////////////////
-
-  public gcd(n: BigMint | number | string): BigMint {
-    const A: BigMint = this;
-
-    //if gcd of self
-    if(A === n){
-      return A.abs();
-    }
-
-    //Convert to class iff necessary
-    let B: BigMint = BigMint.toBigMint(n);
-
-    //If B is zero
-    if(B.digits === 0){
-      return A.abs();
-    }
-
-    //If A is zero
-    if(A.digits === 0){
-
-      //Copy B and return to original base
-      const base: number = A.base;
-      A._assign(B);
-      if(base !== A.base){
-        A.toBase(base);
-      }
-
-      return A.abs();
-    }
-
-    //Make a copy of B iff necessary
-    B = (n === B) ? B.clone() : B;
-
-    //Normalize bases
-    if(A.base !== B.base){
-      B.toBase(A.base);
-    }
-
-    //Calculate GCD
-    B = A._gcd(B);
-
-    //Update A to be result iff needed
-    return (A === B) ? A : A._assign(B);
-  }
-
-  //See: https://en.wikipedia.org/wiki/Binary_GCD_algorithm
-  private _gcd(B: BigMint): BigMint {
-    let A: BigMint = this;
-    const C: BigMint = BigMint.ONE;
-
-    //Remove and record common factors of 2
-    while(A.isEven() && B.isEven()){
-      A._half();
-      B._half();
-      C.double();
-    }
-
-    //Remove factors of 2 from A
-    while(A.isEven()){
-      A._half();
-    }
-
-    do {
-
-      //Remove factors of 2 from B
-      while(B.isEven()){
-        B._half();
-      }
-
-      //Make sure A <= B. A and B are both odd, so B - A will be even.
-      B.subtract(A).abs();
-
-    //Continue until B is zero
-    } while (B.digits !== 0);
-
-    //Restore common factors of 2
-    return A.multiply(C);
-  }
-
-  ////////////////////////
-  // LCM
-  ////////////////////////
-
-  //See: https://en.wikipedia.org/wiki/Least_common_multiple
-  public lcm(N: BigMint | number | string): BigMint {
-    const A: BigMint = this;
-    let B: BigMint = BigMint.toBigMint(N);
-
-    //If lcm of self
-    if(A === B){
-      return A;
-    }
-
-    //If A is zero or B is zero
-    if(A.digits === 0 || B.digits === 0){
-      return A.toZero();
-    }
-
-    //If B is one
-    if(B.digits === 1 && B.integer[0] === 1){
-      return A.abs();
-    }
-
-    //If A is one
-    if(A.digits === 1 && A.integer[0] === 1){
-
-      //Turn A into B
-      const base: number = A.base;
-      A._assign(B);
-      if(base !== A.base){
-        A.toBase(base);
-      }
-
-      return A.abs();
-    }
-
-    //Calculate and return LCM
-    return A.divide(A.gcd(B)).multiply(B).abs();
-  }
-
-  ////////////////////////
-  // ADDITION
-  ////////////////////////
+  public abs(): BigMint {
+    this.isNegative = false;
+    return this;
+  };
 
   public add(n: BigMint | number | string): BigMint {
     const adduend: BigMint = this;
@@ -692,6 +523,84 @@ export default class BigMint {
     return this;
   }
 
+  public gcd(n: BigMint | number | string): BigMint {
+    const A: BigMint = this;
+
+    //if gcd of self
+    if(A === n){
+      return A.abs();
+    }
+
+    //Convert to class iff necessary
+    let B: BigMint = BigMint.toBigMint(n);
+
+    //If B is zero
+    if(B.digits === 0){
+      return A.abs();
+    }
+
+    //If A is zero
+    if(A.digits === 0){
+
+      //Copy B and return to original base
+      const base: number = A.base;
+      A._assign(B);
+      if(base !== A.base){
+        A.toBase(base);
+      }
+
+      return A.abs();
+    }
+
+    //Make a copy of B iff necessary
+    B = (n === B) ? B.clone() : B;
+
+    //Normalize bases
+    if(A.base !== B.base){
+      B.toBase(A.base);
+    }
+
+    //Calculate GCD
+    B = A._gcd(B);
+
+    //Update A to be result iff needed
+    return (A === B) ? A : A._assign(B);
+  }
+
+  //See: https://en.wikipedia.org/wiki/Binary_GCD_algorithm
+  private _gcd(B: BigMint): BigMint {
+    let A: BigMint = this;
+    const C: BigMint = BigMint.ONE;
+
+    //Remove and record common factors of 2
+    while(A.isEven() && B.isEven()){
+      A._half();
+      B._half();
+      C.double();
+    }
+
+    //Remove factors of 2 from A
+    while(A.isEven()){
+      A._half();
+    }
+
+    do {
+
+      //Remove factors of 2 from B
+      while(B.isEven()){
+        B._half();
+      }
+
+      //Make sure A <= B. A and B are both odd, so B - A will be even.
+      B.subtract(A).abs();
+
+    //Continue until B is zero
+    } while (B.digits !== 0);
+
+    //Restore common factors of 2
+    return A.multiply(C);
+  }
+
   public half(): [BigMint, BigMint] {
 
     //If zero
@@ -712,6 +621,67 @@ export default class BigMint {
     this.integer.length = this.digits;
 
     return remainder;
+  }
+
+  public isEven(): boolean {
+
+    //If zero
+    if(this.digits === 0){
+      return true;
+    }
+
+    //If even base
+    if((this.base & 1) === 0){
+      return (this.integer[0] & 1) === 0;
+    }
+
+    //If odd base
+    let xor: number = 0;
+    const integer: number[] = this.integer;
+    for(let i: number = 0, n: number = this.digits; i < n; xor = xor ^ integer[i++]){
+    }
+    return (xor & 1) === 0;
+  }
+
+  public isOdd(): boolean {
+    return !this.isEven();
+  }
+
+  //See: https://en.wikipedia.org/wiki/Least_common_multiple
+  public lcm(N: BigMint | number | string): BigMint {
+    const A: BigMint = this;
+    let B: BigMint = BigMint.toBigMint(N);
+
+    //If lcm of self
+    if(A === B){
+      return A;
+    }
+
+    //If A is zero or B is zero
+    if(A.digits === 0 || B.digits === 0){
+      return A.toZero();
+    }
+
+    //If B is one
+    if(B.digits === 1 && B.integer[0] === 1){
+      return A.abs();
+    }
+
+    //If A is one
+    if(A.digits === 1 && A.integer[0] === 1){
+
+      //Turn A into B
+      const base: number = A.base;
+      A._assign(B);
+      if(base !== A.base){
+        A.toBase(base);
+      }
+
+      return A.abs();
+    }
+
+    //Calculate and return LCM
+    return A.divide(A.gcd(B)).multiply(B).abs();
   }
 
   public multiply(n: BigMint | number | string): BigMint {
@@ -857,6 +827,10 @@ export default class BigMint {
     return this.divideAndRemainder(divisor)[1];
   }
 
+  public signum(): number {
+    return this.isNegative ? -1 : this.digits === 0 ? 0 : 1;
+  };
+
   public square(): BigMint {
     const multiplicand: BigMint = this;
 
@@ -920,10 +894,8 @@ export default class BigMint {
       subtrahend.toBase(minuend.base);
     }
 
-    //If signs differ
+    //If signs differ, add instead
     if (minuend.isNegative !== subtrahend.isNegative){
-
-      //Add
       return minuend.negate().add(subtrahend).negate();
     }
 
@@ -932,28 +904,26 @@ export default class BigMint {
 
     //If same number
     if(comparison === 0){
-
-      //return zero
       return minuend.toZero();
     }
+
+    //Assume A > B
+    let f: (
+      a: number[], b: number, c: number,
+      d: number[], e: number, f: number, g: number
+    ) => number = BasicSubtractionMethod;
 
     //If A < B
     if(comparison < 0){
       minuend.negate();
-      minuend.integer.length = minuend.digits = ReverseSubtractionMethod(
-        minuend.integer, 0, minuend.digits,
-        subtrahend.integer, 0, subtrahend.digits,
-        minuend.base
-      );
-
-    //If A > B
-    } else {
-      minuend.integer.length = minuend.digits = BasicSubtractionMethod(
-        minuend.integer, 0, minuend.digits,
-        subtrahend.integer, 0, subtrahend.digits,
-        minuend.base
-      );
+      f = ReverseSubtractionMethod;
     }
+
+    minuend.integer.length = minuend.digits = f(
+      minuend.integer, 0, minuend.digits,
+      subtrahend.integer, 0, subtrahend.digits,
+      minuend.base
+    );
 
     return minuend;
   }
