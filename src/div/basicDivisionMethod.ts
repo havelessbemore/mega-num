@@ -1,4 +1,4 @@
-import {compare, zero} from '../util';
+import {compare, zero} from '../util/numUtils';
 import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
 import SimpleMultiplicationMethod from '../mul/simpleMultiplicationMethod';
 

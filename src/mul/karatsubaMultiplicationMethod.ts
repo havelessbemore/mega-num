@@ -1,4 +1,5 @@
-import {min, max, basicShiftUp, copy, zero} from '../util';
+import {min, max, zero} from '../util/numUtils';
+import {basicShiftUp, copy} from '../util/arrayUtils';
 import ReverseAdditionMethod from '../add/reverseAdditionMethod';
 import BasicAdditionMethod from '../add/basicAdditionMethod';
 import BasicSubtractionMethod from '../sub/basicSubtractionMethod';

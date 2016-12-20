@@ -9,7 +9,8 @@ import KaratsubaMultiplicationMethod from './mul/karatsubaMultiplicationMethod';
 import BasicDivisionMethod from './div/basicDivisionMethod';
 import SimpleDivisionMethod from './div/simpleDivisionMethod';
 import SimpleMultiplicationMethod from './mul/simpleMultiplicationMethod';
-import {CIPHER, compare, isNumber, isString} from './util';
+import {isNumber, isString} from './util/typeUtils';
+import {CIPHER, compare} from './util/numUtils';
 
 export default class BigMint {
 
@@ -27,8 +28,8 @@ export default class BigMint {
   ///////////////////////
 
   private base: number;
-  private digits: number;
-  private integer: number[];
+  private digits: number[];
+  private precision: number;
   private isNegative: boolean;
 
   ////////////////////////
@@ -74,9 +75,9 @@ export default class BigMint {
 
     //Convert to decimal array
     this.base = 10;
-    this.digits = s.length;
-    const integer: number[] = this.integer = new Array<number>(this.digits);
-    for(let i = 0, j = this.digits; j > 0; integer[i++] = 0 | <any>s[--j]){
+    this.precision = s.length;
+    const digits: number[] = this.digits = new Array<number>(this.precision);
+    for(let i = 0, j = this.precision; j > 0; digits[i++] = 0 | <any>s[--j]){
     }
 
     //Convert to default base
@@ -98,7 +99,7 @@ export default class BigMint {
   private _assign(source: BigMint, keepBase: boolean = false): BigMint {
     const originalBase: number = this.base;
     const target: BigMint = this.copy(source);
-    target.integer = target.integer.slice(0);
+    target.digits = target.digits.slice(0);
     if(keepBase && target.base !== originalBase){
       target.toBase(originalBase);
     }
@@ -107,23 +108,23 @@ export default class BigMint {
 
   private copy(source: BigMint): BigMint {
     this.isNegative = source.isNegative;
-    this.integer = source.integer;
     this.digits = source.digits;
+    this.precision = source.precision;
     this.base = source.base;
     return this;
   }
 
   private toZero(): BigMint {
     this.isNegative = false;
-    this.integer = [];
-    this.digits = 0;
+    this.digits = [];
+    this.precision = 0;
     return this;
   }
 
   private toOne(): BigMint {
     this.isNegative = false;
-    this.integer = [1];
-    this.digits = 1;
+    this.digits = [1];
+    this.precision = 1;
     return this;
   }
 
@@ -160,9 +161,9 @@ export default class BigMint {
   }
 
   private toBase(newBase: number): BigMint {
-    const curInteger: number[] = this.integer;
+    const curInteger: number[] = this.digits;
     const curBase: number = this.base;
-    const curDigits: number = this.digits;
+    const curDigits: number = this.precision;
     const newInteger: number[] = new Array(Math.ceil(
       curDigits * Math.log(curBase) / Math.log(newBase)
     ));
@@ -181,8 +182,8 @@ export default class BigMint {
 
     newInteger.length = newDigits;
     this.base = newBase;
-    this.digits = newDigits;
-    this.integer = newInteger;
+    this.precision = newDigits;
+    this.digits = newInteger;
     return this;
   }
 
@@ -207,23 +208,23 @@ export default class BigMint {
     }
 
     //Check if zero
-    if(this.digits === 0){
+    if(this.precision === 0){
       return (cipher instanceof Array) ? cipher[0] : cipher(0, 0, 0);
     }
 
     let s: string;
-    const A: number[] = this.integer;
+    const A: number[] = this.digits;
 
     //Print with cipher
     if(cipher instanceof Array){
       s = cipher[A[0]];
-      for(let i: number = 1, j: number = this.digits; i < j; s = cipher[A[i++]] + sep + s){
+      for(let i: number = 1, j: number = this.precision; i < j; s = cipher[A[i++]] + sep + s){
       }
 
     //Print with custom function
     } else {
-      s = cipher(A[0], 0, this.digits);
-      for(let i: number = 1, j: number = this.digits; i < j; ++i){
+      s = cipher(A[0], 0, this.precision);
+      for(let i: number = 1, j: number = this.precision; i < j; ++i){
         s = cipher(A[i], i, j) + sep + s;
       }
     }
@@ -308,25 +309,25 @@ export default class BigMint {
     }
 
     //Check if basic numbers
-    if(a.digits < 2 && b.digits < 2){
+    if(a.precision < 2 && b.precision < 2){
 
       //Compare digits
-      if(a.digits !== b.digits){
-        return (a.digits < b.digits) ? -1 : 1;
+      if(a.precision !== b.precision){
+        return (a.precision < b.precision) ? -1 : 1;
       }
 
       //Check if same number
-      if(a.digits === 0 || a.integer[0] === b.integer[0]){
+      if(a.precision === 0 || a.digits[0] === b.digits[0]){
         return 0;
       }
 
       //Compare numbers
-      return (a.integer[0] < b.integer[0]) ? -1 : 1;
+      return (a.digits[0] < b.digits[0]) ? -1 : 1;
     }
 
     //If same base
     if(a.base === b.base){
-      return compare(a.integer, 0, a.digits, b.integer, 0, b.digits);
+      return compare(a.digits, 0, a.precision, b.digits, 0, b.precision);
     }
 
     // Assume a < b
@@ -342,16 +343,16 @@ export default class BigMint {
 
     //Estimate number of digits of A if converted to B's base
     const ratio: number = Math.log(a.base) / Math.log(b.base);
-    if(b.digits < Math.ceil(a.digits * ratio)){
+    if(b.precision < Math.ceil(a.precision * ratio)){
       return -out;
     }
-    if(b.digits > Math.ceil((a.digits + 1) * ratio)){
+    if(b.precision > Math.ceil((a.precision + 1) * ratio)){
       return out;
     }
 
     //Convert A to B's base and compare numbers
     a = a.clone().toBase(b.base);
-    return out * compare(a.integer, 0, a.digits, b.integer, 0, b.digits);
+    return out * compare(a.digits, 0, a.precision, b.digits, 0, b.precision);
   }
 
   ////////////////////////
@@ -398,12 +399,12 @@ export default class BigMint {
     let addend: BigMint = BigMint.toBigMint(n);
 
     //If addend is zero
-    if(addend.digits === 0){
+    if(addend.precision === 0){
       return adduend;
     }
 
     //If adduend is zero
-    if(adduend.digits === 0){
+    if(adduend.precision === 0){
 
       //Copy addend and return to original base
       return adduend._assign(addend, true);
@@ -423,14 +424,14 @@ export default class BigMint {
     }
 
     //Make room for addition
-    //adduend.integer.length = (adduend.digits < addend.digits) ? addend.digits + 1 : adduend.digits + 1;
+    //adduend.digits.length = (adduend.precision < addend.precision) ? addend.precision + 1 : adduend.precision + 1;
 
     //Add
-    adduend.integer.length = adduend.digits = (
-      (adduend.digits < addend.digits) ? ReverseAdditionMethod : BasicAdditionMethod
+    adduend.digits.length = adduend.precision = (
+      (adduend.precision < addend.precision) ? ReverseAdditionMethod : BasicAdditionMethod
     )(
-      adduend.integer, 0, adduend.digits,
-      addend.integer, 0, addend.digits,
+      adduend.digits, 0, adduend.precision,
+      addend.digits, 0, addend.precision,
       adduend.base
     );
 
@@ -446,7 +447,7 @@ export default class BigMint {
     let divisor: BigMint = BigMint.toBigMint(n);
 
     //If divisor is zero
-    if(divisor.digits === 0){
+    if(divisor.precision === 0){
       throw EvalError("Divide by Zero");
     }
 
@@ -456,7 +457,7 @@ export default class BigMint {
     }
 
     //If dividend is zero
-    if(dividend.digits === 0){
+    if(dividend.precision === 0){
       return [dividend, BigMint.ZERO];
     }
 
@@ -464,8 +465,8 @@ export default class BigMint {
     dividend.isNegative = dividend.isNegative !== divisor.isNegative;
 
     //If divisor is one or two
-    if(divisor.digits === 1 && divisor.integer[0] < 3){
-      return (divisor.integer[0] === 1) ? [dividend, BigMint.ZERO] : dividend.half();
+    if(divisor.precision === 1 && divisor.digits[0] < 3){
+      return (divisor.digits[0] === 1) ? [dividend, BigMint.ZERO] : dividend.half();
     }
 
     //If different bases
@@ -474,7 +475,7 @@ export default class BigMint {
       //Estimate the least number of digits of the divisor if converted to the dividend's base
       //If the dividend is smaller than the divisor the quotient will be zero (less than 1)
       const ratio: number = Math.log(divisor.base) / Math.log(dividend.base);
-      if(dividend.digits < Math.ceil(divisor.digits *  ratio)){
+      if(dividend.precision < Math.ceil(divisor.precision *  ratio)){
         const remainder: BigMint = BigMint.ZERO.copy(dividend);
         return [dividend.toZero(), remainder];
       }
@@ -485,7 +486,7 @@ export default class BigMint {
     }
 
     //Check if the dividend has less digits than the divisor
-    if(dividend.digits < divisor.digits){
+    if(dividend.precision < divisor.precision){
       const remainder: BigMint = BigMint.ZERO.copy(dividend);
       return [dividend.toZero(), remainder];
     }
@@ -493,31 +494,31 @@ export default class BigMint {
     const remainder: BigMint = BigMint.ZERO;
 
     [
-      dividend.integer, remainder.integer,
-      dividend.digits, remainder.digits
-    ] = (divisor.digits < 2) ?
+      dividend.digits, remainder.digits,
+      dividend.precision, remainder.precision
+    ] = (divisor.precision < 2) ?
       SimpleDivisionMethod(
-        dividend.integer, dividend.digits,
-        divisor.integer[0], dividend.base
+        dividend.digits, dividend.precision,
+        divisor.digits[0], dividend.base
       ) :
       BasicDivisionMethod(
-        dividend.integer, dividend.digits,
-        divisor.integer, divisor.digits,
+        dividend.digits, dividend.precision,
+        divisor.digits, divisor.precision,
         dividend.base
       );
-    dividend.integer.length = dividend.digits;
-    remainder.integer.length = remainder.digits;
+    dividend.digits.length = dividend.precision;
+    remainder.digits.length = remainder.precision;
     return [dividend, remainder];
   }
 
   public double(): BigMint {
-    if(this.digits === 0){
+    if(this.precision === 0){
       return this;
     }
 
     //Double and set new length
-    this.integer.length = this.digits = BasicDoubleMethod(
-      this.integer, this.digits, this.base
+    this.digits.length = this.precision = BasicDoubleMethod(
+      this.digits, this.precision, this.base
     );
 
     return this;
@@ -535,12 +536,12 @@ export default class BigMint {
     let B: BigMint = BigMint.toBigMint(n);
 
     //If B is zero
-    if(B.digits === 0){
+    if(B.precision === 0){
       return A.abs();
     }
 
     //If A is zero
-    if(A.digits === 0){
+    if(A.precision === 0){
 
       //Copy B and return to original base
       const base: number = A.base;
@@ -595,7 +596,7 @@ export default class BigMint {
       B.subtract(A).abs();
 
     //Continue until B is zero
-    } while (B.digits !== 0);
+    } while (B.precision !== 0);
 
     //Restore common factors of 2
     return A.multiply(C);
@@ -604,9 +605,11 @@ export default class BigMint {
   public half(): [BigMint, BigMint] {
 
     //If zero
-    if(this.digits === 0){
+    if(this.precision === 0){
       return [this, BigMint.ZERO];
     }
+
+    //Halve
     const remainder: number = this._half();
     return [this, remainder === 0 ? BigMint.ZERO : BigMint.ONE];
   }
@@ -615,10 +618,10 @@ export default class BigMint {
     let remainder: number;
 
     //Half
-    [this.digits, remainder] = BasicHalfMethod(
-      this.integer, this.digits, this.base, this.isNegative
+    [this.precision, remainder] = BasicHalfMethod(
+      this.digits, 0, this.precision, this.base, this.isNegative
     );
-    this.integer.length = this.digits;
+    this.digits.length = this.precision;
 
     return remainder;
   }
@@ -626,19 +629,19 @@ export default class BigMint {
   public isEven(): boolean {
 
     //If zero
-    if(this.digits === 0){
+    if(this.precision === 0){
       return true;
     }
 
     //If even base
     if((this.base & 1) === 0){
-      return (this.integer[0] & 1) === 0;
+      return (this.digits[0] & 1) === 0;
     }
 
     //If odd base
     let xor: number = 0;
-    const integer: number[] = this.integer;
-    for(let i: number = 0, n: number = this.digits; i < n; xor = xor ^ integer[i++]){
+    const digits: number[] = this.digits;
+    for(let i: number = 0, n: number = this.precision; i < n; xor = xor ^ digits[i++]){
     }
     return (xor & 1) === 0;
   }
@@ -658,17 +661,17 @@ export default class BigMint {
     }
 
     //If A is zero or B is zero
-    if(A.digits === 0 || B.digits === 0){
+    if(A.precision === 0 || B.precision === 0){
       return A.toZero();
     }
 
     //If B is one
-    if(B.digits === 1 && B.integer[0] === 1){
+    if(B.precision === 1 && B.digits[0] === 1){
       return A.abs();
     }
 
     //If A is one
-    if(A.digits === 1 && A.integer[0] === 1){
+    if(A.precision === 1 && A.digits[0] === 1){
 
       //Turn A into B
       const base: number = A.base;
@@ -693,7 +696,7 @@ export default class BigMint {
     }
 
     //If zero
-    if(multiplicand.digits === 0){
+    if(multiplicand.precision === 0){
       return multiplicand;
     }
 
@@ -701,7 +704,7 @@ export default class BigMint {
     let multiplier = BigMint.toBigMint(n);
 
     //If multiplying by zero
-    if(multiplier.digits === 0){
+    if(multiplier.precision === 0){
       return multiplicand.toZero();
     }
 
@@ -715,40 +718,40 @@ export default class BigMint {
     }
 
     //If multiplying by single digit
-    if(multiplier.digits === 1){
-      multiplicand.digits = SimpleMultiplicationMethod(
-        multiplicand.integer, 0, multiplicand.digits,
-        multiplier.integer[0], multiplicand.base
+    if(multiplier.precision === 1){
+      multiplicand.precision = SimpleMultiplicationMethod(
+        multiplicand.digits, 0, multiplicand.precision,
+        multiplier.digits[0], multiplicand.base
       );
       return multiplicand;
     }
 
     //If single digit
-    if(multiplicand.digits === 1){
-      const n: number = multiplicand.integer[0];
-      multiplicand.integer = multiplier.integer.slice(0);
-      multiplicand.digits = SimpleMultiplicationMethod(
-        multiplicand.integer, 0, multiplier.digits,
+    if(multiplicand.precision === 1){
+      const n: number = multiplicand.digits[0];
+      multiplicand.digits = multiplier.digits.slice(0);
+      multiplicand.precision = SimpleMultiplicationMethod(
+        multiplicand.digits, 0, multiplier.precision,
         n, multiplicand.base
       );
       return multiplicand;
     }
 
     //Make room for multiplication
-    multiplicand.integer.length = multiplicand.digits + multiplier.digits;
+    multiplicand.digits.length = multiplicand.precision + multiplier.precision;
 
     //Multiply
     //if(MEETS_THRESHOLD){
-    multiplicand.integer.length = multiplicand.digits = KaratsubaMultiplicationMethod(
-      multiplicand.integer, multiplicand.digits,
-      multiplier.integer, multiplier.digits,
+    multiplicand.digits.length = multiplicand.precision = KaratsubaMultiplicationMethod(
+      multiplicand.digits, multiplicand.precision,
+      multiplier.digits, multiplier.precision,
       multiplicand.base
     );
     /*
     }
-    multiplicand.integer.length = multiplicand.digits = BasicMultiplicationMethod(
-      multiplicand.integer, multiplicand.digits,
-      multiplier.integer, multiplier.digits,
+    multiplicand.digits.length = multiplicand.precision = BasicMultiplicationMethod(
+      multiplicand.digits, multiplicand.precision,
+      multiplier.digits, multiplier.precision,
       multiplicand.base
     );*/
 
@@ -756,10 +759,7 @@ export default class BigMint {
   }
 
   public negate(): BigMint {
-
-    //Negate sign
-    this.isNegative = (this.digits === 0) ? false : this.isNegative === false;
-
+    this.isNegative = (this.precision === 0) ? false : this.isNegative === false;
     return this;
   };
 
@@ -772,7 +772,7 @@ export default class BigMint {
     let power: BigMint = BigMint.toBigMint(n);
 
     //If raised to zero power
-    if(power.digits === 0){
+    if(power.precision === 0){
 
       //Make one
       return base.toOne();
@@ -786,7 +786,7 @@ export default class BigMint {
     }
 
     //If base is zero
-    if(base.digits === 0){
+    if(base.precision === 0){
       return base;
     }
 
@@ -798,7 +798,7 @@ export default class BigMint {
     }
 
     //If base is one
-    if(base.digits === 1 && base.integer[0] === 1){
+    if(base.precision === 1 && base.digits[0] === 1){
       return base;
     }
 
@@ -809,7 +809,7 @@ export default class BigMint {
     const base: BigMint = this;
 
     //If power is 1
-    if(power.digits === 1 && power.integer[0] === 1){
+    if(power.precision === 1 && power.digits[0] === 1){
       return base;
     }
 
@@ -828,38 +828,33 @@ export default class BigMint {
   }
 
   public signum(): number {
-    return this.isNegative ? -1 : this.digits === 0 ? 0 : 1;
+    return this.isNegative ? -1 : this.precision === 0 ? 0 : 1;
   };
 
   public square(): BigMint {
     const multiplicand: BigMint = this;
 
     //If zero
-    if (multiplicand.digits === 0){
+    if (multiplicand.precision === 0){
       return multiplicand;
     }
 
-    //If negative
-    if(multiplicand.isNegative){
-      multiplicand.isNegative = false;
-    }
+    //If negative change to positive
+    multiplicand.isNegative = false;
 
-    //If 1 or 2
-    if(multiplicand.digits === 1){
-      if(multiplicand.integer[0] === 1){
-        return multiplicand;
-      }
-      if(multiplicand.integer[0] === 2){
-        return multiplicand.double();
-      }
+    //If one
+    if(multiplicand.precision === 1 && multiplicand.digits[0] === 1){
+      return multiplicand;
     }
 
     //Make room for squaring
-    multiplicand.integer.length = 2*multiplicand.digits;
+    multiplicand.digits.length = 2*multiplicand.precision;
+
+    //TODO: Analyze threshold between Basic Method and Karatsuba Method
 
     //Square
-    multiplicand.integer.length = multiplicand.digits = KaratsubaSquareMethod(
-      multiplicand.integer, multiplicand.digits, multiplicand.base
+    multiplicand.digits.length = multiplicand.precision = KaratsubaSquareMethod(
+      multiplicand.digits, multiplicand.precision, multiplicand.base
     );
 
     return multiplicand;
@@ -877,12 +872,12 @@ export default class BigMint {
     let subtrahend: BigMint = BigMint.toBigMint(n);
 
     //If subtrahend is zero
-    if(subtrahend.digits === 0){
+    if(subtrahend.precision === 0){
       return minuend;
     }
 
     //If minuend is zero
-    if(minuend.digits === 0){
+    if(minuend.precision === 0){
 
       //Copy subtrahend and return to original base
       return minuend._assign(subtrahend, true).negate();
@@ -919,9 +914,9 @@ export default class BigMint {
       f = ReverseSubtractionMethod;
     }
 
-    minuend.integer.length = minuend.digits = f(
-      minuend.integer, 0, minuend.digits,
-      subtrahend.integer, 0, subtrahend.digits,
+    minuend.digits.length = minuend.precision = f(
+      minuend.digits, 0, minuend.precision,
+      subtrahend.digits, 0, subtrahend.precision,
       minuend.base
     );
 

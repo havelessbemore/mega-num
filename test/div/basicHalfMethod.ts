@@ -3,7 +3,7 @@ import BasicHalfMethod from '../../src/div/basicHalfMethod';
 
 function test(A: number[], B: number[], C: number, base: number, isNegative: boolean = false): void {
   let remainder: number;
-  [A.length, remainder] = BasicHalfMethod(A, A.length, base, isNegative);
+  [A.length, remainder] = BasicHalfMethod(A, 0, A.length, base, isNegative);
   assert.equal(C, remainder);
   assert.equal(A.length, B.length);
   assert.deepEqual(A, B);

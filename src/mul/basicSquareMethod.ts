@@ -1,4 +1,5 @@
-import {basicShiftUp, zero} from '../util';
+import {zero} from '../util/numUtils';
+import {basicShiftUp} from '../util/arrayUtils';
 
 /*
   f(A) = A * A

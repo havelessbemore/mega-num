@@ -1,4 +1,5 @@
-import {basicShiftUp, copy, zero} from '../util';
+import {zero} from '../util/numUtils';
+import {basicShiftUp, copy} from '../util/arrayUtils';
 import BasicAdditionMethod from '../add/basicAdditionMethod';
 import BasicSubtractionMethod from '../sub/basicSubtractionMethod';
 
@@ -14,7 +15,7 @@ export default function KaratsubaSquareMethod(A: number[], len: number, base: nu
 
 function square(A: number[], min: number, max: number, base: number): number {
   let halfLen: number = max - min;
-  
+
   //Base case
   if(halfLen < 2){
     halfLen = A[min] * A[min];

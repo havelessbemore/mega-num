@@ -2,10 +2,10 @@ import * as chai from 'chai';
 //import * as sinon from 'sinon';
 import BigMint from '../src/bigMint';
 
-function testState(n: BigMint, isNegative: boolean, integer: number[], digits: number): void {
+function testState(n: BigMint, isNegative: boolean, digits: number[], precision: number): void {
   chai.expect(n['isNegative']).to.equal(isNegative);
-  chai.expect(n['integer']).to.deep.equal(integer);
-  chai.expect(n['digits']).to.equal(digits);
+  chai.expect(n['digits']).to.deep.equal(digits);
+  chai.expect(n['precision']).to.equal(precision);
 }
 
 describe('BigMint', function(){
@@ -72,15 +72,177 @@ describe('BigMint', function(){
     })
   });
 
-  describe('signum', function(){
-    it('should return the signum of the number', function(){
-      const n: number[] = [-1, -12, 0, 1, 12];
-      const s: number[] = [-1, -1, 0, 1, 1];
-      for(let i = 0, j = n.length; i < j; ++i){
-        chai.expect(new BigMint(n[i]).signum()).to.equal(s[i]);
+  describe('double', function(){
+    it('should return self if zero', function(){
+      const n: BigMint = new BigMint(0).double();
+      testState(n, false, [], 0);
+    });
+
+    it('should double number', function(){
+      let s: number[] = [1, 2, 25, 123];
+      let d: number[] = [2, 4, 50, 246];
+      for(let i: number = 0, n: number = s.length; i < n; ++i){
+        const n: BigMint = new BigMint(s[i]).double();
+        testState(n, false, [d[i]], 1);
       }
     });
   });
+
+  describe('half', function(){
+    it('should return self remainder zero if number is zero', function(){
+      let r: BigMint;
+      let n: BigMint = new BigMint(0);
+      [n, r] = n.half();
+      testState(n, false, [], 0);
+      testState(r, false, [], 0);
+    });
+
+    it('should return self remainder zero if number is even', function(){
+      let r: BigMint;
+      let n: BigMint = new BigMint(12).setBase(10);
+      [n, r] = n.half();
+      testState(n, false, [6], 1);
+      testState(r, false, [], 0);
+    });
+
+    it('should return self remainder one if number is odd', function(){
+      let r: BigMint;
+      let n: BigMint = new BigMint(15).setBase(10);
+      [n, r] = n.half();
+      testState(n, false, [7], 1);
+      testState(r, false, [1], 1);
+    });
+  });
+
+  describe('isEven', function(){
+    it('should return true for zero', function(){
+      const n: BigMint = new BigMint(0);
+      chai.expect(n.isEven()).to.equal(true);
+    });
+
+    it('should return true if given even number in even base', function(){
+      const n: BigMint = new BigMint(12345678);
+      for(let base of [2, 8, 10, 16, 124]){
+        chai.expect(n.setBase(base).isEven()).to.equal(true);
+      }
+    });
+
+    it('should return false if given odd number in even base', function(){
+      const n: BigMint = new BigMint(123456789);
+      for(let base of [2, 8, 10, 16, 124]){
+        chai.expect(n.setBase(base).isEven()).to.equal(false);
+      }
+    });
+
+    it('should return true if given even number in odd base', function(){
+      const n: BigMint = new BigMint(12345678);
+      for(let base of [3, 7, 11, 15, 123]){
+        chai.expect(n.setBase(base).isEven()).to.equal(true);
+      }
+    });
+
+    it('should return false if given odd number in odd base', function(){
+      const n: BigMint = new BigMint(123456789);
+      for(let base of [3, 7, 11, 15, 123]){
+        chai.expect(n.setBase(base).isEven()).to.equal(false);
+      }
+    });
+  });
+
+  describe('isOdd', function(){
+    it('should return false for zero', function(){
+      const n: BigMint = new BigMint(0);
+      chai.expect(n.isOdd()).to.equal(false);
+    });
+
+    it('should return false if given even number in even base', function(){
+      const n: BigMint = new BigMint(12345678);
+      for(let base of [2, 8, 10, 16, 124]){
+        chai.expect(n.setBase(base).isOdd()).to.equal(false);
+      }
+    });
+
+    it('should return true if given odd number in even base', function(){
+      const n: BigMint = new BigMint(123456789);
+      for(let base of [2, 8, 10, 16, 124]){
+        chai.expect(n.setBase(base).isOdd()).to.equal(true);
+      }
+    });
+
+    it('should return false if given even number in odd base', function(){
+      const n: BigMint = new BigMint(12345678);
+      for(let base of [3, 7, 11, 15, 123]){
+        chai.expect(n.setBase(base).isOdd()).to.equal(false);
+      }
+    });
+
+    it('should return true if given odd number in odd base', function(){
+      const n: BigMint = new BigMint(123456789);
+      for(let base of [3, 7, 11, 15, 123]){
+        chai.expect(n.setBase(base).isOdd()).to.equal(true);
+      }
+    });
+  });
+
+  describe('negate', function(){
+    it('should ensure -0 === 0', function(){
+      const n: BigMint = new BigMint(0).negate();
+      testState(n, false, [], 0);
+    });
+
+    it('should switch a positive number to negative', function(){
+      const n: BigMint = new BigMint(1).negate();
+      testState(n, true, [1], 1);
+    });
+
+    it('should switch a negative number to positive', function(){
+      const n: BigMint = new BigMint(-1).negate();
+      testState(n, false, [1], 1);
+    });
+  });
+
+  describe('signum', function(){
+    it('should return one if number is positive', function(){
+      const n: BigMint = new BigMint(12);
+      chai.expect(n.signum()).to.equal(1);
+    });
+
+    it('should return zero if number is zero', function(){
+      const n: BigMint = new BigMint(0);
+      chai.expect(n.signum()).to.equal(0);
+    });
+
+    it('should return negative one if number is negative', function(){
+      const n: BigMint = new BigMint(-12);
+      chai.expect(n.signum()).to.equal(-1);
+    });
+  });
+
+  describe('square', function(){
+    it('should return itself if zero', function(){
+      const n: BigMint = new BigMint(0);
+      n.square();
+      testState(n, false, [], 0);
+    });
+
+    it('should return itself if one', function(){
+      const n: BigMint = new BigMint(1);
+      n.square();
+      testState(n, false, [1], 1);
+    });
+
+    it('should return itself if negative one', function(){
+      const n: BigMint = new BigMint(-1);
+      n.square();
+      testState(n, false, [1], 1);
+    });
+
+    it('should square normally', function(){
+      const n: BigMint = new BigMint(5).setBase(10);
+      n.square();
+      testState(n, false, [5, 2], 2);
+    });
+  })
 
   describe('subtract', function(){
     it('should return zero when passed itself', function(){
@@ -132,12 +294,12 @@ describe('BigMint', function(){
       testState(a, false, [], 0);
     });
 
-    /*TODO
     it('should subtract normally when minuend > subtrahend', function(){
       let a: BigMint = new BigMint(9);
       let b: BigMint = new BigMint(4);
       a.subtract(b);
       testState(a, false, [5], 1);
+      //TODO: Check if normal subtraction called
     });
 
     it('should reverse subtract when minuend < subtrahend', function(){
@@ -145,7 +307,7 @@ describe('BigMint', function(){
       let b: BigMint = new BigMint(9);
       a.subtract(b);
       testState(a, true, [5], 1);
+      //TODO: Check if reverse subtraction called
     });
-    */
-  })
+  });
 });

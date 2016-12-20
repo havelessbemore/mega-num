@@ -1,4 +1,5 @@
-import {reverseShiftUp, zero} from '../util';
+import {zero} from '../util/numUtils';
+import {reverseShiftUp} from '../util/arrayUtils';
 
 /*
   f(A, B) = A * B
