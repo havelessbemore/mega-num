@@ -1,15 +1,16 @@
-import BasicAdditionMethod from './add/basicAdditionMethod';
-import ReverseAdditionMethod from './add/reverseAdditionMethod';
-import BasicDoubleMethod from './mul/basicDoubleMethod';
-import BasicHalfMethod from './div/basicHalfMethod';
-import BasicSubtractionMethod from './sub/basicSubtractionMethod';
-import ReverseSubtractionMethod from './sub/reverseSubtractionMethod';
-import KaratsubaSquareMethod from './mul/karatsubaSquareMethod';
-import KaratsubaMultiplicationMethod from './mul/karatsubaMultiplicationMethod';
-import BasicDivisionMethod from './div/basicDivisionMethod';
-import SimpleDivisionMethod from './div/simpleDivisionMethod';
-import SimpleMultiplicationMethod from './mul/simpleMultiplicationMethod';
-import {isNumber, isString} from './util/typeUtils';
+import {addition} from './adapter/addition';
+import {decrement} from './adapter/decrement';
+import {increment} from './adapter/increment';
+import {reverseAddition} from './adapter/reverseAddition';
+import {double} from './algorithm/double';
+import {halve} from './algorithm/halve';
+import {subtraction} from './algorithm/subtraction';
+import {reverseSubtraction} from './algorithm/reverseSubtraction';
+import {karatsubaSquare} from './algorithm/karatsubaSquare';
+import {karatsubaMultiplication} from './algorithm/karatsubaMultiplication';
+import {basicDivision} from './algorithm/basicDivision';
+import {singleDigitDivision} from './algorithm/singleDigitDivision';
+import {singleDigitMultiplication} from './algorithm/singleDigitMultiplication';
 import {CIPHER, compare} from './util/numUtils';
 
 export default class BigMint {
@@ -27,10 +28,10 @@ export default class BigMint {
   // PROPERTIES
   ///////////////////////
 
-  private base: number;
-  private digits: number[];
-  private precision: number;
-  private isNegative: boolean;
+  public base: number;
+  public digits: number[];
+  public precision: number;
+  public isNegative: boolean;
 
   ////////////////////////
   // CONSTRUCTOR
@@ -42,9 +43,9 @@ export default class BigMint {
   constructor(input: BigMint | number | string) {
     if(BigMint.isBigMint(input)){
       this._assign(input);
-    } else if(isNumber(input)){
+    } else if(typeof input === "number"){
       this.convertString('' + input);
-    } else if(isString(input)){
+    } else if(typeof input === "string"){
       this.convertString(input);
     } else {
       throw TypeError("Expecting type BigMint | string | number");
@@ -424,16 +425,15 @@ export default class BigMint {
     }
 
     //Make room for addition
-    //adduend.digits.length = (adduend.precision < addend.precision) ? addend.precision + 1 : adduend.precision + 1;
+    adduend.digits.length = (adduend.precision < addend.precision) ? addend.precision + 1 : adduend.precision + 1;
 
     //Add
-    adduend.digits.length = adduend.precision = (
-      (adduend.precision < addend.precision) ? ReverseAdditionMethod : BasicAdditionMethod
-    )(
-      adduend.digits, 0, adduend.precision,
-      addend.digits, 0, addend.precision,
-      adduend.base
-    );
+    if(adduend.precision < addend.precision){
+      reverseAddition(adduend, addend);
+    } else {
+      addition(adduend, addend);
+    }
+    adduend.digits.length = adduend.precision;
 
     return adduend;
   }
@@ -497,11 +497,11 @@ export default class BigMint {
       dividend.digits, remainder.digits,
       dividend.precision, remainder.precision
     ] = (divisor.precision < 2) ?
-      SimpleDivisionMethod(
-        dividend.digits, dividend.precision,
+      singleDigitDivision(
+        dividend.digits, 0, dividend.precision,
         divisor.digits[0], dividend.base
       ) :
-      BasicDivisionMethod(
+      basicDivision(
         dividend.digits, dividend.precision,
         divisor.digits, divisor.precision,
         dividend.base
@@ -517,8 +517,8 @@ export default class BigMint {
     }
 
     //Double and set new length
-    this.digits.length = this.precision = BasicDoubleMethod(
-      this.digits, this.precision, this.base
+    this.digits.length = this.precision = double(
+      this.digits, 0, this.precision, this.base
     );
 
     return this;
@@ -618,9 +618,17 @@ export default class BigMint {
     let remainder: number;
 
     //Half
-    [this.precision, remainder] = BasicHalfMethod(
-      this.digits, 0, this.precision, this.base, this.isNegative
+    [this.precision, remainder] = halve(
+      this.digits, 0, this.precision, this.base
     );
+
+    if(this.isNegative && remainder !== 0){
+
+      //Round up (e.g. Math.floor(-49.5) = -50)
+      increment(this);
+    }
+
+    //Update array length
     this.digits.length = this.precision;
 
     return remainder;
@@ -687,6 +695,20 @@ export default class BigMint {
     return A.divide(A.gcd(B)).multiply(B).abs();
   }
 
+  public minusminus(): BigMint {
+    if(this.isNegative){
+      increment(this);
+      this.digits.length = this.precision;
+    } else if (this.precision === 0){
+      this.toOne();
+      this.isNegative = true;
+    } else {
+      decrement(this);
+      this.digits.length = this.precision;
+    }
+    return this;
+  }
+
   public multiply(n: BigMint | number | string): BigMint {
     const multiplicand: BigMint = this;
 
@@ -719,7 +741,7 @@ export default class BigMint {
 
     //If multiplying by single digit
     if(multiplier.precision === 1){
-      multiplicand.precision = SimpleMultiplicationMethod(
+      multiplicand.precision = singleDigitMultiplication(
         multiplicand.digits, 0, multiplicand.precision,
         multiplier.digits[0], multiplicand.base
       );
@@ -730,26 +752,32 @@ export default class BigMint {
     if(multiplicand.precision === 1){
       const n: number = multiplicand.digits[0];
       multiplicand.digits = multiplier.digits.slice(0);
-      multiplicand.precision = SimpleMultiplicationMethod(
+      multiplicand.precision = singleDigitMultiplication(
         multiplicand.digits, 0, multiplier.precision,
         n, multiplicand.base
       );
       return multiplicand;
     }
 
+    return multiplicand._multiply(multiplier);
+  }
+
+  private _multiply(multiplier: BigMint): BigMint {
+    const multiplicand: BigMint = this;
+
     //Make room for multiplication
     multiplicand.digits.length = multiplicand.precision + multiplier.precision;
 
     //Multiply
     //if(MEETS_THRESHOLD){
-    multiplicand.digits.length = multiplicand.precision = KaratsubaMultiplicationMethod(
+    multiplicand.digits.length = multiplicand.precision = karatsubaMultiplication(
       multiplicand.digits, multiplicand.precision,
       multiplier.digits, multiplier.precision,
       multiplicand.base
     );
     /*
     }
-    multiplicand.digits.length = multiplicand.precision = BasicMultiplicationMethod(
+    multiplicand.digits.length = multiplicand.precision = BasicMultiplication(
       multiplicand.digits, multiplicand.precision,
       multiplier.digits, multiplier.precision,
       multiplicand.base
@@ -765,6 +793,20 @@ export default class BigMint {
 
   public plus(adduend: BigMint | number | string): BigMint {
     return this.add(adduend);
+  }
+
+  public plusplus(): BigMint {
+    if(this.isNegative){
+      decrement(this);
+      this.digits.length = this.precision;
+      if(this.precision === 0){
+        this.isNegative = false;
+      }
+    } else {
+      increment(this);
+      this.digits.length = this.precision;
+    }
+    return this;
   }
 
   public pow(n: BigMint | number | string): BigMint {
@@ -816,11 +858,11 @@ export default class BigMint {
     //Divide the power in half and check for remainder
     if(power._half() > 0){
       const baseClone: BigMint = base.clone();
-      return base.square()._pow(power).multiply(baseClone);
+      return base._square()._pow(power)._multiply(baseClone);
     }
 
     //If power was even
-    return base.square()._pow(power);
+    return base._square()._pow(power);
   }
 
   public remainder(divisor: BigMint | number | string): BigMint {
@@ -847,13 +889,19 @@ export default class BigMint {
       return multiplicand;
     }
 
+    return multiplicand._square();
+  }
+
+  private _square(): BigMint {
+    const multiplicand: BigMint = this;
+
     //Make room for squaring
     multiplicand.digits.length = 2*multiplicand.precision;
 
-    //TODO: Analyze threshold between Basic Method and Karatsuba Method
+    //TODO: Analyze threshold between Basic and Karatsuba
 
     //Square
-    multiplicand.digits.length = multiplicand.precision = KaratsubaSquareMethod(
+    multiplicand.digits.length = multiplicand.precision = karatsubaSquare(
       multiplicand.digits, multiplicand.precision, multiplicand.base
     );
 
@@ -906,12 +954,12 @@ export default class BigMint {
     let f: (
       a: number[], b: number, c: number,
       d: number[], e: number, f: number, g: number
-    ) => number = BasicSubtractionMethod;
+    ) => number = subtraction;
 
     //If A < B
     if(comparison < 0){
       minuend.negate();
-      f = ReverseSubtractionMethod;
+      f = reverseSubtraction;
     }
 
     minuend.digits.length = minuend.precision = f(

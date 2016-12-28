@@ -13,13 +13,6 @@ export function max(a: number, b: number): number {
   return (a < b) ? b : a;
 }
 
-//Converts indices between [min, max) to 0
-export function zero(A: number[], min: number, max: number): void {
-  while(min < max){
-    A[min++] = 0;
-  }
-}
-
 //Assumes valid inputs
 //Assumes maxA >= minA
 //Assumes maxB >= minB
