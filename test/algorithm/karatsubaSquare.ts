@@ -2,7 +2,7 @@ import {assert} from 'chai';
 import {karatsubaSquare} from '../../src/algorithm/karatsubaSquare';
 
 function test(A: number[], B: number[], base: number): void {
-  const len: number = A.length = karatsubaSquare(A, A.length, base);
+  const len: number = A.length = karatsubaSquare(A, 0, A.length, base);
   assert.equal(len, B.length);
   assert.deepEqual(A, B);
 }

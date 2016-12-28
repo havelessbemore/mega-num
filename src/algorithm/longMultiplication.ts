@@ -19,28 +19,30 @@ import {safeShiftUp} from '../util/arrayUtils';
       g  h  i  j  k  l
 
 */
-export function basicMultiplication(A: number[], lenA: number, B: number[], lenB: number, base: number): number {
+export function longMultiplication(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): number {
 
   //Shift A to the left
-  safeShiftUp(A, 0, lenA, lenB);
-  set(A, 0, lenB, 0);
+  const lenB: number = maxB - minB;
+  const minC: number = minA + lenB;
+  safeShiftUp(A, minA, maxA, lenB);
+  set(A, minA, minC, 0);
 
   //For each digit in multiplicand
-  const lenC: number = lenA + lenB;
-  for(let a: number = lenB; a < lenC; ++a){
+  const maxC: number = maxA + lenB;
+  for(let a: number = minC; a < maxC; ++a){
     let carry: number = 0;
     let i: number = a - lenB;
 
     //Multiply by multiplier
-    for(let b: number = 0; b < lenB; ++b){
-      let result: number = A[a] * B[b] + A[i] + carry;
-      if(result < base){
+    for(let b: number = minB; b < maxB; ++b){
+      let v: number = A[a] * B[b] + A[i] + carry;
+      if(v < base){
         carry = 0;
       } else {
-        carry = 0 | (result / base);
-        result = result % base;
+        carry = 0 | (v / base);
+        v = v % base;
       }
-      A[i++] = result;
+      A[i++] = v;
     }
 
     //Add remaining carry
@@ -48,5 +50,5 @@ export function basicMultiplication(A: number[], lenA: number, B: number[], lenB
   }
 
   //Return new length
-  return (A[lenC - 1] === 0) ? lenC - 1 : lenC;
+  return (A[maxC - 1] === 0) ? maxC - 1 : maxC;
 }

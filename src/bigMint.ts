@@ -1,11 +1,13 @@
+import Integer from './type/integer';
 import {addition} from './adapter/addition';
 import {decrement} from './adapter/decrement';
+import {double} from './adapter/double';
+import {halve} from './adapter/halve';
 import {increment} from './adapter/increment';
 import {reverseAddition} from './adapter/reverseAddition';
-import {double} from './algorithm/double';
-import {halve} from './algorithm/halve';
-import {subtraction} from './algorithm/subtraction';
-import {reverseSubtraction} from './algorithm/reverseSubtraction';
+import {reverseSubtraction} from './adapter/reverseSubtraction';
+import {subtraction} from './adapter/subtraction';
+import {exponentiation} from './algorithm/exponentiation';
 import {karatsubaSquare} from './algorithm/karatsubaSquare';
 import {karatsubaMultiplication} from './algorithm/karatsubaMultiplication';
 import {basicDivision} from './algorithm/basicDivision';
@@ -502,8 +504,8 @@ export default class BigMint {
         divisor.digits[0], dividend.base
       ) :
       basicDivision(
-        dividend.digits, dividend.precision,
-        divisor.digits, divisor.precision,
+        dividend.digits, 0, dividend.precision,
+        divisor.digits, 0, divisor.precision,
         dividend.base
       );
     dividend.digits.length = dividend.precision;
@@ -517,9 +519,8 @@ export default class BigMint {
     }
 
     //Double and set new length
-    this.digits.length = this.precision = double(
-      this.digits, 0, this.precision, this.base
-    );
+    double(this);
+    this.digits.length = this.precision;
 
     return this;
   }
@@ -615,23 +616,19 @@ export default class BigMint {
   }
 
   private _half(): number {
-    let remainder: number;
 
     //Half
-    [this.precision, remainder] = halve(
-      this.digits, 0, this.precision, this.base
-    );
+    const remainder: Integer = halve(this);
 
-    if(this.isNegative && remainder !== 0){
-
-      //Round up (e.g. Math.floor(-49.5) = -50)
+    //Round up if negative (e.g. Math.floor(-49.5) = -50)
+    if(this.isNegative && remainder.precision !== 0){
       increment(this);
     }
 
     //Update array length
     this.digits.length = this.precision;
 
-    return remainder;
+    return remainder.precision;
   }
 
   public isEven(): boolean {
@@ -771,13 +768,13 @@ export default class BigMint {
     //Multiply
     //if(MEETS_THRESHOLD){
     multiplicand.digits.length = multiplicand.precision = karatsubaMultiplication(
-      multiplicand.digits, multiplicand.precision,
-      multiplier.digits, multiplier.precision,
+      multiplicand.digits, 0, multiplicand.precision,
+      multiplier.digits, 0, multiplier.precision,
       multiplicand.base
     );
     /*
     }
-    multiplicand.digits.length = multiplicand.precision = BasicMultiplication(
+    multiplicand.digits.length = multiplicand.precision = longMultiplication(
       multiplicand.digits, multiplicand.precision,
       multiplier.digits, multiplier.precision,
       multiplicand.base
@@ -844,25 +841,17 @@ export default class BigMint {
       return base;
     }
 
-    return base._pow((n === power) ? power.clone() : power);
-  }
+    //Clone power if necessary
+    power = (n === power) ? power.clone() : power;
 
-  private _pow(power: BigMint): BigMint {
-    const base: BigMint = this;
+    //Raise base to power
+    base.digits.length = base.precision = exponentiation(
+      base.digits, 0, base.precision, base.base,
+      power.digits, 0, power.precision, power.base
+    );
 
-    //If power is 1
-    if(power.precision === 1 && power.digits[0] === 1){
-      return base;
-    }
-
-    //Divide the power in half and check for remainder
-    if(power._half() > 0){
-      const baseClone: BigMint = base.clone();
-      return base._square()._pow(power)._multiply(baseClone);
-    }
-
-    //If power was even
-    return base._square()._pow(power);
+    //Return base
+    return base;
   }
 
   public remainder(divisor: BigMint | number | string): BigMint {
@@ -902,7 +891,7 @@ export default class BigMint {
 
     //Square
     multiplicand.digits.length = multiplicand.precision = karatsubaSquare(
-      multiplicand.digits, multiplicand.precision, multiplicand.base
+      multiplicand.digits, 0, multiplicand.precision, multiplicand.base
     );
 
     return multiplicand;
@@ -951,22 +940,16 @@ export default class BigMint {
     }
 
     //Assume A > B
-    let f: (
-      a: number[], b: number, c: number,
-      d: number[], e: number, f: number, g: number
-    ) => number = subtraction;
+    let algo: (A: Integer, B: Integer) => Integer = subtraction;
 
     //If A < B
     if(comparison < 0){
       minuend.negate();
-      f = reverseSubtraction;
+      algo = reverseSubtraction;
     }
 
-    minuend.digits.length = minuend.precision = f(
-      minuend.digits, 0, minuend.precision,
-      subtrahend.digits, 0, subtrahend.precision,
-      minuend.base
-    );
+    algo(minuend, subtrahend);
+    minuend.digits.length = minuend.precision;
 
     return minuend;
   }

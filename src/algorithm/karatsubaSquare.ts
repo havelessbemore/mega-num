@@ -8,11 +8,7 @@ import {copy, set, unsafeShiftUp} from '../util/arrayUtils';
   Assumes A > 0
   See: https://en.wikipedia.org/wiki/Karatsuba_algorithm
 */
-export function karatsubaSquare(A: number[], len: number, base: number): number {
-  return square(A, 0, len, base);
-}
-
-function square(A: number[], min: number, max: number, base: number): number {
+export function karatsubaSquare(A: number[], min: number, max: number, base: number): number {
   let halfLen: number = max - min;
 
   //Base case
@@ -42,17 +38,17 @@ function square(A: number[], min: number, max: number, base: number): number {
   unsafeShiftUp(A, mid, max, halfLen);
 
   //low * low
-  const lowMax: number = square(A, min, mid, base);
+  const lowMax: number = karatsubaSquare(A, min, mid, base);
 
   //Fill unused space with zero
   set(A, lowMax, max, 0);
 
   //high * high
   const highMin = mid + halfLen;
-  max = square(A, highMin, max + halfLen, base);
+  max = karatsubaSquare(A, highMin, max + halfLen, base);
 
   //medium = medium * medium - low - high
-  mediumMax = square(medium, 0, mediumMax, base);
+  mediumMax = karatsubaSquare(medium, 0, mediumMax, base);
   mediumMax = subtraction(medium, 0, mediumMax, A, min, lowMax, base);
   mediumMax = subtraction(medium, 0, mediumMax, A, highMin, max, base);
 

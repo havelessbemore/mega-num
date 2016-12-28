@@ -13,54 +13,57 @@ import {compare} from '../util/numUtils';
 
 //INPUT: positive integers x = (xn ··· x1x0)b, y = (yt ··· y1y0)b with n ≥ t ≥ 1, yt != 0.
 //OUTPUT: the quotient q = (qn−t ··· q1q0)b and remainder r = (rt ··· r1r0)b such that x = qy + r, 0 ≤ r < y.
-export function basicDivision(X: number[], maxX: number, Y: number[], maxY: number, base: number): [number[], number[], number, number] {
+export function basicDivision(X: number[], minX: number, maxX: number, Y: number[], minY: number, maxY: number, base: number): [number[], number[], number, number] {
 
   //1. Initialize the quotient
-  const nMt: number = maxX - maxY;
+  const lenY: number = maxY - minY;
+  const nMt: number = maxX - minX - lenY;
   const Q: number[] = new Array(nMt + 1);
   set(Q, 0, nMt + 1, 0);
 
   //2. While X ≥ Yb^(n−t)
-  while(compare(X, nMt, maxX, Y, 0, maxY) >= 0){
+  let maxR: number = maxX;
+  while(compare(X, minX + nMt, maxR, Y, minY, maxY) >= 0){
 
     //Q[n−t] ← Q[n−t] + 1
     ++Q[nMt];
 
     //x ← x − Bb^(n−t)
-    maxX = subtraction(X, nMt, maxX, Y, 0, maxY, base);
+    maxR = subtraction(X, minX + nMt, maxR, Y, minY, maxY, base);
   }
 
   //3. For i from n down to (t + 1)
-  const QY: number[] = new Array(maxY + 1);
-  for(let t: number = maxY - 1, i: number = t + nMt; i > t; --i){
-    const iMt: number = i-t-1;
+  const yt: number = Y[maxY-1];
+  const ytm1: number = Y[maxY-2];
+  const QY: number[] = new Array(lenY + 1);
+  for(let i: number = maxX - 1, iMt: number = nMt; iMt-- > 0; --i){
 
     //3.1 If x[i] = y[t] then set q[i−t−1] ← b − 1; otherwise set q[i−t−1] ← (x[i]b + x[i−1]) / y[t]
     //3.2 While q[i−t−1] * (y[t]b + y[t−1]) > x[i]b^2 + x[i−1]b + x[i−2]
-    Q[iMt] = divThreeHalvesByTwo(X[i], X[i-1], X[i-2], Y[t], Y[t-1], base);
+    Q[iMt] = divThreeHalvesByTwo(X[i], X[i-1], X[i-2], yt, ytm1, base);
 
     //3.3 x ← x − q[i−t−1] * yb^(i−t−1)
     //3.4 If x < 0 then set x ← x + yb^(i−t−1) and q[i−t−1] ← q[i−t−1] − 1
     let maxQY: number = 0;
     if(Q[iMt] !== 0){
-      copy(QY, 0, Y, 0, maxY);
-      maxQY = singleDigitMultiplication(QY, 0, maxY, Q[iMt], base);
+      copy(QY, 0, Y, minY, maxY);
+      maxQY = singleDigitMultiplication(QY, 0, lenY, Q[iMt], base);
     }
-    if(compare(QY, 0, maxQY, X, iMt, maxX) > 0){
+    if(compare(QY, 0, maxQY, X, minX + iMt, maxR) > 0){
       --Q[iMt];
-      maxQY = subtraction(QY, 0, maxQY, Y, 0, maxY, base);
+      maxQY = subtraction(QY, 0, maxQY, Y, minY, maxY, base);
     }
-    maxX = subtraction(X, iMt, maxX, QY, 0, maxQY, base);
+    maxR = subtraction(X, minX + iMt, maxR, QY, 0, maxQY, base);
 
     //Get new length
-    while(maxX > 0 && X[maxX - 1] === 0){
-      --maxX;
+    while(maxR > minX && X[maxR - 1] === 0){
+      --maxR;
     }
   }
 
   //4. r ← x
   //5. Return(q,r)
-  return [Q, X, (Q[nMt] === 0) ? nMt : nMt + 1, maxX];
+  return [Q, X, (Q[nMt] === 0) ? nMt : nMt + 1, maxR];
 }
 
 /*

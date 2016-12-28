@@ -28,16 +28,17 @@ import {unsafeShiftUp} from '../util/arrayUtils';
     -------------------------------------------------------
       h   i   j   k   l   m   n   o   p   q   r   s   t   u
 */
-export function basicSquare(A: number[], len: number, base: number): number {
+export function longSquare(A: number[], min: number, max: number, base: number): number {
 
   //Move digits to the left
-  unsafeShiftUp(A, 0, len, len);
-  set(A, 0, len, 0);
+  let newMax: number = max - min;
+  unsafeShiftUp(A, min, max, newMax);
+  set(A, min, max, 0);
 
   //For every digit
-  const newLen: number = 2*len;
-  for(let d: number = 0, s: number = len; d < newLen; d = d + 2){
-    let digit: number = A[s++];
+  newMax = newMax + max;
+  for(let d: number = min, s: number = max; d < newMax; d = d + 2){
+    const digit: number = A[s++];
 
     //Square the digit
     let carry: number = 0;
@@ -49,7 +50,7 @@ export function basicSquare(A: number[], len: number, base: number): number {
 
     //Multiply by higher digits twice
     let o: number = d + 1;
-    for(let m: number = s; m < newLen; ++o){
+    for(let m: number = s; m < newMax; ++o){
 
       //Multiply
       let quotient: number = 0;
@@ -77,5 +78,5 @@ export function basicSquare(A: number[], len: number, base: number): number {
   }
 
   //Return new length
-  return A[newLen - 1] === 0 ? newLen - 1 : newLen;
+  return A[newMax - 1] === 0 ? newMax - 1 : newMax;
 }

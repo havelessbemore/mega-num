@@ -3,7 +3,7 @@ import {karatsubaMultiplication} from '../../src/algorithm/karatsubaMultiplicati
 
 function test(A: number[], B: number[], C: number[], base: number): void {
   const D: number[] = B.slice();
-  const len: number = A.length = karatsubaMultiplication(A, A.length, B, B.length, base);
+  const len: number = A.length = karatsubaMultiplication(A, 0, A.length, B, 0, B.length, base);
   assert.equal(B.length, D.length);
   assert.deepEqual(B, D);
   assert.equal(len, C.length);
