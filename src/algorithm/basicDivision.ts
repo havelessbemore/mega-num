@@ -4,15 +4,15 @@ import {copy, set} from '../util/arrayUtils';
 import {compare} from '../util/numUtils';
 
 /*
-  f(A, B) = A / B
-  Overwrites A
+  f(X, Y) = X / Y
+  Overwrites X
   Assumes no leading zeros
-  Assumes A.length >= B.length >= 2
+  Assumes X.length >= Y.length >= 2
   See: http://cacr.uwaterloo.ca/hac/about/chap14.pdf
-*/
 
-//INPUT: positive integers x = (xn ··· x1x0)b, y = (yt ··· y1y0)b with n ≥ t ≥ 1, yt != 0.
-//OUTPUT: the quotient q = (qn−t ··· q1q0)b and remainder r = (rt ··· r1r0)b such that x = qy + r, 0 ≤ r < y.
+  INPUT: positive integers x = (xn ··· x1x0)b, y = (yt ··· y1y0)b with n ≥ t ≥ 1, yt != 0
+  OUTPUT: the quotient q = (qn−t ··· q1q0)b and remainder r = (rt ··· r1r0)b such that x = qy + r, 0 ≤ r < y
+*/
 export function basicDivision(X: number[], minX: number, maxX: number, Y: number[], minY: number, maxY: number, base: number): [number[], number[], number, number] {
 
   //1. Initialize the quotient
@@ -44,24 +44,24 @@ export function basicDivision(X: number[], minX: number, maxX: number, Y: number
 
     //3.3 x ← x − q[i−t−1] * yb^(i−t−1)
     //3.4 If x < 0 then set x ← x + yb^(i−t−1) and q[i−t−1] ← q[i−t−1] − 1
-    let maxQY: number = 0;
-    if(Q[iMt] !== 0){
-      copy(QY, 0, Y, minY, maxY);
-      maxQY = singleDigitMultiplication(QY, 0, lenY, Q[iMt], base);
+    if(Q[iMt] === 0){
+      continue;
     }
+    copy(QY, 0, Y, minY, maxY);
+    let maxQY: number = singleDigitMultiplication(QY, 0, lenY, Q[iMt], base);
     if(compare(QY, 0, maxQY, X, minX + iMt, maxR) > 0){
       --Q[iMt];
       maxQY = subtraction(QY, 0, maxQY, Y, minY, maxY, base);
     }
     maxR = subtraction(X, minX + iMt, maxR, QY, 0, maxQY, base);
-
-    //Get new length
-    while(maxR > minX && X[maxR - 1] === 0){
-      --maxR;
-    }
   }
 
   //4. r ← x
+  //Adjust length of remainder
+  while(maxR > minX && X[maxR - 1] === 0){
+    --maxR;
+  }
+
   //5. Return(q,r)
   return [Q, X, (Q[nMt] === 0) ? nMt : nMt + 1, maxR];
 }
