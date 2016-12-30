@@ -23,8 +23,8 @@ export default class BigMint {
 
   public static readonly MIN_BASE: number = 2;
   public static readonly MAX_BASE: number = 94906265; //2^26 < sqrt(Number.MAX_SAFE_INTEGER) < 2^27
-  private static readonly DEFAULT_BASE: number = 94906264;
-  //private static readonly MAX_DIGITS: number = 4294967295; //2^32 - 1
+  public static readonly DEFAULT_BASE: number = 94906264;
+  public static readonly MAX_PRECISION: number = 4294967295; //2^32 - 1
 
   ////////////////////////
   // PROPERTIES
@@ -756,12 +756,6 @@ export default class BigMint {
       return multiplicand;
     }
 
-    return multiplicand._multiply(multiplier);
-  }
-
-  private _multiply(multiplier: BigMint): BigMint {
-    const multiplicand: BigMint = this;
-
     //Make room for multiplication
     multiplicand.digits.length = multiplicand.precision + multiplier.precision;
 
@@ -877,12 +871,6 @@ export default class BigMint {
     if(multiplicand.precision === 1 && multiplicand.digits[0] === 1){
       return multiplicand;
     }
-
-    return multiplicand._square();
-  }
-
-  private _square(): BigMint {
-    const multiplicand: BigMint = this;
 
     //Make room for squaring
     multiplicand.digits.length = 2*multiplicand.precision;

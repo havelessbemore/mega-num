@@ -1,3 +1,8 @@
+/*
+  f(A,B) = A*B
+  Overwrites A
+  Assumes B > 0
+*/
 export function singleDigitMultiplication(A: number[], minA: number, maxA: number, multiplier: number, base: number): number {
 
   //Multiply multiplicand by multiplier
