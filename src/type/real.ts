@@ -1,4 +1,4 @@
-import Integer from './integer';
+import {Integer} from './integer';
 
 interface Real extends Integer {
   scale: number;

@@ -1,4 +1,4 @@
-import Integer from '../type/integer';
+import {Integer} from '../type/integer';
 
 interface UnaryOperation {
   (A: Integer): Integer;

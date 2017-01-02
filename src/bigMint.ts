@@ -1,4 +1,4 @@
-import Integer from './type/integer';
+import {Integer} from './type/integer';
 import {addition} from './adapter/addition';
 import {decrement} from './adapter/decrement';
 import {double} from './adapter/double';
@@ -13,7 +13,8 @@ import {karatsubaMultiplication} from './algorithm/karatsubaMultiplication';
 import {basicDivision} from './algorithm/basicDivision';
 import {singleDigitDivision} from './algorithm/singleDigitDivision';
 import {singleDigitMultiplication} from './algorithm/singleDigitMultiplication';
-import {CIPHER, compare} from './util/numUtils';
+import {CIPHER, compare, changeBase} from './util/numUtils';
+import {setOne, setZero, strToDecArray} from './util/intUtils';
 
 export default class BigMint {
 
@@ -63,25 +64,11 @@ export default class BigMint {
   }
 
   private convertString(s: String): void {
-    s = s.trim();
 
-    //Check if string is a number
-    if(Number.isNaN(<any>s)){
-      throw TypeError("NaN");
-    }
-
-    //Check for leading sign
-    this.isNegative = s[0] === '-';
-
-    //Trim signs, leading zeros and decimal part
-    s = s.replace(/^[-+]?0+|\.[0-9]+$/gm, '');
-
-    //Convert to decimal array
+    //Convert string to base 10
     this.base = 10;
-    this.precision = s.length;
-    const digits: number[] = this.digits = new Array<number>(this.precision);
-    for(let i = 0, j = this.precision; j > 0; digits[i++] = 0 | <any>s[--j]){
-    }
+    [this.digits, this.isNegative] = strToDecArray(s);
+    this.precision = this.digits.length;
 
     //Convert to default base
     this.toBase(BigMint.DEFAULT_BASE);
@@ -114,20 +101,6 @@ export default class BigMint {
     this.digits = source.digits;
     this.precision = source.precision;
     this.base = source.base;
-    return this;
-  }
-
-  private toZero(): BigMint {
-    this.isNegative = false;
-    this.digits = [];
-    this.precision = 0;
-    return this;
-  }
-
-  private toOne(): BigMint {
-    this.isNegative = false;
-    this.digits = [1];
-    this.precision = 1;
     return this;
   }
 
@@ -164,29 +137,8 @@ export default class BigMint {
   }
 
   private toBase(newBase: number): BigMint {
-    const curInteger: number[] = this.digits;
-    const curBase: number = this.base;
-    const curDigits: number = this.precision;
-    const newInteger: number[] = new Array(Math.ceil(
-      curDigits * Math.log(curBase) / Math.log(newBase)
-    ));
-
-    //Update number
-    let newDigits: number = 0;
-    for(let len = curDigits; len > 0; ++newDigits){
-      let remainder: number = 0;
-      for(let i: number = len; i-- > 0; remainder = remainder % newBase){
-        remainder = remainder*curBase + curInteger[i];
-        curInteger[i] = (remainder < newBase) ? 0 : 0 | (remainder / newBase);
-      }
-      for(newInteger[newDigits] = remainder; len > 0 && curInteger[len - 1] < 1; --len){
-      }
-    }
-
-    newInteger.length = newDigits;
+    [this.digits, this.precision] = changeBase(this.digits, 0, this.precision, this.base, newBase);
     this.base = newBase;
-    this.precision = newDigits;
-    this.digits = newInteger;
     return this;
   }
 
@@ -455,7 +407,7 @@ export default class BigMint {
 
     //If self
     if(dividend === divisor){
-      return [dividend.toOne(), BigMint.ZERO];
+      return [setOne(dividend), BigMint.ZERO];
     }
 
     //If dividend is zero
@@ -479,7 +431,7 @@ export default class BigMint {
       const ratio: number = Math.log(divisor.base) / Math.log(dividend.base);
       if(dividend.precision < Math.ceil(divisor.precision *  ratio)){
         const remainder: BigMint = BigMint.ZERO.copy(dividend);
-        return [dividend.toZero(), remainder];
+        return [setZero(dividend), remainder];
       }
 
       //Normalize bases
@@ -490,24 +442,26 @@ export default class BigMint {
     //Check if the dividend has less digits than the divisor
     if(dividend.precision < divisor.precision){
       const remainder: BigMint = BigMint.ZERO.copy(dividend);
-      return [dividend.toZero(), remainder];
+      return [setZero(dividend), remainder];
+    }
+
+    if(divisor.precision < 2){
+      let remainder: number;
+      [dividend.precision, remainder] = singleDigitDivision(
+        dividend.digits, 0, dividend.precision, divisor.digits[0], dividend.base
+      );
+      return [dividend, new BigMint(remainder)];
     }
 
     const remainder: BigMint = BigMint.ZERO;
-
     [
       dividend.digits, remainder.digits,
       dividend.precision, remainder.precision
-    ] = (divisor.precision < 2) ?
-      singleDigitDivision(
-        dividend.digits, 0, dividend.precision,
-        divisor.digits[0], dividend.base
-      ) :
-      basicDivision(
-        dividend.digits, 0, dividend.precision,
-        divisor.digits, 0, divisor.precision,
-        dividend.base
-      );
+    ] = basicDivision(
+      dividend.digits, 0, dividend.precision,
+      divisor.digits, 0, divisor.precision,
+      dividend.base
+    );
     dividend.digits.length = dividend.precision;
     remainder.digits.length = remainder.precision;
     return [dividend, remainder];
@@ -667,7 +621,7 @@ export default class BigMint {
 
     //If A is zero or B is zero
     if(A.precision === 0 || B.precision === 0){
-      return A.toZero();
+      return setZero(A);
     }
 
     //If B is one
@@ -697,7 +651,7 @@ export default class BigMint {
       increment(this);
       this.digits.length = this.precision;
     } else if (this.precision === 0){
-      this.toOne();
+      setOne(this);
       this.isNegative = true;
     } else {
       decrement(this);
@@ -724,7 +678,7 @@ export default class BigMint {
 
     //If multiplying by zero
     if(multiplier.precision === 0){
-      return multiplicand.toZero();
+      return setZero(multiplicand);
     }
 
     //Multiply signs
@@ -808,14 +762,14 @@ export default class BigMint {
     if(power.precision === 0){
 
       //Make one
-      return base.toOne();
+      return setOne(base);
     }
 
     //If raised to negative power
     if(power.isNegative){
 
       //Make zero
-      return base.toZero();
+      return setZero(base);
     }
 
     //If base is zero
@@ -890,7 +844,7 @@ export default class BigMint {
 
     //If self
     if(minuend === n){
-      return minuend.toZero();
+      return setZero(minuend);
     }
 
     //Convert to class iff necessary
@@ -924,7 +878,7 @@ export default class BigMint {
 
     //If same number
     if(comparison === 0){
-      return minuend.toZero();
+      return setZero(minuend);
     }
 
     //Assume A > B

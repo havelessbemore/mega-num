@@ -1,4 +1,4 @@
-import Integer from '../type/integer';
+import {Integer} from '../type/integer';
 import {reverseAddition as algo} from '../algorithm/reverseAddition';
 
 export function reverseAddition(A: Integer, B: Integer): Integer {

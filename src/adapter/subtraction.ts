@@ -1,4 +1,4 @@
-import Integer from '../type/integer';
+import {Integer} from '../type/integer';
 import {subtraction as algo} from '../algorithm/subtraction';
 
 export function subtraction(A: Integer, B: Integer): Integer {

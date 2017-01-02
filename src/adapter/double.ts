@@ -1,4 +1,4 @@
-import Integer from '../type/integer';
+import {Integer} from '../type/integer';
 import {double as algo} from '../algorithm/double';
 
 export function double(A: Integer): Integer {

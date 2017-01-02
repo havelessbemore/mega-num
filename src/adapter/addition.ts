@@ -1,4 +1,4 @@
-import Integer from '../type/integer';
+import {Integer} from '../type/integer';
 import {addition as algo} from '../algorithm/addition';
 
 export function addition(A: Integer, B: Integer): Integer {

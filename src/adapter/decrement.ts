@@ -1,4 +1,4 @@
-import Integer from '../type/integer';
+import {Integer} from '../type/integer';
 import {decrement as algo} from '../algorithm/decrement';
 
 export function decrement(A: Integer): Integer {

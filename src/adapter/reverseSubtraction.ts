@@ -1,4 +1,4 @@
-import Integer from '../type/integer';
+import {Integer} from '../type/integer';
 import {reverseSubtraction as algo} from '../algorithm/reverseSubtraction';
 
 export function reverseSubtraction(A: Integer, B: Integer): Integer {

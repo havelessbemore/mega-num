@@ -1,4 +1,4 @@
-import Integer from '../type/integer';
+import {Integer} from '../type/integer';
 import {halve as algo} from '../algorithm/halve';
 
 export function halve(A: Integer): Integer {

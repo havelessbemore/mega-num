@@ -14,8 +14,6 @@ export function max(a: number, b: number): number {
 }
 
 //Assumes valid inputs
-//Assumes maxA >= minA
-//Assumes maxB >= minB
 //Assumes numbers are in same base
 export function compare(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number): number {
 
@@ -34,4 +32,31 @@ export function compare(A: number[], minA: number, maxA: number, B: number[], mi
 
   //Numbers are equal
   return 0;
+}
+
+//Assumes valid inputs
+export function changeBase(A: number[], minA: number, maxA: number, curBase: number, newBase: number): [number[], number] {
+  let maxB: number = 0;
+  const B: number[] = new Array(Math.ceil(
+    (maxA - minA) * Math.log(curBase) / Math.log(newBase)
+  ));
+
+  //If zero
+  if(maxA === minA){
+    return [B, maxB];
+  }
+
+  do {
+    let remainder: number = 0;
+    for(let i: number = maxA; i > minA; remainder = remainder % newBase){
+      remainder = remainder*curBase + A[--i];
+      A[i] = 0 | (remainder / newBase);
+    }
+    B[maxB++] = remainder;
+    while(A[maxA - 1] === 0){
+      if(--maxA === minA){
+        return [B, maxB];
+      }
+    }
+  } while(true);
 }
