@@ -5,35 +5,6 @@ export const CIPHER: string[] = [
   'U','V','W','X','Y','Z'
 ];
 
-export function min(a: number, b: number): number {
-  return (a > b) ? b : a;
-}
-
-export function max(a: number, b: number): number {
-  return (a < b) ? b : a;
-}
-
-//Assumes valid inputs
-//Assumes numbers are in same base
-export function compare(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number): number {
-
-  //Compare number of digits
-  const d: number = maxA - minA - maxB + minB;
-  if(d !== 0){
-    return d < 0 ? -1 : 1;
-  }
-
-  //Compare digits
-  while(maxA > minA){
-    if(A[--maxA] !== B[--maxB]){
-      return A[maxA] < B[maxB] ? -1 : 1;
-    }
-  }
-
-  //Numbers are equal
-  return 0;
-}
-
 //Assumes valid inputs
 export function changeBase(A: number[], minA: number, maxA: number, curBase: number, newBase: number): [number[], number] {
   let maxB: number = 0;
@@ -59,4 +30,62 @@ export function changeBase(A: number[], minA: number, maxA: number, curBase: num
       }
     }
   } while(true);
+}
+
+//Assumes valid inputs
+//Assumes numbers are in same base
+export function compare(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number): number {
+
+  //Compare number of digits
+  const d: number = maxA - minA - maxB + minB;
+  if(d !== 0){
+    return d < 0 ? -1 : 1;
+  }
+
+  //Compare digits
+  while(maxA > minA){
+    if(A[--maxA] !== B[--maxB]){
+      return A[maxA] < B[maxB] ? -1 : 1;
+    }
+  }
+
+  //Numbers are equal
+  return 0;
+}
+
+export function max(a: number, b: number): number {
+  return (a < b) ? b : a;
+}
+
+export function min(a: number, b: number): number {
+  return (a > b) ? b : a;
+}
+
+export function strToDecArray(s: String): [number[], boolean] {
+  s = s.trim();
+
+  //Check if string is a number
+  if(Number.isNaN(<any>s)){
+    throw TypeError("NaN");
+  }
+
+  //Check for leading sign
+  const isNegative: boolean = s[0] === '-';
+
+  //Trim signs, leading zeros and decimal part
+  s = s.replace(/^[-+]?0+|\.[0-9]+$/gm, '');
+
+  //If zero
+  const precision: number = s.length;
+  if(precision === 0){
+    return [[], false];
+  }
+
+  //Convert to decimal array
+  const digits: number[] = new Array<number>(precision);
+  for(let i = 0, j = precision; j > 0; ++i){
+    digits[i] = 0 | <any>s[--j];
+  }
+
+  return [digits, isNegative];
 }

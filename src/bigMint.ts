@@ -13,8 +13,8 @@ import {karatsubaMultiplication} from './algorithm/karatsubaMultiplication';
 import {basicDivision} from './algorithm/basicDivision';
 import {singleDigitDivision} from './algorithm/singleDigitDivision';
 import {singleDigitMultiplication} from './algorithm/singleDigitMultiplication';
-import {CIPHER, compare, changeBase} from './util/numUtils';
-import {setOne, setZero, strToDecArray} from './util/intUtils';
+import {CIPHER, changeBase, compare, strToDecArray} from './util/numUtils';
+import {copy, setOne, setZero, share} from './util/intUtils';
 
 export default class BigMint {
 
@@ -88,19 +88,10 @@ export default class BigMint {
 
   private _assign(source: BigMint, keepBase: boolean = false): BigMint {
     const originalBase: number = this.base;
-    const target: BigMint = this.copy(source);
-    target.digits = target.digits.slice(0);
-    if(keepBase && target.base !== originalBase){
-      target.toBase(originalBase);
+    copy(this, source);
+    if(keepBase && this.base !== originalBase){
+      this.toBase(originalBase);
     }
-    return target;
-  }
-
-  private copy(source: BigMint): BigMint {
-    this.isNegative = source.isNegative;
-    this.digits = source.digits;
-    this.precision = source.precision;
-    this.base = source.base;
     return this;
   }
 
@@ -430,7 +421,7 @@ export default class BigMint {
       //If the dividend is smaller than the divisor the quotient will be zero (less than 1)
       const ratio: number = Math.log(divisor.base) / Math.log(dividend.base);
       if(dividend.precision < Math.ceil(divisor.precision *  ratio)){
-        const remainder: BigMint = BigMint.ZERO.copy(dividend);
+        const remainder: BigMint = share(BigMint.ZERO,dividend);
         return [setZero(dividend), remainder];
       }
 
@@ -441,7 +432,7 @@ export default class BigMint {
 
     //Check if the dividend has less digits than the divisor
     if(dividend.precision < divisor.precision){
-      const remainder: BigMint = BigMint.ZERO.copy(dividend);
+      const remainder: BigMint = share(BigMint.ZERO, dividend);
       return [setZero(dividend), remainder];
     }
 
@@ -468,14 +459,7 @@ export default class BigMint {
   }
 
   public double(): BigMint {
-    if(this.precision === 0){
-      return this;
-    }
-
-    //Double and set new length
     double(this);
-    this.digits.length = this.precision;
-
     return this;
   }
 
@@ -499,13 +483,7 @@ export default class BigMint {
     if(A.precision === 0){
 
       //Copy B and return to original base
-      const base: number = A.base;
-      A._assign(B);
-      if(base !== A.base){
-        A.toBase(base);
-      }
-
-      return A.abs();
+      return A._assign(B, true).abs();
     }
 
     //Make a copy of B iff necessary
@@ -633,13 +611,7 @@ export default class BigMint {
     if(A.precision === 1 && A.digits[0] === 1){
 
       //Turn A into B
-      const base: number = A.base;
-      A._assign(B);
-      if(base !== A.base){
-        A.toBase(base);
-      }
-
-      return A.abs();
+      return A._assign(B, true).abs();
     }
 
     //Calculate and return LCM
@@ -732,7 +704,9 @@ export default class BigMint {
   }
 
   public negate(): BigMint {
-    this.isNegative = (this.precision === 0) ? false : this.isNegative === false;
+    if(this.precision !== 0){
+      this.isNegative = this.isNegative === false;
+    }
     return this;
   };
 
