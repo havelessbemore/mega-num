@@ -7,14 +7,15 @@ import {increment} from './adapter/increment';
 import {reverseAddition} from './adapter/reverseAddition';
 import {reverseSubtraction} from './adapter/reverseSubtraction';
 import {subtraction} from './adapter/subtraction';
-import {exponentiation} from './algorithm/exponentiation';
-import {karatsubaSquare} from './algorithm/karatsubaSquare';
-import {karatsubaMultiplication} from './algorithm/karatsubaMultiplication';
 import {basicDivision} from './algorithm/basicDivision';
+import {exponentiation} from './algorithm/exponentiation';
+import {karatsubaMultiplication} from './algorithm/karatsubaMultiplication';
+import {karatsubaSquare} from './algorithm/karatsubaSquare';
 import {singleDigitDivision} from './algorithm/singleDigitDivision';
 import {singleDigitMultiplication} from './algorithm/singleDigitMultiplication';
-import {CIPHER, changeBase, compare, strToDecArray} from './util/numUtils';
+import {steinGCD} from './algorithm/steinGCD';
 import {copy, setOne, setZero, share} from './util/intUtils';
+import {CIPHER, changeBase, compare, isEven, strToDecArray} from './util/numUtils';
 
 export default class BigMint {
 
@@ -45,7 +46,7 @@ export default class BigMint {
 
   constructor(input: BigMint | number | string) {
     if(BigMint.isBigMint(input)){
-      this._assign(input);
+      this.assign(input);
     } else if(typeof input === "number"){
       this.convertString('' + input);
     } else if(typeof input === "string"){
@@ -71,7 +72,7 @@ export default class BigMint {
     this.precision = this.digits.length;
 
     //Convert to default base
-    this.toBase(BigMint.DEFAULT_BASE);
+    this._setBase(BigMint.DEFAULT_BASE);
   }
 
   ////////////////////////
@@ -83,14 +84,10 @@ export default class BigMint {
   }
 
   public assign(source: BigMint | number | string, keepBase: boolean = false): BigMint {
-    return this._assign(BigMint.toBigMint(source), keepBase);
-  }
-
-  private _assign(source: BigMint, keepBase: boolean = false): BigMint {
     const originalBase: number = this.base;
-    copy(this, source);
+    copy(this, BigMint.toBigMint(source));
     if(keepBase && this.base !== originalBase){
-      this.toBase(originalBase);
+      this._setBase(originalBase);
     }
     return this;
   }
@@ -124,10 +121,10 @@ export default class BigMint {
     }
 
     //Convert to base
-    return this.toBase(base);
+    return this._setBase(base);
   }
 
-  private toBase(newBase: number): BigMint {
+  private _setBase(newBase: number): BigMint {
     [this.digits, this.precision] = changeBase(this.digits, 0, this.precision, this.base, newBase);
     this.base = newBase;
     return this;
@@ -254,23 +251,6 @@ export default class BigMint {
       return (a.isNegative) ? -1 : 1;
     }
 
-    //Check if basic numbers
-    if(a.precision < 2 && b.precision < 2){
-
-      //Compare digits
-      if(a.precision !== b.precision){
-        return (a.precision < b.precision) ? -1 : 1;
-      }
-
-      //Check if same number
-      if(a.precision === 0 || a.digits[0] === b.digits[0]){
-        return 0;
-      }
-
-      //Compare numbers
-      return (a.digits[0] < b.digits[0]) ? -1 : 1;
-    }
-
     //If same base
     if(a.base === b.base){
       return compare(a.digits, 0, a.precision, b.digits, 0, b.precision);
@@ -297,7 +277,7 @@ export default class BigMint {
     }
 
     //Convert A to B's base and compare numbers
-    a = a.clone().toBase(b.base);
+    a = a.clone()._setBase(b.base);
     return out * compare(a.digits, 0, a.precision, b.digits, 0, b.precision);
   }
 
@@ -353,13 +333,13 @@ export default class BigMint {
     if(adduend.precision === 0){
 
       //Copy addend and return to original base
-      return adduend._assign(addend, true);
+      return adduend.assign(addend, true);
     }
 
     //Normalize bases
     if (adduend.base !== addend.base){
       addend = (n === addend) ? addend.clone() : addend;
-      addend.toBase(adduend.base);
+      addend._setBase(adduend.base);
     }
 
     //If signs differ
@@ -427,7 +407,7 @@ export default class BigMint {
 
       //Normalize bases
       divisor = (n === divisor) ? divisor.clone() : divisor;
-      divisor.toBase(dividend.base);
+      divisor._setBase(dividend.base);
     }
 
     //Check if the dividend has less digits than the divisor
@@ -483,7 +463,7 @@ export default class BigMint {
     if(A.precision === 0){
 
       //Copy B and return to original base
-      return A._assign(B, true).abs();
+      return A.assign(B, true).abs();
     }
 
     //Make a copy of B iff necessary
@@ -491,48 +471,16 @@ export default class BigMint {
 
     //Normalize bases
     if(A.base !== B.base){
-      B.toBase(A.base);
+      B._setBase(A.base);
     }
 
-    //Calculate GCD
-    B = A._gcd(B);
+    [A.digits,,A.precision] = steinGCD(
+      A.digits, 0, A.precision,
+      B.digits, 0, B.precision,
+      A.base
+    );
 
-    //Update A to be result iff needed
-    return (A === B) ? A : A._assign(B);
-  }
-
-  //See: https://en.wikipedia.org/wiki/Binary_GCD_algorithm
-  private _gcd(B: BigMint): BigMint {
-    let A: BigMint = this;
-    const C: BigMint = BigMint.ONE;
-
-    //Remove and record common factors of 2
-    while(A.isEven() && B.isEven()){
-      A._half();
-      B._half();
-      C.double();
-    }
-
-    //Remove factors of 2 from A
-    while(A.isEven()){
-      A._half();
-    }
-
-    do {
-
-      //Remove factors of 2 from B
-      while(B.isEven()){
-        B._half();
-      }
-
-      //Make sure A <= B. A and B are both odd, so B - A will be even.
-      B.subtract(A).abs();
-
-    //Continue until B is zero
-    } while (B.precision !== 0);
-
-    //Restore common factors of 2
-    return A.multiply(C);
+    return A;
   }
 
   public half(): [BigMint, BigMint] {
@@ -543,44 +491,25 @@ export default class BigMint {
     }
 
     //Halve
-    const remainder: number = this._half();
-    return [this, remainder === 0 ? BigMint.ZERO : BigMint.ONE];
-  }
-
-  private _half(): number {
-
-    //Half
-    const remainder: Integer = halve(this);
+    let remainder: Integer = halve(this);
 
     //Round up if negative (e.g. Math.floor(-49.5) = -50)
-    if(this.isNegative && remainder.precision !== 0){
-      increment(this);
+    if(remainder.precision === 0){
+      remainder = BigMint.ZERO;
+    } else {
+      remainder = BigMint.ONE;
+      if(this.isNegative){
+        increment(this);
+      }
     }
 
     //Update array length
     this.digits.length = this.precision;
-
-    return remainder.precision;
+    return [this, <BigMint>remainder];
   }
 
   public isEven(): boolean {
-
-    //If zero
-    if(this.precision === 0){
-      return true;
-    }
-
-    //If even base
-    if((this.base & 1) === 0){
-      return (this.digits[0] & 1) === 0;
-    }
-
-    //If odd base
-    let xor: number = 0;
-    const digits: number[] = this.digits;
-    for(let i: number = 0, n: number = this.precision; i < n; xor = xor ^ digits[i++]){
-    }
-    return (xor & 1) === 0;
+    return isEven(this.digits, 0, this.precision, this.base);
   }
 
   public isOdd(): boolean {
@@ -611,7 +540,7 @@ export default class BigMint {
     if(A.precision === 1 && A.digits[0] === 1){
 
       //Turn A into B
-      return A._assign(B, true).abs();
+      return A.assign(B, true).abs();
     }
 
     //Calculate and return LCM
@@ -659,7 +588,7 @@ export default class BigMint {
     //Normalize bases
     if (multiplicand.base !== multiplier.base){
       multiplier = (n === multiplier) ? multiplier.clone() : multiplier;
-      multiplier.toBase(multiplicand.base);
+      multiplier._setBase(multiplicand.base);
     }
 
     //If multiplying by single digit
@@ -833,13 +762,13 @@ export default class BigMint {
     if(minuend.precision === 0){
 
       //Copy subtrahend and return to original base
-      return minuend._assign(subtrahend, true).negate();
+      return minuend.assign(subtrahend, true).negate();
     }
 
     //Normalize bases
     if (minuend.base !== subtrahend.base){
       subtrahend = (n === subtrahend) ? subtrahend.clone() : subtrahend;
-      subtrahend.toBase(minuend.base);
+      subtrahend._setBase(minuend.base);
     }
 
     //If signs differ, add instead
