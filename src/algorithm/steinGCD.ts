@@ -24,7 +24,7 @@ export function steinGCD(A: number[], minA: number, maxA: number, B: number[], m
     [maxA] = halve(A, minA, maxA, base);
   }
 
-  //While B !== A
+  //A will always be odd from now on
   do {
 
     //Remove extra factors of 2 in B
@@ -32,6 +32,7 @@ export function steinGCD(A: number[], minA: number, maxA: number, B: number[], m
       [maxB] = halve(B, minB, maxB, base);
     }
 
+    //B is now odd
     //Compare A and B
     let c: number = compare(A, minA, maxA, B, minB, maxB);
 
@@ -55,6 +56,9 @@ export function steinGCD(A: number[], minA: number, maxA: number, B: number[], m
 
     //B = B - A
     maxB = subtraction(B, minB, maxB, A, minA, maxA, base);
+
+    //B is now even since B and A were both odd
+    [maxB] = halve(B, minB, maxB, base);
   } while (true);
 
   //Restore common factors of 2 (A = A << shifts)

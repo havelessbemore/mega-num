@@ -11,11 +11,12 @@ import {basicDivision} from './algorithm/basicDivision';
 import {exponentiation} from './algorithm/exponentiation';
 import {karatsubaMultiplication} from './algorithm/karatsubaMultiplication';
 import {karatsubaSquare} from './algorithm/karatsubaSquare';
+import {lcm} from './algorithm/lcm';
 import {singleDigitDivision} from './algorithm/singleDigitDivision';
 import {singleDigitMultiplication} from './algorithm/singleDigitMultiplication';
 import {steinGCD} from './algorithm/steinGCD';
 import {copy, setOne, setZero, share} from './util/intUtils';
-import {CIPHER, changeBase, compare, isEven, strToDecArray} from './util/numUtils';
+import {CIPHER, changeBase, compare, isEven, strToDigits} from './util/numUtils';
 
 export default class BigMint {
 
@@ -68,7 +69,7 @@ export default class BigMint {
 
     //Convert string to base 10
     this.base = 10;
-    [this.digits, this.isNegative] = strToDecArray(s);
+    [this.digits, this.isNegative] = strToDigits(s);
     this.precision = this.digits.length;
 
     //Convert to default base
@@ -517,34 +518,47 @@ export default class BigMint {
   }
 
   //See: https://en.wikipedia.org/wiki/Least_common_multiple
-  public lcm(N: BigMint | number | string): BigMint {
+  public lcm(n: BigMint | number | string): BigMint {
     const A: BigMint = this;
-    let B: BigMint = BigMint.toBigMint(N);
+
+    //Make A positive
+    A.abs();
 
     //If lcm of self
-    if(A === B){
+    if(A === n){
       return A;
     }
 
-    //If A is zero or B is zero
-    if(A.precision === 0 || B.precision === 0){
+    //If A is zero
+    if(A.precision === 0){
+      return A;
+    }
+
+    //If B is zero
+    let B: BigMint = BigMint.toBigMint(n);
+    if(B.precision === 0){
       return setZero(A);
     }
 
     //If B is one
     if(B.precision === 1 && B.digits[0] === 1){
-      return A.abs();
+      return A;
     }
 
-    //If A is one
+    //If A is one then turn A into B
     if(A.precision === 1 && A.digits[0] === 1){
-
-      //Turn A into B
       return A.assign(B, true).abs();
     }
 
-    //Calculate and return LCM
-    return A.divide(A.gcd(B)).multiply(B).abs();
+    //Calculate LCM
+    [A.digits, A.precision] = lcm(
+      A.digits, 0, A.precision,
+      B.digits, 0, B.precision,
+      A.base
+    );
+    A.digits.length = A.precision;
+    
+    return A;
   }
 
   public minusminus(): BigMint {

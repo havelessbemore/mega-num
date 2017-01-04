@@ -1,5 +1,5 @@
 
-//Assumes shifts >= max - min
+//Assumes shifts >= max - min, shifts > 0
 export function unsafeShiftUp(A: any[], min: number, max: number, shifts: number): void {
   for(let i: number = min + shifts; min < max; A[i++] = A[min++]){
   }
@@ -26,5 +26,5 @@ export function set<T>(A: T[], min: number, max: number, v: T): void {
 
 //Helper method used for debugging
 export function print(A: any[], min: number, max: number): string {
-  return "[" + A.slice(min, max).reverse().join(' ') + "]";
+  return "[" + A.slice(min, max).reverse().join(', ') + "]";
 }

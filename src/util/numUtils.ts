@@ -81,7 +81,7 @@ export function min(a: number, b: number): number {
   return (a > b) ? b : a;
 }
 
-export function strToDecArray(s: String): [number[], boolean] {
+export function strToDigits(s: String): [number[], boolean] {
   s = s.trim();
 
   //Check if string is a number
