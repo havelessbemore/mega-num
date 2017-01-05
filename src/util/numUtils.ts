@@ -7,16 +7,19 @@ export const CIPHER: string[] = [
 
 //Assumes valid inputs
 export function changeBase(A: number[], minA: number, maxA: number, curBase: number, newBase: number): [number[], number] {
+
+  //If zero
+  if(maxA === minA){
+    return [[], 0];
+  }
+
+  //Create new array
   let maxB: number = 0;
   const B: number[] = new Array(Math.ceil(
     (maxA - minA) * Math.log(curBase) / Math.log(newBase)
   ));
 
-  //If zero
-  if(maxA === minA){
-    return [B, maxB];
-  }
-
+  //Return number in newBase
   do {
     let remainder: number = 0;
     for(let i: number = maxA; i > minA; remainder = remainder % newBase){
@@ -84,16 +87,21 @@ export function min(a: number, b: number): number {
 export function strToDigits(s: String): [number[], boolean] {
   s = s.trim();
 
-  //Check if string is a number
-  if(Number.isNaN(<any>s)){
-    throw TypeError("NaN");
+  //Check if empty string
+  if(s.length < 1){
+    throw new TypeError("NaN");
   }
 
   //Check for leading sign
   const isNegative: boolean = s[0] === '-';
 
   //Trim signs, leading zeros and decimal part
-  s = s.replace(/^[-+]?0+|\.[0-9]+$/gm, '');
+  s = s.replace(/^[-+]?0*/, '').replace(/\.[0-9]+$/, '');
+
+  //Check if string is not a number
+  if(s.match(/[^\d]/)){
+    throw new TypeError("NaN");
+  }
 
   //If zero
   const precision: number = s.length;
