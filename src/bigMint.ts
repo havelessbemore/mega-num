@@ -8,15 +8,15 @@ import {halve} from './functional/halve';
 import {increment} from './functional/increment';
 import {max} from './functional/max';
 import {min} from './functional/min';
+import {multiply} from './functional/multiply';
 import {negate} from './functional/negate';
+import {pow} from './functional/pow';
+import {signum} from './functional/signum';
 import {subtract} from './functional/subtract';
+import {square} from './functional/square';
 import {basicDivision} from './algorithm/basicDivision';
-import {exponentiation} from './algorithm/exponentiation';
-import {karatsubaMultiplication} from './algorithm/karatsubaMultiplication';
-import {karatsubaSquare} from './algorithm/karatsubaSquare';
 import {lcm} from './algorithm/lcm';
 import {singleDigitDivision} from './algorithm/singleDigitDivision';
-import {singleDigitMultiplication} from './algorithm/singleDigitMultiplication';
 import {steinGCD} from './algorithm/steinGCD';
 import {assign, changeBase, copy, setOne, setZero} from './util/intUtils';
 import {CIPHER, isEven, strToDigits} from './util/numUtils';
@@ -292,7 +292,7 @@ export default class BigMint {
 
     //If divisor is zero
     if(divisor.precision === 0){
-      throw EvalError("Divide by Zero");
+      throw EvalError("Divide by zero");
     }
 
     //If self
@@ -320,7 +320,7 @@ export default class BigMint {
       //If the dividend is smaller than the divisor the quotient will be zero (less than 1)
       const ratio: number = Math.log(divisor.base) / Math.log(dividend.base);
       if(dividend.precision < Math.ceil(divisor.precision *  ratio)){
-        const remainder: BigMint = assign(BigMint.ZERO,dividend);
+        const remainder: BigMint = <BigMint>assign(BigMint.ZERO,dividend);
         return [<BigMint>setZero(dividend), remainder];
       }
 
@@ -331,7 +331,7 @@ export default class BigMint {
 
     //Check if the dividend has less digits than the divisor
     if(dividend.precision < divisor.precision){
-      const remainder: BigMint = assign(BigMint.ZERO, dividend);
+      const remainder: BigMint = <BigMint>assign(BigMint.ZERO, dividend);
       return [<BigMint>setZero(dividend), remainder];
     }
 
@@ -467,74 +467,9 @@ export default class BigMint {
   }
 
   public multiply(n: BigMint | number | string): BigMint {
-    const multiplicand: BigMint = this;
-
-    //If self
-    if(multiplicand === n){
-      return multiplicand.square();
-    }
-
-    //If zero
-    if(multiplicand.precision === 0){
-      return multiplicand;
-    }
-
-    //Convert to class if necessary
-    let multiplier = BigMint.toBigMint(n);
-
-    //If multiplying by zero
-    if(multiplier.precision === 0){
-      return <BigMint>setZero(multiplicand);
-    }
-
-    //Multiply signs
-    multiplicand.isNegative = multiplicand.isNegative !== multiplier.isNegative;
-
-    //Normalize bases
-    if (multiplicand.base !== multiplier.base){
-      multiplier = (n === multiplier) ? multiplier.clone() : multiplier;
-      multiplier._setBase(multiplicand.base);
-    }
-
-    //If multiplying by single digit
-    if(multiplier.precision === 1){
-      multiplicand.precision = singleDigitMultiplication(
-        multiplicand.digits, 0, multiplicand.precision,
-        multiplier.digits[0], multiplicand.base
-      );
-      return multiplicand;
-    }
-
-    //If single digit
-    if(multiplicand.precision === 1){
-      const n: number = multiplicand.digits[0];
-      multiplicand.digits = multiplier.digits.slice(0);
-      multiplicand.precision = singleDigitMultiplication(
-        multiplicand.digits, 0, multiplier.precision,
-        n, multiplicand.base
-      );
-      return multiplicand;
-    }
-
-    //Make room for multiplication
-    multiplicand.digits.length = multiplicand.precision + multiplier.precision;
-
-    //Multiply
-    //if(MEETS_THRESHOLD){
-    multiplicand.digits.length = multiplicand.precision = karatsubaMultiplication(
-      multiplicand.digits, 0, multiplicand.precision,
-      multiplier.digits, 0, multiplier.precision,
-      multiplicand.base
-    );
-    /*
-    }
-    multiplicand.digits.length = multiplicand.precision = longMultiplication(
-      multiplicand.digits, multiplicand.precision,
-      multiplier.digits, multiplier.precision,
-      multiplicand.base
-    );*/
-
-    return multiplicand;
+    multiply(this, BigMint.toBigMint(n));
+    this.digits.length = this.precision;
+    return this;
   }
 
   public negate(): BigMint {
@@ -542,61 +477,14 @@ export default class BigMint {
     return this;
   };
 
-  public plus(adduend: BigMint | number | string): BigMint {
-    return this.add(adduend);
-  }
-
   public plusplus(): BigMint {
     increment(this);
     return this;
   }
 
   public pow(n: BigMint | number | string): BigMint {
-    const base: BigMint = this;
-    let power: BigMint = BigMint.toBigMint(n);
-
-    //If raised to zero power
-    if(power.precision === 0){
-
-      //Make one
-      return <BigMint>setOne(base);
-    }
-
-    //If raised to negative power
-    if(power.isNegative){
-
-      //Make zero
-      return <BigMint>setZero(base);
-    }
-
-    //If base is zero
-    if(base.precision === 0){
-      return base;
-    }
-
-    //If negative base and even power
-    if(base.isNegative && power.isEven()){
-
-      //Switch sign
-      base.isNegative = false;
-    }
-
-    //If base is one
-    if(base.precision === 1 && base.digits[0] === 1){
-      return base;
-    }
-
-    //Clone power if necessary
-    power = (n === power) ? power.clone() : power;
-
-    //Raise base to power
-    base.digits.length = base.precision = exponentiation(
-      base.digits, 0, base.precision, base.base,
-      power.digits, 0, power.precision, power.base
-    );
-
-    //Return base
-    return base;
+    pow(this, BigMint.toBigMint(n));
+    return this;
   }
 
   public remainder(divisor: BigMint | number | string): BigMint {
@@ -604,36 +492,13 @@ export default class BigMint {
   }
 
   public signum(): number {
-    return this.isNegative ? -1 : this.precision === 0 ? 0 : 1;
+    return signum(this);
   };
 
   public square(): BigMint {
-    const multiplicand: BigMint = this;
-
-    //If zero
-    if (multiplicand.precision === 0){
-      return multiplicand;
-    }
-
-    //If negative change to positive
-    multiplicand.isNegative = false;
-
-    //If one
-    if(multiplicand.precision === 1 && multiplicand.digits[0] === 1){
-      return multiplicand;
-    }
-
-    //Make room for squaring
-    multiplicand.digits.length = 2*multiplicand.precision;
-
-    //TODO: Analyze threshold between Basic and Karatsuba
-
-    //Square
-    multiplicand.digits.length = multiplicand.precision = karatsubaSquare(
-      multiplicand.digits, 0, multiplicand.precision, multiplicand.base
-    );
-
-    return multiplicand;
+    square(this);
+    this.digits.length = this.precision;
+    return this;
   }
 
   public subtract(n: BigMint | number | string): BigMint {

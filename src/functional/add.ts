@@ -40,8 +40,10 @@ export function add(A: Integer, B: Integer): Integer {
   //If A < B
 } else if(A.precision < B.precision){
 
-    //Ensure room for addition
-    A.digits.length = B.precision + 1;
+    //Make room for addition
+    if(A.digits.length <= B.precision){
+      A.digits.length = B.precision + 1;
+    }
 
     //Add
     A.precision = reverseAddition(
