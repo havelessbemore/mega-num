@@ -1,21 +1,21 @@
-import {Integer} from '../type/integer';
+import {Integer} from '../integer';
+import {changeBase as _changeBase} from './numUtils';
 
-export function setOne<T extends Integer>(A: T): T {
+export function setOne(A: any): Integer {
   A.precision = 1;
-  A.digits.length = 1;
-  A.digits[0] = 1;
+  A.digits = [1];
   A.isNegative = false;
   return A;
 }
 
-export function setZero<T extends Integer>(A: T): T {
+export function setZero(A: any): Integer {
   A.precision = 0;
-  A.digits.length = 0;
+  A.digits = [];
   A.isNegative = false;
   return A;
 }
 
-export function share<T extends Integer>(to: T, from: T): T {
+export function assign<T extends Integer>(to: T, from: T): T {
   to.base = from.base;
   to.digits = from.digits;
   to.precision = from.precision;
@@ -24,7 +24,17 @@ export function share<T extends Integer>(to: T, from: T): T {
 }
 
 export function copy<T extends Integer>(to: T, from: T): T {
-  share(to, from);
+  assign(to, from);
   to.digits = to.digits.slice(0, to.precision);
   return to;
+}
+
+export function changeBase(A: Integer, base: number): Integer {
+  if(A.base !== base){
+    [A.digits, A.precision] = _changeBase(
+      A.digits, 0, A.precision, A.base, base
+    );
+    A.base = base;
+  }
+  return A;
 }

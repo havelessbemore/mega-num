@@ -8,9 +8,9 @@ export const CIPHER: string[] = [
 //Assumes valid inputs
 export function changeBase(A: number[], minA: number, maxA: number, curBase: number, newBase: number): [number[], number] {
 
-  //If zero
-  if(maxA === minA){
-    return [[], 0];
+  //If zero or same base
+  if(maxA === minA || curBase === newBase){
+    return [A, maxA];
   }
 
   //Create new array
