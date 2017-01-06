@@ -1,6 +1,7 @@
 import {Integer} from '../integer';
+import {isEven} from './isEven';
 import {exponentiation} from '../algorithm/exponentiation';
-import {copy, isEven, setOne, setZero} from '../util/intUtils';
+import {copy, setOne, setZero} from '../util/intUtils';
 
 export function pow(A: Integer, B: Integer): Integer {
 

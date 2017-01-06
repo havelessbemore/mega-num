@@ -1,6 +1,5 @@
 import {Integer} from '../integer';
 import {changeBase as _changeBase} from './numUtils';
-import {isEven as _isEven} from './numUtils';
 
 export function assign(to: any, from: Integer): Integer {
   to.base = from.base;
@@ -24,10 +23,6 @@ export function copy(to: any, from: Integer): Integer {
   assign(to, from);
   to.digits = to.digits.slice(0, to.precision);
   return to;
-}
-
-export function isEven(A: Integer): boolean {
-  return _isEven(A.digits, 0, A.precision, A.base);
 }
 
 export function setOne(A: any): Integer {

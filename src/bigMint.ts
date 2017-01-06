@@ -3,9 +3,13 @@ import {abs} from './functional/abs';
 import {add} from './functional/add';
 import {compare} from './functional/compare';
 import {decrement} from './functional/decrement';
+import {divideAndRemainder} from './functional/divideAndRemainder';
 import {double} from './functional/double';
+import {gcd} from './functional/gcd';
 import {halve} from './functional/halve';
 import {increment} from './functional/increment';
+import {isEven} from './functional/isEven';
+import {lcm} from './functional/lcm';
 import {max} from './functional/max';
 import {min} from './functional/min';
 import {multiply} from './functional/multiply';
@@ -14,12 +18,8 @@ import {pow} from './functional/pow';
 import {signum} from './functional/signum';
 import {subtract} from './functional/subtract';
 import {square} from './functional/square';
-import {basicDivision} from './algorithm/basicDivision';
-import {lcm} from './algorithm/lcm';
-import {singleDigitDivision} from './algorithm/singleDigitDivision';
-import {steinGCD} from './algorithm/steinGCD';
-import {assign, changeBase, copy, setOne, setZero} from './util/intUtils';
-import {CIPHER, isEven, strToDigits} from './util/numUtils';
+import {assign, changeBase, copy} from './util/intUtils';
+import {CIPHER, strToDigits} from './util/numUtils';
 
 export default class BigMint {
 
@@ -245,33 +245,6 @@ export default class BigMint {
     return compare(this,  BigMint.toBigMint(n))
   }
 
-  ////////////////////////
-  // BITWISE
-  ////////////////////////
-
-  //public not(): BigMint {
-  //  return this.add(BigMint.ONE).negate();
-  //}
-
-  //TODO
-  //public and(B: BigMint | number | string): BigMint {
-  //  throw Error("D");
-  //}
-
-  //public andNot(B: BigMint | number | string): BigMint {
-  //  return this.and(this.tryClone(B).not());
-  //}
-
-  //TODO
-  //public or(B: BigMint | number | string): BigMint {
-  //  throw Error("D");
-  //}
-
-  //TODO
-  //public xor(B: BigMint | number | string): BigMint {
-  //  throw Error("D");
-  //}
-
   public abs(): BigMint {
     abs(this);
     return this;
@@ -287,74 +260,12 @@ export default class BigMint {
   }
 
   public divideAndRemainder(n: BigMint | number | string): [BigMint, BigMint] {
-    const dividend: BigMint = this;
-    let divisor: BigMint = BigMint.toBigMint(n);
-
-    //If divisor is zero
-    if(divisor.precision === 0){
-      throw EvalError("Divide by zero");
-    }
-
-    //If self
-    if(dividend === divisor){
-      return [<BigMint>setOne(dividend), BigMint.ZERO];
-    }
-
-    //If dividend is zero
-    if(dividend.precision === 0){
-      return [dividend, BigMint.ZERO];
-    }
-
-    //Divide signs
-    dividend.isNegative = dividend.isNegative !== divisor.isNegative;
-
-    //If divisor is one or two
-    if(divisor.precision === 1 && divisor.digits[0] < 3){
-      return (divisor.digits[0] === 1) ? [dividend, BigMint.ZERO] : dividend.half();
-    }
-
-    //If different bases
-    if(dividend.base !== divisor.base){
-
-      //Estimate the least number of digits of the divisor if converted to the dividend's base
-      //If the dividend is smaller than the divisor the quotient will be zero (less than 1)
-      const ratio: number = Math.log(divisor.base) / Math.log(dividend.base);
-      if(dividend.precision < Math.ceil(divisor.precision *  ratio)){
-        const remainder: BigMint = <BigMint>assign(BigMint.ZERO,dividend);
-        return [<BigMint>setZero(dividend), remainder];
-      }
-
-      //Normalize bases
-      divisor = (n === divisor) ? divisor.clone() : divisor;
-      divisor._setBase(dividend.base);
-    }
-
-    //Check if the dividend has less digits than the divisor
-    if(dividend.precision < divisor.precision){
-      const remainder: BigMint = <BigMint>assign(BigMint.ZERO, dividend);
-      return [<BigMint>setZero(dividend), remainder];
-    }
-
-    if(divisor.precision < 2){
-      let remainder: number;
-      [dividend.precision, remainder] = singleDigitDivision(
-        dividend.digits, 0, dividend.precision, divisor.digits[0], dividend.base
-      );
-      return [dividend, new BigMint(remainder)];
-    }
-
-    const remainder: BigMint = BigMint.ZERO;
-    [
-      dividend.digits, remainder.digits,
-      dividend.precision, remainder.precision
-    ] = basicDivision(
-      dividend.digits, 0, dividend.precision,
-      divisor.digits, 0, divisor.precision,
-      dividend.base
-    );
-    dividend.digits.length = dividend.precision;
-    remainder.digits.length = remainder.precision;
-    return [dividend, remainder];
+    let Q: Integer;
+    let R: Integer;
+    [Q, R] = divideAndRemainder(this, BigMint.toBigMint(n));
+    Q.digits.length = Q.precision;
+    R.digits.length = R.precision;
+    return [<BigMint>assign(this, Q), <BigMint>assign(BigMint.ZERO, R)];
   }
 
   public double(): BigMint {
@@ -363,43 +274,9 @@ export default class BigMint {
   }
 
   public gcd(n: BigMint | number | string): BigMint {
-    const A: BigMint = this;
-
-    //if gcd of self
-    if(A === n){
-      return A.abs();
-    }
-
-    //Convert to class iff necessary
-    let B: BigMint = BigMint.toBigMint(n);
-
-    //If B is zero
-    if(B.precision === 0){
-      return A.abs();
-    }
-
-    //If A is zero
-    if(A.precision === 0){
-
-      //Copy B and return to original base
-      return A.assign(B, true).abs();
-    }
-
-    //Make a copy of B iff necessary
-    B = (n === B) ? B.clone() : B;
-
-    //Normalize bases
-    if(A.base !== B.base){
-      B._setBase(A.base);
-    }
-
-    [A.digits,,A.precision] = steinGCD(
-      A.digits, 0, A.precision,
-      B.digits, 0, B.precision,
-      A.base
-    );
-
-    return A;
+    gcd(this, BigMint.toBigMint(n));
+    this.digits.length = this.precision;
+    return this;
   }
 
   public half(): [BigMint, BigMint] {
@@ -410,7 +287,7 @@ export default class BigMint {
   }
 
   public isEven(): boolean {
-    return isEven(this.digits, 0, this.precision, this.base);
+    return isEven(this);
   }
 
   public isOdd(): boolean {
@@ -419,46 +296,9 @@ export default class BigMint {
 
   //See: https://en.wikipedia.org/wiki/Least_common_multiple
   public lcm(n: BigMint | number | string): BigMint {
-    const A: BigMint = this;
-
-    //Make A positive
-    A.abs();
-
-    //If lcm of self
-    if(A === n){
-      return A;
-    }
-
-    //If A is zero
-    if(A.precision === 0){
-      return A;
-    }
-
-    //If B is zero
-    let B: BigMint = BigMint.toBigMint(n);
-    if(B.precision === 0){
-      return <BigMint>setZero(A);
-    }
-
-    //If B is one
-    if(B.precision === 1 && B.digits[0] === 1){
-      return A;
-    }
-
-    //If A is one then turn A into B
-    if(A.precision === 1 && A.digits[0] === 1){
-      return A.assign(B, true).abs();
-    }
-
-    //Calculate LCM
-    [A.digits, A.precision] = lcm(
-      A.digits, 0, A.precision,
-      B.digits, 0, B.precision,
-      A.base
-    );
-    A.digits.length = A.precision;
-
-    return A;
+    lcm(this, BigMint.toBigMint(n));
+    this.digits.length = this.precision;
+    return this;
   }
 
   public minusminus(): BigMint {
