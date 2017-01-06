@@ -1,14 +1,6 @@
 import {Integer} from '../integer';
 import {changeBase as _changeBase} from './numUtils';
 
-export function assign(to: any, from: Integer): Integer {
-  to.base = from.base;
-  to.digits = from.digits;
-  to.precision = from.precision;
-  to.isNegative = from.isNegative;
-  return to;
-}
-
 export function changeBase(A: Integer, base: number): Integer {
   if(A.base !== base){
     [A.digits, A.precision] = _changeBase(
@@ -17,12 +9,6 @@ export function changeBase(A: Integer, base: number): Integer {
     A.base = base;
   }
   return A;
-}
-
-export function copy(to: any, from: Integer): Integer {
-  assign(to, from);
-  to.digits = to.digits.slice(0, to.precision);
-  return to;
 }
 
 export function setOne(A: any): Integer {

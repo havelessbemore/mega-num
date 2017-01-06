@@ -1,6 +1,7 @@
 import {Integer} from '../integer';
+import {copy} from './copy';
 import {steinGCD} from '../algorithm/steinGCD';
-import {copy, changeBase} from '../util/intUtils';
+import {changeBase} from '../util/intUtils';
 
 export function gcd(A: Integer, B: Integer): Integer {
 

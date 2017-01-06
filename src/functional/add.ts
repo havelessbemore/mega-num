@@ -1,10 +1,11 @@
 import {Integer} from '../integer';
+import {copy} from './copy';
 import {double} from './double';
 import {negate} from './negate';
 import {subtract} from './subtract';
 import {addition} from '../algorithm/addition';
 import {reverseAddition} from '../algorithm/reverseAddition';
-import {changeBase, copy} from '../util/intUtils';
+import {changeBase} from '../util/intUtils';
 
 export function add(A: Integer, B: Integer): Integer {
 

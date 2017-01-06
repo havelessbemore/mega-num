@@ -1,7 +1,10 @@
+import * as Constants from './constants';
 import {Integer} from './integer';
 import {abs} from './functional/abs';
 import {add} from './functional/add';
+import {assign} from './functional/assign';
 import {compare} from './functional/compare';
+import {copy} from './functional/copy';
 import {decrement} from './functional/decrement';
 import {divideAndRemainder} from './functional/divideAndRemainder';
 import {double} from './functional/double';
@@ -16,9 +19,9 @@ import {multiply} from './functional/multiply';
 import {negate} from './functional/negate';
 import {pow} from './functional/pow';
 import {signum} from './functional/signum';
+import {setBase} from './functional/setBase';
 import {subtract} from './functional/subtract';
 import {square} from './functional/square';
-import {assign, changeBase, copy} from './util/intUtils';
 import {CIPHER, strToDigits} from './util/numUtils';
 
 export default class BigMint {
@@ -27,10 +30,10 @@ export default class BigMint {
   // CONSTANTS
   ////////////////////////
 
-  public static readonly MIN_BASE: number = 2;
-  public static readonly MAX_BASE: number = 94906265; //2^26 < sqrt(Number.MAX_SAFE_INTEGER) < 2^27
-  public static readonly DEFAULT_BASE: number = 94906264;
-  public static readonly MAX_PRECISION: number = 4294967295; //2^32 - 1
+  public static readonly MIN_BASE: number = Constants.MIN_BASE;
+  public static readonly MAX_BASE: number = Constants.MAX_BASE;
+  public static readonly DEFAULT_BASE: number = Constants.DEFAULT_BASE;
+  public static readonly MAX_PRECISION: number = Constants.MAX_PRECISION;
 
   ////////////////////////
   // PROPERTIES
@@ -50,7 +53,7 @@ export default class BigMint {
 
   constructor(input: BigMint | number | string) {
     if(BigMint.isBigMint(input)){
-      this.assign(input);
+      assign(this, input);
     } else if(typeof input === "number"){
       this.convertString('' + input);
     } else if(typeof input === "string"){
@@ -76,7 +79,7 @@ export default class BigMint {
     this.precision = this.digits.length;
 
     //Convert to default base
-    this._setBase(BigMint.DEFAULT_BASE);
+    this.setBase(BigMint.DEFAULT_BASE);
   }
 
   ////////////////////////
@@ -87,12 +90,10 @@ export default class BigMint {
     return new BigMint(this);
   }
 
-  public assign(source: BigMint | number | string, keepBase: boolean = false): BigMint {
-    const originalBase: number = this.base;
+  public copy(source: BigMint | number | string): BigMint {
+    const base: number = this.base;
     copy(this, BigMint.toBigMint(source));
-    if(keepBase && this.base !== originalBase){
-      this._setBase(originalBase);
-    }
+    this.setBase(base);
     return this;
   }
 
@@ -105,31 +106,7 @@ export default class BigMint {
   }
 
   public setBase(base: number): BigMint {
-
-    //Sanitize base
-    base = 0 | base;
-
-    //Check if already in base
-    if(this.base === base){
-      return this;
-    }
-
-    //Check if new base too low
-    if(base < BigMint.MIN_BASE){
-      throw RangeError(base + " < BigMint.MIN_BASE (" + BigMint.MIN_BASE + ")");
-    }
-
-    //Check if new base too high
-    if(base > BigMint.MAX_BASE){
-      throw RangeError(base + " > BigMint.MAX_BASE (" + BigMint.MAX_BASE + ")");
-    }
-
-    //Convert to base
-    return this._setBase(base);
-  }
-
-  private _setBase(base: number): BigMint {
-    changeBase(this, base);
+    setBase(this, base);
     this.digits.length = this.precision;
     return this;
   }
@@ -189,46 +166,6 @@ export default class BigMint {
   // COMPARE
   ////////////////////////
 
-  public lt(n: BigMint | number | string): boolean {
-    return this.compareTo(n) < 0;
-  }
-
-  public lessThan(n: BigMint | number | string): boolean {
-    return this.lt(n);
-  }
-
-  public lteq(n: BigMint | number | string): boolean {
-    return this.compareTo(n) <= 0;
-  }
-
-  public lessThanEquals(n: BigMint | number | string): boolean {
-    return this.lteq(n);
-  }
-
-  public eq(n: BigMint | number | string): boolean {
-    return this.compareTo(n) === 0;
-  }
-
-  public equals(n: BigMint | number | string): boolean {
-    return this.eq(n);
-  }
-
-  public gteq(n: BigMint | number | string): boolean {
-    return this.compareTo(n) >= 0;
-  }
-
-  public greaterThanEquals(n: BigMint | number | string): boolean {
-    return this.gteq(n);
-  }
-
-  public gt(n: BigMint | number | string): boolean {
-    return this.compareTo(n) > 0;
-  }
-
-  public greaterThan(n: BigMint | number | string): boolean {
-    return this.gt(n);
-  }
-
   public static min(a: BigMint | number | string, b: BigMint | number | string): BigMint {
     const c: BigMint = BigMint.toBigMint(a);
     const d: BigMint = BigMint.toBigMint(b);
@@ -256,7 +193,8 @@ export default class BigMint {
   }
 
   public divide(divisor: BigMint | number | string): BigMint {
-    return this.divideAndRemainder(divisor)[0];
+    this.divideAndRemainder(divisor);
+    return this;
   }
 
   public divideAndRemainder(n: BigMint | number | string): [BigMint, BigMint] {
@@ -324,11 +262,13 @@ export default class BigMint {
 
   public pow(n: BigMint | number | string): BigMint {
     pow(this, BigMint.toBigMint(n));
+    this.digits.length = this.precision;
     return this;
   }
 
   public remainder(divisor: BigMint | number | string): BigMint {
-    return this.divideAndRemainder(divisor)[1];
+    assign(this, this.divideAndRemainder(divisor)[1]);
+    return this;
   }
 
   public signum(): number {

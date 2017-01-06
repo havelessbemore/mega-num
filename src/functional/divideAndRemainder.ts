@@ -1,7 +1,8 @@
 import {Integer} from '../integer';
+import {assign} from './assign';
 import {basicDivision} from '../algorithm/basicDivision';
 import {singleDigitDivision} from '../algorithm/singleDigitDivision';
-import {assign, changeBase, setOne, setZero} from '../util/intUtils';
+import {changeBase, setOne, setZero} from '../util/intUtils';
 
 export function divideAndRemainder(A: Integer, B: Integer): [Integer, Integer] {
 

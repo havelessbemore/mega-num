@@ -7,9 +7,10 @@
   "directories": {},
   "scripts": {
     "build": "ntsc && tslint 'src/**/*.ts' && babel lib --out-dir lib && webpack --display-error-details",
+    "coverage": "ntsc && istanbul cover _mocha lib/test/*.js lib/test/**/*.js && remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html",
+    "prod-build": "BABEL_ENV=prod npm run build",
     "server": "webpack-dev-server --hot --inline --progress",
-    "test": "ntsc && mocha --opts mocha.opts",
-    "coverage": "ntsc && istanbul cover _mocha lib/test/*.js lib/test/**/*.js && remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html"
+    "test": "ntsc && mocha --opts mocha.opts"
   },
   "license": "MIT",
   "author": {

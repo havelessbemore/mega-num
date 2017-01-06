@@ -1,10 +1,11 @@
 import {Integer} from '../integer';
 import {add} from './add';
 import {compare} from './compare';
+import {copy} from './copy';
 import {negate} from './negate';
 import {reverseSubtraction} from '../algorithm/reverseSubtraction';
 import {subtraction} from '../algorithm/subtraction';
-import {changeBase, copy, setZero} from '../util/intUtils';
+import {changeBase, setZero} from '../util/intUtils';
 
 export function subtract(A: Integer, B: Integer): Integer {
 

@@ -1,6 +1,7 @@
 import {Integer} from '../integer';
+import {copy} from './copy';
 import {lcm as _lcm} from '../algorithm/lcm';
-import {changeBase, copy, setZero} from '../util/intUtils';
+import {changeBase, setZero} from '../util/intUtils';
 
 export function lcm(A: Integer, B: Integer): Integer {
 
