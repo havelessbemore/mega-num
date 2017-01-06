@@ -1,1 +1,1 @@
-export {default as Mint} from './bigMint';
+export {BigInt as Int} from './oop/bigInt';

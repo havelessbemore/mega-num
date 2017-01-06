@@ -2,12 +2,10 @@ import {Integer} from '../integer';
 import {changeBase as _changeBase} from './numUtils';
 
 export function changeBase(A: Integer, base: number): Integer {
-  if(A.base !== base){
-    [A.digits, A.precision] = _changeBase(
-      A.digits, 0, A.precision, A.base, base
-    );
-    A.base = base;
-  }
+  [A.digits, A.precision] = _changeBase(
+    A.digits, 0, A.precision, A.base, base
+  );
+  A.base = base;
   return A;
 }
 
