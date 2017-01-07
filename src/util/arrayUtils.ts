@@ -24,7 +24,18 @@ export function set<T>(A: T[], min: number, max: number, v: T): void {
   }
 }
 
-//Helper method used for debugging
-export function print(A: any[], min: number, max: number): string {
-  return "[" + A.slice(min, max).reverse().join(', ') + "]";
+export function printArr(A: any[], min: number, max: number, minSub: number = min, maxSub: number = max): string {
+  function format(A: any[]): any[] {
+    A.forEach((v: any, i: number, A: any[]) => {
+      if(v == null || v !== v){
+        A[i] = v + '';
+      }
+    });
+    return A;
+  }
+  return "[" +
+    format(A.slice(min,minSub)).join(', ') +
+    "|" + format(A.slice(minSub,maxSub)).join(', ') +
+    "|" + format(A.slice(maxSub,max)).join(', ') +
+  "]";
 }

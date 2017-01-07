@@ -1,8 +1,8 @@
 import {Integer} from '../integer';
-import {changeBase as _changeBase} from './numUtils';
+import {setBase} from '../algorithm/setBase';
 
 export function changeBase(A: Integer, base: number): Integer {
-  [A.digits, A.precision] = _changeBase(
+  [A.digits, A.precision] = setBase(
     A.digits, 0, A.precision, A.base, base
   );
   A.base = base;

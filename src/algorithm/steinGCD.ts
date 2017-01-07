@@ -1,7 +1,8 @@
+import {compare} from './compare';
 import {double} from './double';
 import {halve} from './halve';
+import {isEven} from './isEven';
 import {subtraction} from './subtraction';
-import {compare, isEven} from '../util/numUtils';
 
 /*
 f(A, B) = GCD(A, B)

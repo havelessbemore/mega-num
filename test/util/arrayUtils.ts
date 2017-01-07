@@ -90,13 +90,13 @@ describe('arrayUtils', function(){
     });
   });
 
-  describe('print', function(){
-    it("should print out the array's subset in reverse", function(){
-      assert.equal(util.print([],0,0), "[]");
-      assert.equal(util.print([1,2,3],0,3), "[3, 2, 1]");
-      assert.equal(util.print([1,2,3],0,2), "[2, 1]");
-      assert.equal(util.print([1,2,3],2,3), "[3]");
-      assert.equal(util.print([1,2,3,4,5],1,4), "[4, 3, 2]");
+  describe('printArr', function(){
+    it("should print out the array in subsets", function(){
+      assert.equal(util.printArr([],0,0), "[||]");
+      assert.equal(util.printArr([1,2,3],0,3), "[|1, 2, 3|]");
+      assert.equal(util.printArr([1,2,3],0,2), "[|1, 2|]");
+      assert.equal(util.printArr([1,2,3],2,3), "[|3|]");
+      assert.equal(util.printArr([1,2,3,4,5],1,4), "[|2, 3, 4|]");
     });
   });
 });

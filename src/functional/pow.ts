@@ -40,6 +40,18 @@ export function pow(A: Integer, B: Integer): Integer {
   //Copy B
   B = copy({}, B);
 
+  //Make room for exponentiation
+  /*const minNewLen: number = Math.floor(
+    (A.precision-1) * (
+      (B.precision) * Math.log2(B.base) + Math.log2(B.digits[B.precision-1]
+    ))
+  );
+  console.log("PREDICTED LENGTH: ", minNewLen);
+  if(A.digits.length < minNewLen){
+    A.digits.length = minNewLen;
+  }
+  */
+
   //A = A^B
   A.precision = exponentiation(
     A.digits, 0, A.precision, A.base, B.digits, 0, B.precision, B.base

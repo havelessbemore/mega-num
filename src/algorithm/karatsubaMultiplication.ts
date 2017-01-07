@@ -58,9 +58,16 @@ export function karatsubaMultiplication(A: number[], minA: number, maxA: number,
 
   //A = medium*(base^halfLen) + lowA
   if(midA === maxA || midB === maxB){
-    return (mediumMax > lowMax - halfA) ?
-      reverseAddition(A, halfA, lowMax, medium, 0, mediumMax, base):
-      addition(A, halfA, lowMax, medium, 0, mediumMax, base);
+    if(lowMax <= halfA){
+      maxA = halfA + mediumMax;
+      set(A, lowMax, halfA, 0);
+      copy(A, halfA, medium, 0, mediumMax);
+    } else if(mediumMax > lowMax - halfA){
+      maxA = reverseAddition(A, halfA, lowMax, medium, 0, mediumMax, base);
+    } else {
+      maxA = addition(A, halfA, lowMax, medium, 0, mediumMax, base);
+    }
+    return maxA;
   }
 
   //Fill unused space with zero
@@ -74,5 +81,6 @@ export function karatsubaMultiplication(A: number[], minA: number, maxA: number,
   mediumMax = subtraction(medium, 0, mediumMax, A, highMin, maxA, base);
 
   //A = highA*(base^len) + medium*(base^halfLen) + lowA
-  return addition(A, halfA, maxA, medium, 0, mediumMax, base);
+  maxA = addition(A, halfA, maxA, medium, 0, mediumMax, base);
+  return maxA;
 }

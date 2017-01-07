@@ -3,10 +3,10 @@ import {karatsubaMultiplication} from '../../src/algorithm/karatsubaMultiplicati
 
 function test(A: number[], B: number[], C: number[], base: number): void {
   const D: number[] = B.slice();
-  const len: number = A.length = karatsubaMultiplication(A, 0, A.length, B, 0, B.length, base);
-  assert.equal(B.length, D.length);
-  assert.deepEqual(B, D);
-  assert.equal(len, C.length);
+  A.length = karatsubaMultiplication(A, 0, A.length, B, 0, B.length, base);
+  assert.equal(B.length, D.length, "Second input was modified");
+  assert.deepEqual(B, D, "Second input was modified");
+  assert.equal(C.length, A.length, "Actual result length does not match expected result length");
   assert.deepEqual(A, C);
 }
 
@@ -14,6 +14,22 @@ describe('karatsubaMultiplication', function(){
 
   it('should return 1*1 in base 10',
     () => test([1], [1], [1], 10)
+  );
+
+  it('should return 1*10 in base 10',
+    () => test([1], [0,1], [0,1], 10)
+  );
+
+  it('should return 1*100 in base 10',
+    () => test([1], [0,0,1], [0,0,1], 10)
+  );
+
+  it('should return 1*100,000 in base 10',
+    () => test([1], [0,0,0,0,0,1], [0,0,0,0,0,1], 10)
+  );
+
+  it('should return 1*100,000,000 in base 10',
+    () => test([1], [0,0,0,0,0,0,0,0,1], [0,0,0,0,0,0,0,0,1], 10)
   );
 
   it('should return 1*9 in base 10',

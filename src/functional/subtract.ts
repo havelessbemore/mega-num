@@ -53,7 +53,16 @@ export function subtract(A: Integer, B: Integer): Integer {
 
   //If A < B
   if(c < 0){
+
+    //Switch sign
     negate(A);
+    
+    //Make room for subtraction
+    if(A.digits.length < B.precision){
+      A.digits.length = B.precision;
+    }
+
+    //Subtract
     A.precision = reverseSubtraction(
       A.digits, 0, A.precision,
       B.digits, 0, B.precision,

@@ -1,6 +1,6 @@
 import {Integer} from '../integer';
 import {changeBase} from '../util/intUtils';
-import {compare as _compare} from '../util/numUtils';
+import {compare as _compare} from '../algorithm/compare';
 
 export function compare(A: Integer, B: Integer): number {
 

@@ -1,7 +1,7 @@
+import {compare} from './compare';
 import {singleDigitMultiplication} from './singleDigitMultiplication';
 import {subtraction} from './subtraction';
 import {copy, set} from '../util/arrayUtils';
-import {compare} from '../util/numUtils';
 
 /*
   f(X, Y) = X / Y
