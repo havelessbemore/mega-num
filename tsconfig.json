@@ -80,7 +80,6 @@
     "src/index.ts",
     "src/integer.ts",
     "src/oop/bigInt.ts",
-    "src/oop/bigMint.ts",
     "src/util/arrayUtils.ts",
     "src/util/intUtils.ts",
     "src/util/numUtils.ts",
