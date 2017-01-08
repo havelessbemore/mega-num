@@ -30,18 +30,19 @@ module.exports = [{
     loaders: [{
       test: /\.tsx?$/,
       exclude: /node_modules/,
-      loaders: ['babel', 'ts-loader']
+      loaders: ['babel-loader', 'ts-loader']
     }, {
       test: /\.jsx?$/,
-      loader: 'babel',
+      loader: 'babel-loader',
       exclude: /node_modules/
     }]
   },
 
   plugins: [
-    new webpack.NoErrorsPlugin(),
+    //new webpack.NoErrorsPlugin(),
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin()
   ],
 
   //Options for ts-loader

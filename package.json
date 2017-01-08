@@ -6,7 +6,7 @@
   "typings": "lib/src/index.d.ts",
   "directories": {},
   "scripts": {
-    "build": "tsc && tslint 'src/**/*.ts' && babel lib --out-dir lib && webpack --display-error-details",
+    "build": "tsc && tslint 'src/**/*.ts' && webpack --display-error-details",
     "build-prod": "BABEL_ENV=prod npm run build",
     "coverage": "tsc && istanbul cover _mocha lib/test/*.js lib/test/**/*.js && remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html",
     "server": "webpack-dev-server --hot --inline --progress",
@@ -22,7 +22,6 @@
     "typescript": "^2.1.4"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
     "babel-core": "^6.9.0",
     "babel-loader": "^6.2.4",
     "babel-plugin-transform-runtime": "^6.15.0",
