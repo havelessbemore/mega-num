@@ -53,7 +53,7 @@ describe('BigInt', function(){
   describe('toBigInt', function(){
     it('should cast a valid input to class', function(){
       const n: BigInt = BigInt.toBigInt(0);
-      chai.expect(n.constructor.name).to.equal('BigInt');
+      chai.expect(n instanceof BigInt).to.equal(true);
     });
 
     it('should return input if input is already class', function(){

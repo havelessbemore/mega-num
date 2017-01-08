@@ -6,11 +6,11 @@
   "typings": "lib/src/index.d.ts",
   "directories": {},
   "scripts": {
-    "build": "ntsc && tslint 'src/**/*.ts' && babel lib --out-dir lib && webpack --display-error-details",
+    "build": "tsc && tslint 'src/**/*.ts' && babel lib --out-dir lib && webpack --display-error-details",
     "build-prod": "BABEL_ENV=prod npm run build",
-    "coverage": "ntsc && istanbul cover _mocha lib/test/*.js lib/test/**/*.js && remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html",
+    "coverage": "tsc && istanbul cover _mocha lib/test/*.js lib/test/**/*.js && remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html",
     "server": "webpack-dev-server --hot --inline --progress",
-    "test": "ntsc && mocha --opts mocha.opts"
+    "test": "tsc && mocha --opts mocha.opts"
   },
   "license": "MIT",
   "author": {
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.20.0",
-    "ntypescript": "1.201609302242.1"
+    "typescript": "^2.1.4"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

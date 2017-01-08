@@ -1,25 +1,21 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": false,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
-    "noLib": false,
-    "noUnusedParameters": true,
+    "noImplicitThis": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "outDir": "./lib",
-    "preserveConstEnums": false,
+    "pretty": true,
     "removeComments": true,
     "sourceMap": true,
     "stripInternal": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "target": "es6"
+    "target": "es5"
   },
   "filesGlob": [
     "**/*.ts",
