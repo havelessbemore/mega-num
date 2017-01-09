@@ -55,6 +55,7 @@
     "src/functional/abs.ts",
     "src/functional/add.ts",
     "src/functional/assign.ts",
+    "src/functional/clone.ts",
     "src/functional/compare.ts",
     "src/functional/copy.ts",
     "src/functional/decrement.ts",

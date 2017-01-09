@@ -5,11 +5,11 @@ import {isInteger} from './isInteger';
 import {setZero} from '../util/intUtils';
 import {strToDigits} from '../util/numUtils';
 
-export function toInteger(A: Integer | number | string, base: number = DEFAULT_BASE): Integer {
+export function toInteger(A: Integer | number | string, base: number = null, isMutable: boolean = false): Integer {
 
   //If already an integer
   if(isInteger(A)){
-    return A;
+    return setBase(A, (base == null) ? A.base : base, isMutable);
   }
 
   //Convert numbers to string
@@ -27,7 +27,5 @@ export function toInteger(A: Integer | number | string, base: number = DEFAULT_B
   B.precision = B.digits.length;
 
   //Convert to chosen base
-  setBase(B, base);
-
-  return B;
+  return setBase(B, (base == null) ? DEFAULT_BASE : base, true);
 }

@@ -1,15 +1,16 @@
 import {MIN_BASE, MAX_BASE} from '../constants';
 import {Integer} from '../integer';
+import {clone} from './clone';
 import {changeBase} from '../util/intUtils';
 
-export function setBase(A: Integer, base: number): Integer {
+export function setBase(A: Integer, base: number, isMutable: boolean = false): Integer {
 
   //Sanitize base
   base = 0 | base;
 
   //Check if already in base
   if(A.base === base){
-    return A;
+    return (isMutable) ? A : clone(A);
   }
 
   //If new base too low
@@ -23,5 +24,5 @@ export function setBase(A: Integer, base: number): Integer {
   }
 
   //Convert to base
-  return changeBase(A, base);
+  return changeBase((isMutable) ? A : clone(A), base);
 }

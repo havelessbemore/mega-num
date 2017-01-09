@@ -14,6 +14,8 @@ export function compare(A: Integer, B: Integer): number {
     return (A.isNegative) ? -1 : 1;
   }
 
+  const base: number = A.base;
+
   //If not same base
   if(A.base !== B.base){
 
@@ -25,11 +27,10 @@ export function compare(A: Integer, B: Integer): number {
     if(Math.ceil((A.precision + 1) * ratio) < B.precision){
       return -1
     }
-  }
 
-  //Convert A to B's base
-  const base: number = A.base;
-  changeBase(A, B.base);
+    //Convert A to B's base
+    changeBase(A, B.base);
+  }
 
   //Compare A and B
   const out: number = _compare(
@@ -37,7 +38,7 @@ export function compare(A: Integer, B: Integer): number {
     B.digits, 0, B.precision
   );
 
-  //Change A back to original base
+  //Change A back to original base (if needed)
   changeBase(A, base);
 
   //Return result

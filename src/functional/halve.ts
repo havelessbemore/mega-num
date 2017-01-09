@@ -1,14 +1,16 @@
 import {Integer} from '../integer';
+import {clone} from './clone';
 import {decrement} from './decrement';
 import {halve as _halve} from '../algorithm/halve';
 import {setZero, setOne} from '../util/intUtils';
 
-export function halve(A: Integer): [Integer, Integer] {
-  const remainder: Integer = <Integer>{base: A.base};
+export function halve(A: Integer, isMutable: boolean = false): [Integer, Integer] {
+  const remainder: Integer = setZero({base: A.base});
+  A = (isMutable) ? A : clone(A);
 
   //If zero
   if(A.precision === 0){
-    return [A, setZero(remainder)];
+    return [A, remainder];
   }
 
   //Halve
@@ -16,14 +18,14 @@ export function halve(A: Integer): [Integer, Integer] {
 
   //If no remainder
   if(remainder.precision === 0){
-    return [A, setZero(remainder)];
+    return [A, remainder];
   }
 
-  //If remainder and A is negative
+  //If remainder and C is negative
   if(A.isNegative){
 
     //Round down (e.g. Math.floor(-49.5) = -50)
-    decrement(A);
+    decrement(A, true);
   }
 
   return [A, setOne(remainder)];

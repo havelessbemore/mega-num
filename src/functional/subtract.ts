@@ -1,18 +1,21 @@
 import {Integer} from '../integer';
 import {add} from './add';
 import {compare} from './compare';
+import {clone} from './clone';
 import {copy} from './copy';
 import {negate} from './negate';
 import {reverseSubtraction} from '../algorithm/reverseSubtraction';
 import {subtraction} from '../algorithm/subtraction';
 import {changeBase, setZero} from '../util/intUtils';
 
-export function subtract(A: Integer, B: Integer): Integer {
+export function subtract(A: Integer, B: Integer, isMutable: boolean = false): Integer {
 
   //If subtracting itself
   if(A === B){
-    return setZero(A);
+    return setZero((isMutable) ? A : {base: A.base});
   }
+
+  A = (isMutable) ? A : clone(A);
 
   //If B is zero
   if(B.precision === 0){
@@ -25,8 +28,8 @@ export function subtract(A: Integer, B: Integer): Integer {
   if(A.precision === 0){
 
     //Copy B
-    copy(A, B);
-    negate(A);
+    A = copy(A, B);
+    A = negate(A, true);
     return changeBase(A, base);
   }
 
@@ -34,9 +37,9 @@ export function subtract(A: Integer, B: Integer): Integer {
   if(A.isNegative !== B.isNegative){
 
     //Change sign, add, change sign again
-    negate(A);
-    add(A, B);
-    return negate(A);
+    A = negate(A, true);
+    A = add(A, B, true);
+    return negate(A, true);
   }
 
   //Normalize to B's base
@@ -55,8 +58,8 @@ export function subtract(A: Integer, B: Integer): Integer {
   if(c < 0){
 
     //Switch sign
-    negate(A);
-    
+    negate(A, true);
+
     //Make room for subtraction
     if(A.digits.length < B.precision){
       A.digits.length = B.precision;

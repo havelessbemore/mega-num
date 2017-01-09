@@ -15,7 +15,7 @@ export function toString(A: Integer, sep: string = null, cipher: ReadonlyArray<s
 
       //Print without cipher
       sep = (sep == null) ? ":": sep;
-      return sign + A.digits.slice(0).reverse().join(sep);
+      return sign + A.digits.slice(0,A.precision).reverse().join(sep);
     }
 
     //Use default cipher

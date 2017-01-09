@@ -1,9 +1,11 @@
 import {Integer} from '../integer';
+import {clone} from './clone';
 import {decrement} from '../algorithm/decrement';
 import {increment as _increment} from '../algorithm/increment';
 
 
-export function increment(A: Integer): Integer {
+export function increment(A: Integer, isMutable: boolean = false): Integer {
+  A = (isMutable) ? A : clone(A);
 
   //If negative
   if(A.isNegative){

@@ -1,4 +1,5 @@
 import {Integer} from '../integer';
+import {clone} from './clone';
 import {copy} from './copy';
 import {double} from './double';
 import {negate} from './negate';
@@ -7,12 +8,14 @@ import {addition} from '../algorithm/addition';
 import {reverseAddition} from '../algorithm/reverseAddition';
 import {changeBase} from '../util/intUtils';
 
-export function add(A: Integer, B: Integer): Integer {
+export function add(A: Integer, B: Integer, isMutable: boolean = false): Integer {
 
   //If self
   if(A === B){
-    return double(A);
+    return double(A, isMutable);
   }
+
+  A = (isMutable) ? A : clone(A);
 
   //If B is zero
   if(B.precision === 0){
@@ -21,9 +24,9 @@ export function add(A: Integer, B: Integer): Integer {
 
   const base: number = A.base;
 
-  //If A is zero
+  //If C is zero
   if(A.precision === 0){
-    copy(A, B);
+    A = copy(A, B);
     return changeBase(A, base);
   }
 
@@ -34,16 +37,16 @@ export function add(A: Integer, B: Integer): Integer {
   if(A.isNegative !== B.isNegative){
 
     //Change sign, subtract, change sign again
-    negate(A);
-    subtract(A, B);
-    negate(A);
+    A = negate(A, true);
+    A = subtract(A, B, true);
+    A = negate(A, true);
 
-  //If A < B
+  //If C < B
 } else if(A.precision < B.precision){
 
-    //Make room for addition
+    //Update C's digit array to minimum result size
     if(A.digits.length <= B.precision){
-      A.digits.length = B.precision + 1;
+      A.digits.length = B.precision;
     }
 
     //Add

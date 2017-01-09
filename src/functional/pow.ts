@@ -1,61 +1,45 @@
 import {Integer} from '../integer';
-import {copy} from './copy';
+import {clone} from './clone';
 import {isEven} from './isEven';
 import {exponentiation} from '../algorithm/exponentiation';
 import {setOne, setZero} from '../util/intUtils';
 
-export function pow(A: Integer, B: Integer): Integer {
+export function pow(A: Integer, B: Integer, isMutable: boolean = false): Integer {
+  const C: Integer = (isMutable) ? A : clone(A);
 
-  //A^0 = 1
+  //C^0 = 1
   if(B.precision === 0){
-    return setOne(A);
+    return setOne(C);
   }
 
-  //If negative power
+  //If power is negative
   if(B.isNegative){
 
     //If 1 / 0
-    if(A.precision === 0){
+    if(C.precision === 0){
       throw new EvalError("Divide by zero");
     }
 
-    return setZero(A);
+    return setZero(C);
   }
 
   //0^B = zero
-  if(A.precision === 0){
-    return A;
+  if(C.precision === 0){
+    return C;
   }
 
   //If negative base and even power
-  if(A.isNegative && isEven(B)){
-    A.isNegative = false;
-  }
+  C.isNegative = !(C.isNegative && isEven(B));
 
   //1^B = 1
-  if(A.precision === 1 && A.digits[0] === 1){
-    return A;
+  if(C.precision === 1 && C.digits[0] === 1){
+    return C;
   }
 
-  //Copy B
-  B = copy({}, B);
-
-  //Make room for exponentiation
-  /*const minNewLen: number = Math.floor(
-    (A.precision-1) * (
-      (B.precision) * Math.log2(B.base) + Math.log2(B.digits[B.precision-1]
-    ))
-  );
-  console.log("PREDICTED LENGTH: ", minNewLen);
-  if(A.digits.length < minNewLen){
-    A.digits.length = minNewLen;
-  }
-  */
-
-  //A = A^B
-  A.precision = exponentiation(
-    A.digits, 0, A.precision, A.base, B.digits, 0, B.precision, B.base
+  //C = C^B
+  C.precision = exponentiation(
+    C.digits, 0, C.precision, C.base, B.digits.slice(0,B.precision), 0, B.precision, B.base
   );
 
-  return A;
+  return C;
 }
