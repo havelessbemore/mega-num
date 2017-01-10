@@ -13,6 +13,17 @@ function toInteger(digits: number[], precision: number, isNegative: boolean, bas
 
 describe('intUtils', function(){
 
+  describe('assign', function(){
+    it('should assign source property values to target', () => {
+      const source: Integer = toInteger([1,2,3,4,5], 5, true, 125);
+      const target: Integer = toInteger([6,7,8], 3, false, 10);
+      const actual: Integer = util.assign(target, source);
+      assert.equal(actual, target);
+      assert.deepEqual(actual, source);
+      assert.equal(actual.digits, source.digits);
+    });
+  });
+
   describe('setOne', function(){
     it('should set zero to one', () => {
       const input: Integer = toInteger([], 0, false, 10);

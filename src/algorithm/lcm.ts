@@ -1,5 +1,4 @@
 import {basicDivision} from './basicDivision';
-import {copy} from '../util/arrayUtils';
 import {karatsubaMultiplication} from './karatsubaMultiplication';
 import {steinGCD} from './steinGCD';
 
@@ -12,14 +11,12 @@ import {steinGCD} from './steinGCD';
 export function lcm(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): [number[], number] {
 
   //Copy A
-  let maxC: number = maxA - minA;
-  let C: number[] = new Array(maxC);
-  copy(C, 0, A, minA, maxA);
+  let C: number[] = A.slice(minA, maxA);
+  let maxC: number = C.length;
 
   //Copy B
-  const maxD: number = maxB - minB;
-  const D: number[] = new Array(maxD);
-  copy(D, 0, B, minB, maxB);
+  const D: number[] = B.slice(minB, maxB);
+  const maxD: number = D.length;
 
   //Get gcd(A, B)
   [C,,maxC] = steinGCD(C, 0, maxC, D, 0, maxD, base);

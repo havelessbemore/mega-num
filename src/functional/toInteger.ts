@@ -1,4 +1,4 @@
-import {DEFAULT_BASE} from '../constants';
+import {Globals} from '../globals';
 import {Integer} from '../integer';
 import {setBase} from './setBase';
 import {isInteger} from './isInteger';
@@ -27,5 +27,5 @@ export function toInteger(A: Integer | number | string, base: number = null, isM
   B.precision = B.digits.length;
 
   //Convert to chosen base
-  return setBase(B, (base == null) ? DEFAULT_BASE : base, true);
+  return setBase(B, (base == null) ? Globals.DEFAULT_BASE : base, true);
 }

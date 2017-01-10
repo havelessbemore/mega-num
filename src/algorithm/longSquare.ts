@@ -1,5 +1,5 @@
-import {set} from '../util/arrayUtils';
 import {unsafeShiftUp} from '../util/arrayUtils';
+import {zero} from '../util/numUtils';
 
 /*
   f(A) = A * A
@@ -33,7 +33,7 @@ export function longSquare(A: number[], min: number, max: number, base: number):
   //Move digits to the left
   let newMax: number = max - min;
   unsafeShiftUp(A, min, max, newMax);
-  set(A, min, max, 0);
+  zero(A, min, max);
 
   //For every digit
   newMax = newMax + max;

@@ -1,6 +1,14 @@
 import {Integer} from '../integer';
 import {setBase} from '../algorithm/setBase';
 
+export function assign(target: any, source: Integer): Integer {
+  target.base = source.base;
+  target.digits = source.digits;
+  target.precision = source.precision;
+  target.isNegative = source.isNegative;
+  return target;
+}
+
 export function changeBase(A: Integer, base: number): Integer {
   [A.digits, A.precision] = setBase(
     A.digits, 0, A.precision, A.base, base

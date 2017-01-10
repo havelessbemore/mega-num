@@ -1,6 +1,7 @@
 import {addition} from './addition';
 import {subtraction} from './subtraction';
-import {copy, set, unsafeShiftUp} from '../util/arrayUtils';
+import {copy, unsafeShiftUp} from '../util/arrayUtils';
+import {zero} from '../util/numUtils';
 
 /*
   f(A) = A * A
@@ -41,7 +42,7 @@ export function karatsubaSquare(A: number[], min: number, max: number, base: num
   const lowMax: number = karatsubaSquare(A, min, mid, base);
 
   //Fill unused space with zero
-  set(A, lowMax, max, 0);
+  zero(A, lowMax, max);
 
   //high * high
   const highMin = mid + halfLen;

@@ -6,7 +6,7 @@ import {setOne} from '../util/intUtils';
 
 export function decrement(A: Integer, isMutable: boolean = false): Integer {
   A = (isMutable) ? A : clone(A);
-  
+
   //If negative
   if(A.isNegative){
     A.precision = increment(A.digits, 0, A.precision, A.base);

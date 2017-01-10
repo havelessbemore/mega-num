@@ -1,8 +1,8 @@
 import {addition} from './addition';
 import {reverseAddition} from './reverseAddition';
 import {subtraction} from './subtraction';
-import {min, max} from '../util/numUtils';
-import {copy, set, unsafeShiftUp} from '../util/arrayUtils';
+import {copy, unsafeShiftUp} from '../util/arrayUtils';
+import {min, max, zero} from '../util/numUtils';
 
 /*
   f(A) = A * B
@@ -11,7 +11,7 @@ import {copy, set, unsafeShiftUp} from '../util/arrayUtils';
   Assumes A and B are not the same array
   Explanation: https://en.wikipedia.org/wiki/Karatsuba_algorithm
 */
-export function karatsubaMultiplication(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): number {
+export function karatsubaMultiplication(A: number[], minA: number, maxA: number, B: ReadonlyArray<number>, minB: number, maxB: number, base: number): number {
   let halfLen: number = max(maxA - minA, maxB - minB);
 
   //Base case
@@ -60,7 +60,7 @@ export function karatsubaMultiplication(A: number[], minA: number, maxA: number,
   if(midA === maxA || midB === maxB){
     if(lowMax <= halfA){
       maxA = halfA + mediumMax;
-      set(A, lowMax, halfA, 0);
+      zero(A, lowMax, halfA);
       copy(A, halfA, medium, 0, mediumMax);
     } else if(mediumMax > lowMax - halfA){
       maxA = reverseAddition(A, halfA, lowMax, medium, 0, mediumMax, base);
@@ -71,7 +71,7 @@ export function karatsubaMultiplication(A: number[], minA: number, maxA: number,
   }
 
   //Fill unused space with zero
-  set(A, lowMax, maxA, 0);
+  zero(A, lowMax, maxA);
 
   //highA = highA * highB
   const highMin: number = midA + halfLen;

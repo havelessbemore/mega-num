@@ -39,3 +39,10 @@ export function strToDigits(s: String): [number[], boolean] {
 
   return [digits, isNegative];
 }
+
+//Sets indices between [min, max) to 0
+export function zero(A: number[], min: number, max: number): void {
+  while(min < max){
+    A[min++] = 0;
+  }
+}

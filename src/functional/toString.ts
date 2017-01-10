@@ -1,4 +1,4 @@
-import {CIPHER} from '../constants';
+import {Globals} from '../globals';
 import {Integer} from '../integer';
 
 //Assumes input cipher is adequate for base
@@ -11,7 +11,7 @@ export function toString(A: Integer, sep: string = null, cipher: ReadonlyArray<s
   if(cipher == null){
 
     //If default cipher too small for base
-    if(CIPHER.length < A.base){
+    if(Globals.DEFAULT_CIPHER.length < A.base){
 
       //Print without cipher
       sep = (sep == null) ? ":": sep;
@@ -19,7 +19,7 @@ export function toString(A: Integer, sep: string = null, cipher: ReadonlyArray<s
     }
 
     //Use default cipher
-    cipher = CIPHER;
+    cipher = Globals.DEFAULT_CIPHER;
   }
 
   //Print with cipher

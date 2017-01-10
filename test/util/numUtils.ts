@@ -63,4 +63,21 @@ describe('numUtils', function(){
       assert.deepEqual(util.strToDigits("-5.678"), [[5], true]);
     });
   });
+
+  describe('zero', function(){
+    it('should set indices [min, max) of an array to zero', function(){
+      let actual: number[] = [9,9,9,9,9,9,9,9,9];
+      util.zero(actual, 2, 4);
+      assert.deepEqual(actual, [9,9,0,0,9,9,9,9,9]);
+      actual = [9,9,9,9,9,9,9,9,9];
+      util.zero(actual, 0, 5);
+      assert.deepEqual(actual, [0,0,0,0,0,9,9,9,9]);
+      actual = [9,9,9,9,9,9,9,9,9];
+      util.zero(actual, 8, 9);
+      assert.deepEqual(actual, [9,9,9,9,9,9,9,9,0]);
+      actual = [9,9,9,9,9,9,9,9,9];
+      util.zero(actual, 0, 10);
+      assert.deepEqual(actual, [0,0,0,0,0,0,0,0,0,0]);
+    });
+  });
 });

@@ -76,20 +76,6 @@ describe('arrayUtils', function(){
     });
   });
 
-  describe('set', function(){
-    it('should set indices [min, max) of an array to zero', function(){
-      const actual: number[] = [9,9,9,9,9,9,9,9,9];
-      util.set(actual, 2, 4, 0);
-      assert.deepEqual(actual, [9,9,0,0,9,9,9,9,9]);
-      util.set(actual, 0, 5, 1);
-      assert.deepEqual(actual, [1,1,1,1,1,9,9,9,9]);
-      util.set(actual, 8, 9, 2);
-      assert.deepEqual(actual, [1,1,1,1,1,9,9,9,2]);
-      util.set(actual, 0, 10, 3);
-      assert.deepEqual(actual, [3,3,3,3,3,3,3,3,3,3]);
-    });
-  });
-
   describe('printArr', function(){
     it("should print out the array in subsets", function(){
       assert.equal(util.printArr([],0,0), "[||]");

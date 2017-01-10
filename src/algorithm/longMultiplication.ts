@@ -1,5 +1,5 @@
-import {set} from '../util/arrayUtils';
 import {safeShiftUp} from '../util/arrayUtils';
+import {zero} from '../util/numUtils';
 
 /*
   f(A, B) = A * B
@@ -19,13 +19,13 @@ import {safeShiftUp} from '../util/arrayUtils';
       g  h  i  j  k  l
 
 */
-export function longMultiplication(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): number {
+export function longMultiplication(A: number[], minA: number, maxA: number, B: ReadonlyArray<number>, minB: number, maxB: number, base: number): number {
 
   //Shift A to the left
   const lenB: number = maxB - minB;
   const minC: number = minA + lenB;
   safeShiftUp(A, minA, maxA, lenB);
-  set(A, minA, minC, 0);
+  zero(A, minA, minC);
 
   //For each digit in multiplicand
   const maxC: number = maxA + lenB;
