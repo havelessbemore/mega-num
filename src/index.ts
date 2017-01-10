@@ -1,5 +1,5 @@
 //Globals
-export {Globals as _globals} from './globals';
+export {Globals as __globals__} from './globals';
 
 //Functional
 export {abs} from './functional/abs';
