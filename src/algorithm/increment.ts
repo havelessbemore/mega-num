@@ -4,7 +4,9 @@
   Assumes A >= 0
 */
 
-export function increment(A: number[], minA: number, maxA: number, base: number): number {
+export function increment(
+  A: number[], minA: number, maxA: number, base: number
+): number {
 
   //Deal with any carries
   for(--base; minA < maxA && A[minA] === base; A[minA++] = 0){

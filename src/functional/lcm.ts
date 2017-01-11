@@ -1,11 +1,10 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
 import {copy} from './copy';
 import {lcm as _lcm} from '../algorithm/lcm';
-import {changeBase, setZero} from '../util/intUtils';
+import {changeBase, setZero, tryMutable} from '../util/intUtils';
 
-export function lcm(A: Integer, B: Integer, isMutable: boolean = false): Integer {
-  const C: Integer = (isMutable) ? A : clone(A);
+export function lcm(A: Integer, B: Integer, isMutable?: boolean): Integer {
+  const C: Integer = tryMutable(A, isMutable);
 
   //Make C positive
   C.isNegative = false;

@@ -1,11 +1,11 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
 import {decrement} from '../algorithm/decrement';
 import {increment as _increment} from '../algorithm/increment';
+import {tryMutable} from '../util/intUtils';
 
 
-export function increment(A: Integer, isMutable: boolean = false): Integer {
-  A = (isMutable) ? A : clone(A);
+export function increment(A: Integer, isMutable?: boolean): Integer {
+  A = tryMutable(A, isMutable);
 
   //If negative
   if(A.isNegative){

@@ -19,7 +19,11 @@ import {zero} from '../util/numUtils';
       g  h  i  j  k  l
 
 */
-export function longMultiplication(A: number[], minA: number, maxA: number, B: ReadonlyArray<number>, minB: number, maxB: number, base: number): number {
+export function longMultiplication(
+  A: number[], minA: number, maxA: number,
+  B: ReadonlyArray<number>, minB: number, maxB: number,
+  base: number
+): number {
 
   //Shift A to the left
   const lenB: number = maxB - minB;

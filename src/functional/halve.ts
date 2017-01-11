@@ -1,12 +1,11 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
 import {decrement} from './decrement';
 import {halve as _halve} from '../algorithm/halve';
-import {setZero, setOne} from '../util/intUtils';
+import {setZero, setOne, tryMutable} from '../util/intUtils';
 
-export function halve(A: Integer, isMutable: boolean = false): [Integer, Integer] {
+export function halve(A: Integer, isMutable?: boolean): [Integer, Integer] {
   const remainder: Integer = setZero({base: A.base});
-  A = (isMutable) ? A : clone(A);
+  A = tryMutable(A, isMutable);
 
   //If zero
   if(A.precision === 0){

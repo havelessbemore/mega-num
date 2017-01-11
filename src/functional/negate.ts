@@ -1,8 +1,8 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
+import {tryMutable} from '../util/intUtils';
 
-export function negate(A: Integer, isMutable: boolean = false): Integer {
-  A = (isMutable) ? A : clone(A);
+export function negate(A: Integer, isMutable?: boolean): Integer {
+  A = tryMutable(A, isMutable);
   A.isNegative = A.precision > 0 && !A.isNegative;
   return A;
 }

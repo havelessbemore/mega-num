@@ -1,19 +1,18 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
 import {square} from './square';
 import {karatsubaMultiplication} from '../algorithm/karatsubaMultiplication';
 import {longMultiplication} from '../algorithm/longMultiplication';
 import {singleDigitMultiplication} from '../algorithm/singleDigitMultiplication';
-import {changeBase, setZero} from '../util/intUtils';
+import {changeBase, setZero, tryMutable} from '../util/intUtils';
 
-export function multiply(A: Integer, B: Integer, isMutable: boolean = false): Integer {
+export function multiply(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
   //If self
   if(A === B){
     return square(A, isMutable);
   }
 
-  A = (isMutable) ? A : clone(A);
+  A = tryMutable(A, isMutable);
 
   //If A is zero
   if(A.precision === 0){

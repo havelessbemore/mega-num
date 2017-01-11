@@ -1,11 +1,11 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
+import {compare} from './compare';
 import {copy} from './copy';
 import {steinGCD} from '../algorithm/steinGCD';
-import {changeBase} from '../util/intUtils';
+import {changeBase, tryMutable} from '../util/intUtils';
 
-export function gcd(A: Integer, B: Integer, isMutable: boolean = false): Integer {
-  const C: Integer = (isMutable) ? A : clone(A);
+export function gcd(A: Integer, B: Integer, isMutable?: boolean): Integer {
+  const C: Integer = tryMutable(A, isMutable);
 
   //Make C positive
   C.isNegative = false;
@@ -15,22 +15,27 @@ export function gcd(A: Integer, B: Integer, isMutable: boolean = false): Integer
     return C;
   }
 
-  const base: number = C.base;
-
   //If C = 0
   if(C.precision === 0){
     copy(C, B);
     C.isNegative = false;
+    return C;
+  }
 
   //If |C| > 0 && |B| > 0
-  } else {
+  const base: number = C.base;
 
-    //Normalize the bases
-    changeBase(C, B.base);
+  //Normalize the bases
+  changeBase(C, B.base);
+
+  //If C != B
+  if(compare(C, B) !== 0){
 
     //Calculate GCD
     [C.digits,,C.precision] = steinGCD(
-      C.digits, 0, C.precision, B.digits.slice(0, B.precision), 0, B.precision, C.base
+      C.digits, 0, C.precision,
+      B.digits.slice(0, B.precision), 0, B.precision,
+      C.base
     );
   }
 

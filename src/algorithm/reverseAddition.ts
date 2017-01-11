@@ -7,7 +7,11 @@ import {addition} from './addition';
     A < B
     A and B not overlapping array segments
 */
-export function reverseAddition(A: number[], minA: number, maxA: number, B: ReadonlyArray<number>, minB: number, maxB: number, base: number): number{
+export function reverseAddition(
+  A: number[], minA: number, maxA: number,
+  B: ReadonlyArray<number>, minB: number, maxB: number,
+  base: number
+): number{
 
   //Add extra digits to A
   const newMaxB: number = minB - minA + maxA;

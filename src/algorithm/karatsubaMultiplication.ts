@@ -11,7 +11,11 @@ import {min, max, zero} from '../util/numUtils';
   Assumes A and B are not the same array
   Explanation: https://en.wikipedia.org/wiki/Karatsuba_algorithm
 */
-export function karatsubaMultiplication(A: number[], minA: number, maxA: number, B: ReadonlyArray<number>, minB: number, maxB: number, base: number): number {
+export function karatsubaMultiplication(
+  A: number[], minA: number, maxA: number,
+  B: ReadonlyArray<number>, minB: number, maxB: number,
+  base: number
+): number {
   let halfLen: number = max(maxA - minA, maxB - minB);
 
   //Base case
@@ -36,7 +40,9 @@ export function karatsubaMultiplication(A: number[], minA: number, maxA: number,
   //mediumB = lowB + highB
   const mediumB: number[] = new Array(midB - minB + 1);
   copy(mediumB, 0, B, minB, midB);
-  const mediumMaxB: number = addition(mediumB, 0, midB - minB, B, midB, maxB, base);
+  const mediumMaxB: number = addition(
+    mediumB, 0, midB - minB, B, midB, maxB, base
+  );
 
   //medium = lowA + highA
   const medium: number[] = new Array(midA - minA + 1 + mediumMaxB);
@@ -44,14 +50,18 @@ export function karatsubaMultiplication(A: number[], minA: number, maxA: number,
   let mediumMax: number = addition(medium, 0, midA - minA, A, midA, maxA, base);
 
   //medium = medium * mediumB
-  mediumMax = karatsubaMultiplication(medium, 0, mediumMax, mediumB, 0, mediumMaxB, base);
+  mediumMax = karatsubaMultiplication(
+    medium, 0, mediumMax, mediumB, 0, mediumMaxB, base
+  );
 
   //Shift highA left
   A[maxA] = 0;
   unsafeShiftUp(A, midA, maxA, halfLen);
 
   //lowA = lowA * lowB
-  const lowMax: number = karatsubaMultiplication(A, minA, midA, B, minB, midB, base);
+  const lowMax: number = karatsubaMultiplication(
+    A, minA, midA, B, minB, midB, base
+  );
 
   //medium = medium - lowA
   mediumMax = subtraction(medium, 0, mediumMax, A, minA, lowMax, base);
@@ -75,7 +85,9 @@ export function karatsubaMultiplication(A: number[], minA: number, maxA: number,
 
   //highA = highA * highB
   const highMin: number = midA + halfLen;
-  maxA = karatsubaMultiplication(A, highMin, maxA + halfLen, B, midB, maxB, base);
+  maxA = karatsubaMultiplication(
+    A, highMin, maxA + halfLen, B, midB, maxB, base
+  );
 
   //medium = medium - highA
   mediumMax = subtraction(medium, 0, mediumMax, A, highMin, maxA, base);

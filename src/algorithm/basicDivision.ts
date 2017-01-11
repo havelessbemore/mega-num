@@ -14,7 +14,11 @@ import {zero} from '../util/numUtils';
   INPUT: positive integers x = (xn ··· x1x0)b, y = (yt ··· y1y0)b with n ≥ t ≥ 1, yt != 0
   OUTPUT: the quotient q = (qn−t ··· q1q0)b and remainder r = (rt ··· r1r0)b such that x = qy + r, 0 ≤ r < y
 */
-export function basicDivision(X: number[], minX: number, maxX: number, Y: ReadonlyArray<number>, minY: number, maxY: number, base: number): [number[], number[], number, number] {
+export function basicDivision(
+  X: number[], minX: number, maxX: number,
+  Y: ReadonlyArray<number>, minY: number, maxY: number,
+  base: number
+): [number[], number[], number, number] {
 
   //1. Initialize the quotient
   const lenY: number = maxY - minY;

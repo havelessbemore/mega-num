@@ -9,7 +9,10 @@ import {karatsubaMultiplication} from './karatsubaMultiplication';
   Assumes A > 0
   Assumes B > 0
 */
-export function exponentiation(A: number[], minA: number, maxA: number, baseA: number, B: number[], minB: number, maxB: number, baseB: number): number {
+export function exponentiation(
+  A: number[], minA: number, maxA: number, baseA: number,
+  B: number[], minB: number, maxB: number, baseB: number
+): number {
   let maxC: number = 1;
   const C: number[] = [1];
 

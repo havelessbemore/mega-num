@@ -2,7 +2,9 @@
 f(A) = A + A
 Overwrites A
 */
-export function double(A: number[], minA: number, maxA: number, base: number): number {
+export function double(
+  A: number[], minA: number, maxA: number, base: number
+): number {
 
   //Double
   let carry: number = 0;

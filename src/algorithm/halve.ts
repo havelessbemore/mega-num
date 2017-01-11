@@ -3,7 +3,9 @@
   Overwrites A
   Assumes A > 0
 */
-export function halve(A: number[], minA: number, maxA: number, base: number): [number, number] {
+export function halve(
+  A: number[], minA: number, maxA: number, base: number
+): [number, number] {
 
   //Halve
   let remainder: number = 0;

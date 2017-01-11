@@ -1,9 +1,8 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
 import {copy} from './copy';
 import {basicDivision} from '../algorithm/basicDivision';
 import {singleDigitDivision} from '../algorithm/singleDigitDivision';
-import {changeBase, setOne, setZero} from '../util/intUtils';
+import {changeBase, setOne, setZero, tryMutable} from '../util/intUtils';
 
 export function divideAndRemainder(A: Integer, B: Integer, isMutable: boolean = false): [Integer, Integer] {
 
@@ -12,7 +11,7 @@ export function divideAndRemainder(A: Integer, B: Integer, isMutable: boolean = 
     throw new EvalError("Divide by zero");
   }
 
-  let C: Integer = (isMutable) ? A : clone(A);
+  let C: Integer = tryMutable(A, isMutable);
 
   //If self
   if(A === B){

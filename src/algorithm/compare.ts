@@ -1,6 +1,9 @@
 //Assumes valid inputs
 //Assumes numbers are in same base
-export function compare(A: ReadonlyArray<number>, minA: number, maxA: number, B: ReadonlyArray<number>, minB: number, maxB: number): number {
+export function compare(
+  A: ReadonlyArray<number>, minA: number, maxA: number,
+  B: ReadonlyArray<number>, minB: number, maxB: number
+): number {
 
   //Compare number of digits
   const d: number = maxA - minA - maxB + minB;

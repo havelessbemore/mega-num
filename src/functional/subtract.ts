@@ -1,21 +1,20 @@
 import {Integer} from '../integer';
 import {add} from './add';
 import {compare} from './compare';
-import {clone} from './clone';
 import {copy} from './copy';
 import {negate} from './negate';
 import {reverseSubtraction} from '../algorithm/reverseSubtraction';
 import {subtraction} from '../algorithm/subtraction';
-import {changeBase, setZero} from '../util/intUtils';
+import {changeBase, setZero, tryMutable} from '../util/intUtils';
 
-export function subtract(A: Integer, B: Integer, isMutable: boolean = false): Integer {
+export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
   //If subtracting itself
   if(A === B){
     return setZero((isMutable) ? A : {base: A.base});
   }
 
-  A = (isMutable) ? A : clone(A);
+  A = tryMutable(A, isMutable);
 
   //If B is zero
   if(B.precision === 0){

@@ -7,7 +7,11 @@ import {decrement} from './decrement';
   Note
      Overwrites A
 */
-export function subtraction(A: number[], minA: number, maxA: number, B: ReadonlyArray<number>, minB: number, maxB: number, base: number): number {
+export function subtraction(
+  A: number[], minA: number, maxA: number,
+  B: ReadonlyArray<number>, minB: number, maxB: number,
+  base: number
+): number {
   let a: number = minA;
   let borrow: number = 0;
 

@@ -5,7 +5,7 @@ import {isInteger} from './isInteger';
 import {setZero} from '../util/intUtils';
 import {strToDigits} from '../util/numUtils';
 
-export function toInteger(A: Integer | number | string, base: number = null, isMutable: boolean = false): Integer {
+export function toInteger(A: Integer | number | string, base: number = null, isMutable?: boolean): Integer {
 
   //If already an integer
   if(isInteger(A)){

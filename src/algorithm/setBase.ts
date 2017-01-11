@@ -1,5 +1,8 @@
 //Assumes valid inputs
-export function setBase(A: number[], minA: number, maxA: number, curBase: number, newBase: number): [number[], number] {
+export function setBase(
+  A: number[], minA: number, maxA: number,
+  curBase: number, newBase: number
+): [number[], number] {
 
   //If zero or same base
   if(maxA === minA || curBase === newBase){

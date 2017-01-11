@@ -7,7 +7,11 @@ import {increment} from './increment';
     A.length >= B.length
     A and B not same array or non-intersecting segments
 */
-export function addition(A: number[], minA: number, maxA: number, B: ReadonlyArray<number>, minB: number, maxB: number, base: number): number{
+export function addition(
+  A: number[], minA: number, maxA: number,
+  B: ReadonlyArray<number>, minB: number, maxB: number,
+  base: number
+): number{
   let carry: number = 0;
 
   //Add common digits

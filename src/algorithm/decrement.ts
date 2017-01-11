@@ -3,10 +3,12 @@
   Overwrites A
   Assumes A > 0
 */
-export function decrement(A: number[], minA: number, maxA: number, base: number): number {
+export function decrement(
+  A: number[], minA: number, maxA: number, base: number
+): number {
 
   //Deal with any borrows
-  for(const borrow = base - 1; A[minA] === 0; A[minA++] = borrow){
+  for(const borrow: number = base - 1; A[minA] === 0; A[minA++] = borrow){
   }
 
   //Subtract one

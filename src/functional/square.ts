@@ -1,10 +1,10 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
 import {karatsubaSquare} from '../algorithm/karatsubaSquare';
 import {longSquare} from '../algorithm/longSquare';
+import {tryMutable} from '../util/intUtils';
 
-export function square(A: Integer, isMutable: boolean = false): Integer {
-  A = (isMutable) ? A : clone(A);
+export function square(A: Integer, isMutable?: boolean): Integer {
+  A = tryMutable(A, isMutable);
 
   //If zero
   if(A.precision === 0){

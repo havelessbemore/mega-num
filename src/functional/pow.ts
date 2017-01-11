@@ -1,11 +1,10 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
 import {isEven} from './isEven';
 import {exponentiation} from '../algorithm/exponentiation';
-import {setOne, setZero} from '../util/intUtils';
+import {setOne, setZero, tryMutable} from '../util/intUtils';
 
-export function pow(A: Integer, B: Integer, isMutable: boolean = false): Integer {
-  const C: Integer = (isMutable) ? A : clone(A);
+export function pow(A: Integer, B: Integer, isMutable?: boolean): Integer {
+  const C: Integer = tryMutable(A, isMutable);
 
   //C^0 = 1
   if(B.precision === 0){

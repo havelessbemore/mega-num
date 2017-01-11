@@ -1,8 +1,7 @@
 import {Integer} from '../integer';
-import {clone} from './clone';
 import {compare} from './compare';
+import {tryMutable} from '../util/intUtils';
 
-export function max(A: Integer, B: Integer, isMutable: boolean = false): Integer {
-  A = (compare(A, B) < 0) ? B : A;
-  return (isMutable) ? A : clone(A);
+export function max(A: Integer, B: Integer, isMutable?: boolean): Integer {
+  return tryMutable(compare(A, B) < 0 ? B : A, isMutable);
 }

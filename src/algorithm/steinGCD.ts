@@ -8,9 +8,14 @@ import {subtraction} from './subtraction';
 f(A, B) = GCD(A, B)
 Overwrites A, B
 Expects A > 0, B > 0
+//Assumes A != B
 See: https://en.wikipedia.org/wiki/Binary_GCD_algorithm
 */
-export function steinGCD(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): [number[], number, number] {
+export function steinGCD(
+  A: number[], minA: number, maxA: number,
+  B: number[], minB: number, maxB: number,
+  base: number
+): [number[], number, number] {
 
   //Count and remove common factors of 2
   let shifts: number = 0;
@@ -25,22 +30,15 @@ export function steinGCD(A: number[], minA: number, maxA: number, B: number[], m
     [maxA] = halve(A, minA, maxA, base);
   }
 
+  //Remove extra factors of 2 in B
+  while(isEven(B, minB, maxB, base)){
+    [maxB] = halve(B, minB, maxB, base);
+  }
+
   //A will always be odd from now on
-  do {
-
-    //Remove extra factors of 2 in B
-    while(isEven(B, minB, maxB, base)){
-      [maxB] = halve(B, minB, maxB, base);
-    }
-
-    //B is now odd
-    //Compare A and B
-    let c: number = compare(A, minA, maxA, B, minB, maxB);
-
-    //End loop iff B - A === 0
-    if(c === 0){
-      break;
-    }
+  //While A != B
+  let c: number;
+  while((c = compare(A, minA, maxA, B, minB, maxB)) !== 0){
 
     //Switch A and B iff A > B
     if(c > 0){
@@ -58,9 +56,11 @@ export function steinGCD(A: number[], minA: number, maxA: number, B: number[], m
     //B = B - A
     maxB = subtraction(B, minB, maxB, A, minA, maxA, base);
 
-    //B is now even since B and A were both odd
-    [maxB] = halve(B, minB, maxB, base);
-  } while (true);
+    //B is now even so halve it at least once
+    do {
+      [maxB] = halve(B, minB, maxB, base);
+    } while (isEven(B, minB, maxB, base));
+  }
 
   //Restore common factors of 2 (A = A << shifts)
   while(shifts-- > 0){

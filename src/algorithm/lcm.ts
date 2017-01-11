@@ -8,7 +8,11 @@ import {steinGCD} from './steinGCD';
   Asumes A > 0, B > 0
   See: https://en.wikipedia.org/wiki/Least_common_multiple
 */
-export function lcm(A: number[], minA: number, maxA: number, B: number[], minB: number, maxB: number, base: number): [number[], number] {
+export function lcm(
+  A: number[], minA: number, maxA: number,
+  B: number[], minB: number, maxB: number,
+  base: number
+): [number[], number] {
 
   //Copy A
   let C: number[] = A.slice(minA, maxA);

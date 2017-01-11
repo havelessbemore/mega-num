@@ -9,7 +9,9 @@ import {zero} from '../util/numUtils';
   Assumes A > 0
   See: https://en.wikipedia.org/wiki/Karatsuba_algorithm
 */
-export function karatsubaSquare(A: number[], min: number, max: number, base: number): number {
+export function karatsubaSquare(
+  A: number[], min: number, max: number, base: number
+): number {
   let halfLen: number = max - min;
 
   //Base case

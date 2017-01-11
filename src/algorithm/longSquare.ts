@@ -28,7 +28,9 @@ import {zero} from '../util/numUtils';
     -------------------------------------------------------
       h   i   j   k   l   m   n   o   p   q   r   s   t   u
 */
-export function longSquare(A: number[], min: number, max: number, base: number): number {
+export function longSquare(
+  A: number[], min: number, max: number, base: number
+): number {
 
   //Move digits to the left
   let newMax: number = max - min;

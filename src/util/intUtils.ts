@@ -1,5 +1,10 @@
+import {Globals} from '../globals';
 import {Integer} from '../integer';
 import {setBase} from '../algorithm/setBase';
+
+export function tryMutable(A: Integer, isMutable: boolean = Globals.DEFAULT_IS_MUTABLE): Integer {
+  return (isMutable) ? A : copy({}, A);
+}
 
 export function assign(target: any, source: Integer): Integer {
   target.base = source.base;
@@ -7,6 +12,12 @@ export function assign(target: any, source: Integer): Integer {
   target.precision = source.precision;
   target.isNegative = source.isNegative;
   return target;
+}
+
+export function copy(target: any, source: Integer): Integer {
+  const A: Integer = assign(target, source);
+  A.digits = A.digits.slice(0, A.precision);
+  return A;
 }
 
 export function changeBase(A: Integer, base: number): Integer {
