@@ -1,7 +1,8 @@
 import {Integer} from '../integer';
 import {copy} from './copy';
+import {setBase} from './setBase';
 import {lcm as _lcm} from '../algorithm/lcm';
-import {changeBase, setZero, tryMutable} from '../util/intUtils';
+import {setZero, tryMutable} from '../util/intUtils';
 
 export function lcm(A: Integer, B: Integer, isMutable?: boolean): Integer {
   const C: Integer = tryMutable(A, isMutable);
@@ -30,7 +31,7 @@ export function lcm(A: Integer, B: Integer, isMutable?: boolean): Integer {
   } else {
 
     //Normalize bases
-    changeBase(C, B.base);
+    setBase(C, B.base, true);
 
     //Calculate LCM
     [C.digits, C.precision] = _lcm(
@@ -39,5 +40,5 @@ export function lcm(A: Integer, B: Integer, isMutable?: boolean): Integer {
   }
 
   //Change C to original base
-  return changeBase(C, base);
+  return setBase(C, base, true);
 }

@@ -1,8 +1,9 @@
 import {Integer} from '../integer';
 import {compare} from './compare';
 import {copy} from './copy';
+import {setBase} from './setBase';
 import {steinGCD} from '../algorithm/steinGCD';
-import {changeBase, tryMutable} from '../util/intUtils';
+import {tryMutable} from '../util/intUtils';
 
 export function gcd(A: Integer, B: Integer, isMutable?: boolean): Integer {
   const C: Integer = tryMutable(A, isMutable);
@@ -26,7 +27,7 @@ export function gcd(A: Integer, B: Integer, isMutable?: boolean): Integer {
   const base: number = C.base;
 
   //Normalize the bases
-  changeBase(C, B.base);
+  setBase(C, B.base, true);
 
   //If C != B
   if(compare(C, B) !== 0){
@@ -40,5 +41,5 @@ export function gcd(A: Integer, B: Integer, isMutable?: boolean): Integer {
   }
 
   //Return C to original base
-  return changeBase(C, base);
+  return setBase(C, base, true);
 }

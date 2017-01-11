@@ -2,10 +2,11 @@ import {Integer} from '../integer';
 import {copy} from './copy';
 import {double} from './double';
 import {negate} from './negate';
+import {setBase} from './setBase';
 import {subtract} from './subtract';
 import {addition} from '../algorithm/addition';
 import {reverseAddition} from '../algorithm/reverseAddition';
-import {changeBase, tryMutable} from '../util/intUtils';
+import {tryMutable} from '../util/intUtils';
 
 export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
   A = tryMutable(A, isMutable);
@@ -25,7 +26,7 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
   //If C is zero
   if(A.precision === 0){
     A = copy(A, B);
-    return changeBase(A, base);
+    return setBase(A, base, true);
   }
 
   //If signs differ
@@ -39,7 +40,7 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
   }
 
   //Normalize to B's base
-  changeBase(A, B.base);
+  setBase(A, B.base, true);
 
   //If C < B
   if(A.precision < B.precision){
@@ -68,5 +69,5 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
   }
 
   //Change A back to original base
-  return changeBase(A, base);
+  return setBase(A, base, true);
 }

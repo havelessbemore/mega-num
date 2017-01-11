@@ -1,8 +1,8 @@
 import {Integer} from '../integer';
-import {copy} from './copy';
+import {setBase} from './setBase';
 import {basicDivision} from '../algorithm/basicDivision';
 import {singleDigitDivision} from '../algorithm/singleDigitDivision';
-import {changeBase, setOne, setZero, tryMutable} from '../util/intUtils';
+import {assign, setOne, setZero, tryMutable} from '../util/intUtils';
 
 export function divideAndRemainder(A: Integer, B: Integer, isMutable: boolean = false): [Integer, Integer] {
 
@@ -43,19 +43,19 @@ export function divideAndRemainder(A: Integer, B: Integer, isMutable: boolean = 
     //If C's length < the least possible length of B if converted to C's base
     const ratio: number = Math.log(B.base) / Math.log(base);
     if(C.precision < Math.ceil(B.precision * ratio)){
-      const remainder: Integer = (isMutable) ? copy({}, C) : C;
-      return [setZero({base: C.base}), remainder];
+      const remainder: Integer = assign({}, C);
+      return [setZero(C), remainder];
     }
 
     //Normalize bases
-    changeBase(C, B.base);
+    setBase(C, B.base, true);
   }
 
   //If C's length < B's length
   if(C.precision < B.precision){
-    C.base = base;
-    const remainder: Integer = (isMutable) ? copy({}, C) : C;
-    return [setZero({base: C.base}), remainder];
+    setBase(C, base, true);
+    const remainder: Integer = assign({}, C);
+    return [setZero(C), remainder];
   }
 
   //Choose best algorithm
@@ -76,7 +76,7 @@ export function divideAndRemainder(A: Integer, B: Integer, isMutable: boolean = 
   }
 
   //Return C and R
-  changeBase(C, base);
-  changeBase(R, base);
+  setBase(C, base, true);
+  setBase(R, base, true);
   return [C, R];
 }

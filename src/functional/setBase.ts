@@ -1,6 +1,7 @@
 import {Globals} from '../globals';
 import {Integer} from '../integer';
-import {changeBase, tryMutable} from '../util/intUtils';
+import {setBase as _setBase} from '../algorithm/setBase';
+import {tryMutable} from '../util/intUtils';
 
 export function setBase(A: Integer, base: number, isMutable?: boolean): Integer {
 
@@ -18,5 +19,8 @@ export function setBase(A: Integer, base: number, isMutable?: boolean): Integer 
   }
 
   //Convert to base
-  return changeBase(tryMutable(A, isMutable), base);
+  A = tryMutable(A, isMutable);
+  [A.digits, A.precision] = _setBase(A.digits, 0, A.precision, A.base, base);
+  A.base = base;
+  return A;
 }

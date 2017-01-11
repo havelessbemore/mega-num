@@ -1,9 +1,10 @@
 import {Integer} from '../integer';
+import {setBase} from './setBase';
 import {square} from './square';
 import {karatsubaMultiplication} from '../algorithm/karatsubaMultiplication';
 import {longMultiplication} from '../algorithm/longMultiplication';
 import {singleDigitMultiplication} from '../algorithm/singleDigitMultiplication';
-import {changeBase, setZero, tryMutable} from '../util/intUtils';
+import {setZero, tryMutable} from '../util/intUtils';
 
 export function multiply(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
@@ -29,14 +30,14 @@ export function multiply(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
   //Normalize to B's base
   const base: number = A.base;
-  changeBase(A, B.base);
+  setBase(A, B.base, true);
 
   //If B is single digit
   if(B.precision === 1){
     A.precision = singleDigitMultiplication(
       A.digits, 0, A.precision, B.digits[0], A.base
     );
-    return changeBase(A, base);
+    return setBase(A, base, true);
   }
 
   //If C is single digit
@@ -46,7 +47,7 @@ export function multiply(A: Integer, B: Integer, isMutable?: boolean): Integer {
     A.precision = singleDigitMultiplication(
       A.digits, 0, B.precision, multiplicand, A.base
     );
-    return changeBase(A, base);
+    return setBase(A, base, true);
   }
 
   //Make minimum room for multiplication
@@ -66,5 +67,5 @@ export function multiply(A: Integer, B: Integer, isMutable?: boolean): Integer {
     );
   }
 
-  return changeBase(A, base);
+  return setBase(A, base, true);
 }

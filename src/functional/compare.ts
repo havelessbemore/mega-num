@@ -1,5 +1,5 @@
 import {Integer} from '../integer';
-import {changeBase} from '../util/intUtils';
+import {setBase} from './setBase';
 import {compare as _compare} from '../algorithm/compare';
 
 export function compare(A: Integer, B: Integer): number {
@@ -29,7 +29,7 @@ export function compare(A: Integer, B: Integer): number {
     }
 
     //Convert A to B's base
-    changeBase(A, B.base);
+    setBase(A, B.base, true);
   }
 
   //Compare A and B
@@ -39,7 +39,7 @@ export function compare(A: Integer, B: Integer): number {
   );
 
   //Change A back to original base (if needed)
-  changeBase(A, base);
+  setBase(A, base, true);
 
   //Return result
   return out;

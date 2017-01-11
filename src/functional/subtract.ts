@@ -3,9 +3,10 @@ import {add} from './add';
 import {compare} from './compare';
 import {copy} from './copy';
 import {negate} from './negate';
+import {setBase} from './setBase';
 import {reverseSubtraction} from '../algorithm/reverseSubtraction';
 import {subtraction} from '../algorithm/subtraction';
-import {changeBase, setZero, tryMutable} from '../util/intUtils';
+import {setZero, tryMutable} from '../util/intUtils';
 
 export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
@@ -29,7 +30,7 @@ export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
     //Copy B
     A = copy(A, B);
     A = negate(A, true);
-    return changeBase(A, base);
+    return setBase(A, base, true);
   }
 
   //If signs differ
@@ -42,7 +43,7 @@ export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
   }
 
   //Normalize to B's base
-  changeBase(A, B.base);
+  setBase(A, B.base, true);
 
   //Compare A and B
   const c: number = compare(A, B);
@@ -80,5 +81,5 @@ export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
     );
   }
 
-  return changeBase(A, base);
+  return setBase(A, base, true);
 }
