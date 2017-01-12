@@ -14,8 +14,8 @@ export function isEven(
 
   //If odd base
   let xor: number = 0;
-  while(minA < maxA){
+  do {
     xor = xor ^ A[minA++];
-  }
+  } while(minA < maxA);
   return (xor & 1) === 0;
 }

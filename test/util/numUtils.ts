@@ -27,15 +27,15 @@ describe('numUtils', function(){
 
   describe('strToDigits', function(){
     it('should throw error if string is empty or just spaces', function(){
-      expect(() => util.strToDigits("")).to.throw(TypeError);
-      expect(() => util.strToDigits("   ")).to.throw(TypeError);
+      expect(function(){util.strToDigits("")}).to.throw(TypeError);
+      expect(function(){util.strToDigits("   ")}).to.throw(TypeError);
     });
 
     it('should throw error if string value is not a number', function(){
       expect(function(){util.strToDigits("ABC")}).to.throw(TypeError);
-      expect(() => util.strToDigits("-+123")).to.throw(TypeError);
-      expect(() => util.strToDigits("123m456")).to.throw(TypeError);
-      expect(() => util.strToDigits("1.2.3.4")).to.throw(TypeError);
+      expect(function(){util.strToDigits("-+123")}).to.throw(TypeError);
+      expect(function(){util.strToDigits("123m456")}).to.throw(TypeError);
+      expect(function(){util.strToDigits("1.2.3.4")}).to.throw(TypeError);
     });
 
     it('should return 0 if string is just zeros', function(){

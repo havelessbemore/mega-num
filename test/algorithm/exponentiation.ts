@@ -26,7 +26,7 @@ function deepEqual(A: any[], minA: number, maxA: number, B: any[], minB: number,
 
 describe('exponentiation', function(){
 
-  it('should return X^1 in base 10', () => {
+  it('should return X^1 in base 10', function(){
     test(
       [1], 0, 1, 10,
       [1], 0, 1, 10,
@@ -88,7 +88,7 @@ describe('exponentiation', function(){
     );
   });
 
-  it('should return 1^X in base 10', () => {
+  it('should return 1^X in base 10', function(){
     test(
       [1], 0, 1, 10,
       [2], 0, 1, 10,
@@ -150,7 +150,7 @@ describe('exponentiation', function(){
     );
   });
 
-  it('should return 2^2 in base 10', () => {
+  it('should return 2^2 in base 10', function(){
     test(
       [2], 0, 1, 10,
       [2], 0, 1, 10,
@@ -158,7 +158,7 @@ describe('exponentiation', function(){
     )
   });
 
-  it('should return 4^2 in base 10', () => {
+  it('should return 4^2 in base 10', function(){
     test(
       [4], 0, 1, 10,
       [2], 0, 1, 10,
@@ -166,7 +166,7 @@ describe('exponentiation', function(){
     )
   });
 
-  it('should return 2^63 in base 10', () => {
+  it('should return 2^63 in base 10', function(){
     test(
       [2], 0, 1, 10,
       [3,6], 0, 2, 10,
@@ -174,7 +174,7 @@ describe('exponentiation', function(){
     )
   });
 
-  it('should return 2^64 in base 10', () => {
+  it('should return 2^64 in base 10', function(){
     test(
       [2], 0, 1, 10,
       [4,6], 0, 2, 10,
@@ -182,7 +182,7 @@ describe('exponentiation', function(){
     )
   });
 
-  it('should return 9^2 in base 11', () => {
+  it('should return 9^2 in base 11', function(){
     test(
       [9], 0, 1, 11,
       [2], 0, 1, 11,
@@ -190,7 +190,7 @@ describe('exponentiation', function(){
     )
   });
 
-  it('should return 9999999^2 in base 10000000', () => {
+  it('should return 9999999^2 in base 10000000', function(){
     test(
       [9999999], 0, 1, 10000000,
       [2], 0, 1, 10000000,
@@ -198,7 +198,7 @@ describe('exponentiation', function(){
     )
   });
 
-  it('should return 456^123 in base 10', () => {
+  it('should return 456^123 in base 10', function(){
     test(
       [6,5,4], 0, 3, 10,
       [3,2,1], 0, 3, 10,
@@ -218,7 +218,7 @@ describe('exponentiation', function(){
     )
   });
 
-  it('should return 456^123 in base 373', () => {
+  it('should return 456^123 in base 373', function(){
     test(
       [83,1], 0, 2, 373,
       [123], 0, 1, 373,
