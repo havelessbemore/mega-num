@@ -121,8 +121,26 @@ export class BigInt {
     return BigInt.toBigInt(max(A, B, isMutable), true);
   }
 
+  public max(B: Integer, isMutable?: boolean): BigInt {
+    const out: Integer = max(this, B, true);
+    if(isMutable && this !== out){
+      copy(this, B);
+      return this;
+    }
+    return BigInt.toBigInt(out, isMutable);
+  }
+
   public static min(A: Integer, B: Integer, isMutable?: boolean): BigInt {
     return BigInt.toBigInt(min(A, B, isMutable), true);
+  }
+
+  public min(B: Integer, isMutable?: boolean): BigInt {
+    const out: Integer = min(this, B, true);
+    if(isMutable && this !== out){
+      copy(this, B);
+      return this;
+    }
+    return BigInt.toBigInt(out, isMutable);
   }
 
   public minusminus(isMutable?: boolean): BigInt {
@@ -182,7 +200,7 @@ export class BigInt {
   }
 
   public static toBigInt(input: Integer | number | string, isMutable?: boolean): BigInt {
-    return (BigInt.isBigInt(input) && isMutable) ? input : new BigInt(input);
+    return (isMutable && BigInt.isBigInt(input)) ? input : new BigInt(input);
   }
 
   public toString(sep: string = null, cipher: ReadonlyArray<string> = null): string {
