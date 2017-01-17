@@ -1,15 +1,7 @@
 import {assert} from 'chai';
 import {Integer} from '../../src/integer';
+import {toInteger} from '../../src/util/intUtils';
 import {negate} from '../../src/functional/negate';
-
-function toInteger(digits: number[], precision: number, isNegative: boolean, base: number): Integer {
-  return {
-    base: base,
-    digits: digits,
-    precision: precision,
-    isNegative: isNegative
-  };
-}
 
 describe('negate', function(){
   it('should return the negative value of a positive input', function(){

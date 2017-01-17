@@ -35,8 +35,7 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
     //Change sign, subtract, change sign again
     A = negate(A, true);
     A = subtract(A, B, true);
-    A = negate(A, true);
-    return A;
+    return negate(A, true);
   }
 
   //Normalize to B's base

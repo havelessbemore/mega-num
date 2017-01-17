@@ -1,15 +1,7 @@
 import {assert} from 'chai';
 import {Integer} from '../../src/integer';
+import {toInteger} from '../../src/util/intUtils';
 import {signum} from '../../src/functional/signum';
-
-function toInteger(digits: number[], precision: number, isNegative: boolean, base: number): Integer {
-  return {
-    base: base,
-    digits: digits,
-    precision: precision,
-    isNegative: isNegative
-  };
-}
 
 describe('signum', function(){
 

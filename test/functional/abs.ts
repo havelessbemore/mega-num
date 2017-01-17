@@ -1,15 +1,7 @@
 import {assert} from 'chai';
 import {Integer} from '../../src/integer';
 import {abs} from '../../src/functional/abs';
-
-function toInteger(digits: number[], precision: number, isNegative: boolean, base: number): Integer {
-  return {
-    base: base,
-    digits: digits,
-    precision: precision,
-    isNegative: isNegative
-  };
-}
+import {toInteger} from '../../src/util/intUtils';
 
 describe('abs', function(){
   it('should return the absolute value of a positive input', function(){

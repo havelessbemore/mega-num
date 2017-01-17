@@ -1,14 +1,13 @@
 import {assert} from 'chai';
+import sinon = require('sinon');
+import rewire = require('rewire');
 import {Integer} from '../../src/integer';
 import {clone} from '../../src/functional/clone';
+import {toInteger} from '../../src/util/intUtils';
+const rewireClone: CloneDep & rewire.Rewire = rewire<CloneDep>('../../src/functional/clone');
 
-function toInteger(digits: number[], precision: number, isNegative: boolean, base: number): Integer {
-  return {
-    base: base,
-    digits: digits,
-    precision: precision,
-    isNegative: isNegative
-  };
+interface CloneDep {
+  clone: (A: Integer) => Integer;
 }
 
 describe('clone', function(){
@@ -18,5 +17,20 @@ describe('clone', function(){
     assert.notEqual(input, output);
     assert.deepEqual(input, output);
     assert.notEqual(input.digits, output.digits);
+  });
+
+  it('should use copy to clone', function(){
+    const input: Integer = toInteger([1,2,3,4,5], 5, true, 125);
+
+    //Create mock
+    const dependency = rewireClone.__get__('copy_1');
+    const mock: Sinon.SinonMock = sinon.mock(dependency);
+    mock.expects("copy").once().withExactArgs({}, input);
+
+    //Rewire and run method
+    rewireClone.__with__({copy_1: dependency})(() => rewireClone.clone(input));
+
+    //Verify method
+    mock.verify();
   });
 });

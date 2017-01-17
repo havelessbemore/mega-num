@@ -139,6 +139,7 @@
     "typings/globals/node/index.d.ts",
     "typings/globals/sinon/index.d.ts",
     "typings/index.d.ts",
-    "typings/modules/chalk/index.d.ts"
+    "typings/modules/chalk/index.d.ts",
+    "typings/modules/rewire/index.d.ts"
   ]
 }

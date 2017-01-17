@@ -83,6 +83,11 @@ describe('arrayUtils', function(){
       assert.equal(util.printArr([1,2,3],0,2), "[|1, 2|]");
       assert.equal(util.printArr([1,2,3],2,3), "[|3|]");
       assert.equal(util.printArr([1,2,3,4,5],1,4), "[|2, 3, 4|]");
+      assert.equal(util.printArr([1,2,3,4,5],0,5,2,3), "[1, 2|3|4, 5]");
+    });
+
+    it("should print null / NaN / undefined correctly", function(){
+      assert.equal(util.printArr([null, undefined, NaN],0,3), "[|null, undefined, NaN|]");
     });
   });
 });

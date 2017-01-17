@@ -32,3 +32,12 @@ export function setZero(A: any): Integer {
 export function tryMutable(A: Integer, isMutable: boolean = Globals.DEFAULT_IS_MUTABLE): Integer {
   return (isMutable) ? A : copy({}, A);
 }
+
+export function toInteger(digits: number[], precision: number, isNegative: boolean, base: number): Integer {
+  return {
+    base: base,
+    digits: digits,
+    precision: precision,
+    isNegative: isNegative
+  };
+}
