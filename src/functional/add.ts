@@ -13,7 +13,8 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
   //If self
   if(A === B){
-    return double(A, true);
+    double(A, true);
+    return A;
   }
 
   //If B is zero
@@ -25,21 +26,24 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
   //If C is zero
   if(A.precision === 0){
-    A = copy(A, B);
-    return setBase(A, base, true);
+    copy(A, B);
+    setBase(A, base, true);
+    return A;
   }
 
   //If signs differ
   if(A.isNegative !== B.isNegative){
 
     //Change sign, subtract, change sign again
-    A = negate(A, true);
-    A = subtract(A, B, true);
-    return negate(A, true);
+    negate(A, true);
+    subtract(A, B, true);
+    negate(A, true);
+    return A;
   }
 
   //Normalize to B's base
   setBase(A, B.base, true);
+  console.log("A: ", A);
 
   //If C < B
   if(A.precision < B.precision){
@@ -68,5 +72,6 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
   }
 
   //Change A back to original base
-  return setBase(A, base, true);
+  setBase(A, base, true);
+  return A;
 }
