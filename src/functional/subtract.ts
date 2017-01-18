@@ -28,18 +28,20 @@ export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
   if(A.precision === 0){
 
     //Copy B
-    A = copy(A, B);
-    A = negate(A, true);
-    return setBase(A, base, true);
+    copy(A, B);
+    negate(A, true);
+    setBase(A, base, true);
+    return A;
   }
 
   //If signs differ
   if(A.isNegative !== B.isNegative){
 
     //Change sign, add, change sign again
-    A = negate(A, true);
-    A = add(A, B, true);
-    return negate(A, true);
+    negate(A, true);
+    add(A, B, true);
+    negate(A, true);
+    return A;
   }
 
   //Normalize to B's base
@@ -81,5 +83,6 @@ export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
     );
   }
 
-  return setBase(A, base, true);
+  setBase(A, base, true);
+  return A;
 }
