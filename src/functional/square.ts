@@ -21,7 +21,7 @@ export function square(A: Integer, isMutable?: boolean): Integer {
   }
 
   //Choose best performing algorithm
-  if(A.precision < 500){
+  if(A.precision < 100){
     A.precision = longSquare(A.digits, 0, A.precision, A.base);
   } else {
     A.precision = karatsubaSquare(A.digits, 0, A.precision, A.base);
