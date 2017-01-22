@@ -1,7 +1,7 @@
 import {assert} from 'chai';
 import {setBase} from '../../src/algorithm/setBase';
 
-describe('changeBase', function(){
+describe('setBase', function(){
   it('should return zero when input is zero', function(){
     assert.deepEqual(setBase([],0,0,2,16), [[], 0]);
     assert.deepEqual(setBase([],0,0,16,2), [[], 0]);
