@@ -17,7 +17,8 @@ export function lcm(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
   //If B is zero
   if(B.precision === 0){
-    return setZero(C);
+    setZero(C);
+    return C;
   }
 
   const base: number = C.base;
@@ -40,5 +41,6 @@ export function lcm(A: Integer, B: Integer, isMutable?: boolean): Integer {
   }
 
   //Change C to original base
-  return setBase(C, base, true);
+  setBase(C, base, true);
+  return C;
 }
