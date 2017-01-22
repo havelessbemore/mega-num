@@ -28,7 +28,7 @@ export function pow(A: Integer, B: Integer, isMutable?: boolean): Integer {
   }
 
   //If negative base and even power
-  C.isNegative = !(C.isNegative && isEven(B));
+  C.isNegative = C.isNegative && !isEven(B);
 
   //1^B = 1
   if(C.precision === 1 && C.digits[0] === 1){
