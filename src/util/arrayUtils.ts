@@ -1,19 +1,23 @@
-
-//Assumes shifts >= max - min, shifts > 0
-export function unsafeShiftUp(A: any[], min: number, max: number, shifts: number): void {
-  for(let i: number = min + shifts; min < max; A[i++] = A[min++]){
-  }
-}
-
-export function safeShiftUp(A: any[], min: number, max: number, shifts: number): void {
-  for(let i: number = max + shifts; max > min; A[--i] = A[--max]){
-  }
-}
+import {Globals} from '../globals';
 
 //Assumes A and B not same array or sections A and B do not intersect
 export function copy<T>(to: T[], minTo: number, from: ReadonlyArray<T>, minFrom: number, maxFrom: number): void {
   while(minFrom < maxFrom){
     to[minTo++] = from[minFrom++];
+  }
+}
+
+export function growArray(A: any[], minNewLen: number, maxNewLen: number): void {
+  let newLen: number = maxNewLen;
+  if(newLen > Globals.MAX_PRECISION){
+    if(minNewLen > Globals.MAX_PRECISION){
+      throw new RangeError("Array greater than supported array length");
+    }
+    newLen = minNewLen;
+  }
+
+  if(A.length < newLen){
+    A.length = newLen;
   }
 }
 
@@ -24,4 +28,15 @@ export function printArr(A: any[], min: number, max: number, minSub: number = mi
     "|" + A.slice(minSub,maxSub).join(', ') +
     "|" + A.slice(maxSub,max).join(', ') +
   "]";
+}
+
+export function safeShiftUp(A: any[], min: number, max: number, shifts: number): void {
+  for(let i: number = max + shifts; max > min; A[--i] = A[--max]){
+  }
+}
+
+//Assumes shifts >= max - min, shifts > 0
+export function unsafeShiftUp(A: any[], min: number, max: number, shifts: number): void {
+  for(let i: number = min + shifts; min < max; A[i++] = A[min++]){
+  }
 }

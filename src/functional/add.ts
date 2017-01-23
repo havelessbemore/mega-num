@@ -6,6 +6,7 @@ import {setBase} from './setBase';
 import {subtract} from './subtract';
 import {addition} from '../algorithm/addition';
 import {reverseAddition} from '../algorithm/reverseAddition';
+import {growArray} from '../util/arrayUtils';
 import {tryMutable} from '../util/intUtils';
 
 export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
@@ -43,15 +44,12 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
   //Normalize to B's base
   setBase(A, B.base, true);
-  console.log("A: ", A);
 
   //If C < B
   if(A.precision < B.precision){
 
     //Update C's digit array to minimum result size
-    if(A.digits.length < B.precision){
-      A.digits.length = B.precision;
-    }
+    growArray(A.digits, B.precision, B.precision + 1);
 
     //Add
     A.precision = reverseAddition(

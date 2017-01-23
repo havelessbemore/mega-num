@@ -165,7 +165,7 @@ describe('add', function(){
     const A: Integer = toInteger([4,5], 2, false, 10);
     const B: Integer = toInteger([21,43], 2, false, 100);
     const C: Integer = toInteger([54], 1, false, 100);
-    C.digits.length = 2;
+    C.digits.length = 3;
 
     //Create mocks
     const dependency = rewireAdd.__get__('reverseAddition_1');
@@ -173,7 +173,6 @@ describe('add', function(){
     mock.expects("reverseAddition").once().withExactArgs(
       C.digits, 0, C.precision, B.digits, 0, B.precision, B.base
     );
-    console.log("C:", C);
 
     //Rewire and run method
     rewireAdd.__with__({reverseAddition_1: dependency})(() => {

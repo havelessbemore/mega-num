@@ -1,6 +1,7 @@
 import {Integer} from '../integer';
 import {karatsubaSquare} from '../algorithm/karatsubaSquare';
 import {longSquare} from '../algorithm/longSquare';
+import {growArray} from '../util/arrayUtils';
 import {tryMutable} from '../util/intUtils';
 
 export function square(A: Integer, isMutable?: boolean): Integer {
@@ -15,10 +16,8 @@ export function square(A: Integer, isMutable?: boolean): Integer {
   A.isNegative = false;
 
   //Make minimum room for squaring
-  const maxNewLen: number = 2*A.precision - 1;
-  if(A.digits.length < maxNewLen){
-    A.digits.length = maxNewLen;
-  }
+  const maxNewLen: number = 2 * A.precision;
+  growArray(A.digits, maxNewLen - 1, maxNewLen);
 
   //Choose best performing algorithm
   if(A.precision < 100){
