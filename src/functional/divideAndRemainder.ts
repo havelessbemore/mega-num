@@ -4,7 +4,7 @@ import {basicDivision} from '../algorithm/basicDivision';
 import {singleDigitDivision} from '../algorithm/singleDigitDivision';
 import {assign, setOne, setZero, tryMutable} from '../util/intUtils';
 
-export function divideAndRemainder(A: Integer, B: Integer, isMutable: boolean = false): [Integer, Integer] {
+export function divideAndRemainder(A: Integer, B: Integer, isMutable?: boolean): [Integer, Integer] {
 
   //If A / 0
   if(B.precision === 0){
@@ -15,19 +15,14 @@ export function divideAndRemainder(A: Integer, B: Integer, isMutable: boolean = 
 
   //If self
   if(A === B){
-    return [C, setZero({base: C.base})];
-  }
-
-  //If 0 / B
-  if(C.precision === 0){
-    return [C, setZero({base: C.base})];
+    return [setOne(C), setZero({base: C.base})];
   }
 
   //Divide signs
   C.isNegative = C.isNegative !== B.isNegative;
 
-  //If B = 1
-  if(B.precision === 1 && B.digits[0] === 1){
+  //If 0 / B or B = 1
+  if(C.precision === 0 || (B.precision === 1 && B.digits[0] === 1)){
     return [C, setZero({base: C.base})];
   }
 
@@ -40,9 +35,9 @@ export function divideAndRemainder(A: Integer, B: Integer, isMutable: boolean = 
   const base: number = C.base;
   if(base !== B.base){
 
-    //If C's length < the least possible length of B if converted to C's base
-    const ratio: number = Math.log(B.base) / Math.log(base);
-    if(C.precision < Math.ceil(B.precision * ratio)){
+    //If C's max length in B's base < B's length
+    const ratio: number = Math.log(base) / Math.log(B.base);
+    if(Math.ceil(C.precision * ratio) < B.precision){
       const remainder: Integer = assign({}, C);
       return [setZero(C), remainder];
     }

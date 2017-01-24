@@ -5,11 +5,11 @@ import {isInteger} from './isInteger';
 import {setZero} from '../util/intUtils';
 import {strToDigits} from '../util/numUtils';
 
-export function toInteger(A: Integer | number | string, base: number = null, isMutable?: boolean): Integer {
+export function toInteger(A: Integer | number | string, base?: number): Integer {
 
   //If already an integer
   if(isInteger(A)){
-    return setBase(A, (base == null) ? A.base : base, isMutable);
+    return A;
   }
 
   //Convert numbers to string
