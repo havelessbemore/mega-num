@@ -50,6 +50,7 @@ describe('BigInt', function(){
     });
   });
 
+  /*
   describe('toBigInt', function(){
     it('should cast a valid input to class', function(){
       const n: BigInt = BigInt.toBigInt(0, true);
@@ -62,6 +63,7 @@ describe('BigInt', function(){
       chai.expect(n).to.equal(m);
     });
   });
+  */
 
   describe('abs', function(){
     it('should return the absolute value of the number', function(){
@@ -88,11 +90,12 @@ describe('BigInt', function(){
     });
   });
 
-  describe('half', function(){
+  describe('halve', function(){
     it('should return self remainder zero if number is zero', function(){
       let r: BigInt;
       let n: BigInt = new BigInt(0);
-      [n, r] = n.half(true);
+      [n, r] = n.halve(true);
+      n.digits.length = n.precision;
       testState(n, false, [], 0);
       testState(r, false, [], 0);
     });
@@ -100,7 +103,8 @@ describe('BigInt', function(){
     it('should return self remainder zero if number is even', function(){
       let r: BigInt;
       let n: BigInt = new BigInt(12).setBase(10, true);
-      [n, r] = n.half(true);
+      [n, r] = n.halve(true);
+      n.digits.length = n.precision;
       testState(n, false, [6], 1);
       testState(r, false, [], 0);
     });
@@ -108,7 +112,8 @@ describe('BigInt', function(){
     it('should return self remainder one if number is odd', function(){
       let r: BigInt;
       let n: BigInt = new BigInt(15).setBase(10, true);
-      [n, r] = n.half(true);
+      [n, r] = n.halve(true);
+      n.digits.length = n.precision;
       testState(n, false, [7], 1);
       testState(r, false, [1], 1);
     });
@@ -222,24 +227,28 @@ describe('BigInt', function(){
     it('should return itself if zero', function(){
       const n: BigInt = new BigInt(0);
       n.square(true);
+      n.digits.length = n.precision;
       testState(n, false, [], 0);
     });
 
     it('should return itself if one', function(){
       const n: BigInt = new BigInt(1);
       n.square(true);
+      n.digits.length = n.precision;
       testState(n, false, [1], 1);
     });
 
     it('should return itself if negative one', function(){
       const n: BigInt = new BigInt(-1);
       n.square(true);
+      n.digits.length = n.precision;
       testState(n, false, [1], 1);
     });
 
     it('should square normally', function(){
       const n: BigInt = new BigInt(5).setBase(10, true);
       n.square(true);
+      n.digits.length = n.precision;
       testState(n, false, [5, 2], 2);
     });
   })

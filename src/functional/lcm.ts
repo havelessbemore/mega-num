@@ -4,6 +4,7 @@ import {setBase} from './setBase';
 import {lcm as _lcm} from '../algorithm/lcm';
 import {setZero, tryMutable} from '../util/intUtils';
 
+//See: https://en.wikipedia.org/wiki/Least_common_multiple
 export function lcm(A: Integer, B: Integer, isMutable?: boolean): Integer {
   const C: Integer = tryMutable(A, isMutable);
 

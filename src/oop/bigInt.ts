@@ -1,4 +1,3 @@
-import {Globals} from '../globals';
 import {Integer} from '../integer';
 import {abs} from '../functional/abs';
 import {add} from '../functional/add';
@@ -21,6 +20,7 @@ import {signum} from '../functional/signum';
 import {setBase} from '../functional/setBase';
 import {subtract} from '../functional/subtract';
 import {square} from '../functional/square';
+import {isInteger} from '../functional/isInteger';
 import {toInteger} from '../functional/toInteger';
 import {toString} from '../functional/toString';
 import {assign} from '../util/intUtils';
@@ -36,18 +36,19 @@ export class BigInt {
   public isNegative: boolean;
 
   constructor(input: Integer | number | string) {
-    assign(this, toInteger(input, Globals.DEFAULT_BASE, false));
-    this.digits.length = this.precision;
+    if(isInteger(input)){
+      copy(this, input);
+    } else {
+      assign(this, toInteger(input));
+    }
   }
 
   public abs(isMutable?: boolean): BigInt {
-    return BigInt.toBigInt(abs(this, isMutable), true);
+    return BigInt.tryBigInt(abs(this, isMutable));
   };
 
   public add(addend: Integer, isMutable?: boolean): BigInt {
-    const A: Integer = add(this, addend, isMutable);
-    A.digits.length = A.precision;
-    return BigInt.toBigInt(A, true);
+    return BigInt.tryBigInt(add(this, addend, isMutable));
   }
 
   public clone(): BigInt {
@@ -58,9 +59,8 @@ export class BigInt {
     return compare(this, B);
   }
 
-  public copy(source: Integer): BigInt {
-    copy(this, source);
-    return this;
+  public set(source: Integer): BigInt {
+    return <BigInt>copy(this, source);
   }
 
   public divide(divisor: Integer, isMutable?: boolean): BigInt {
@@ -68,34 +68,25 @@ export class BigInt {
   }
 
   public divideAndRemainder(divisor: Integer, isMutable?: boolean): [BigInt, BigInt] {
-    let Q: Integer;
-    let R: Integer;
-    [Q, R] = divideAndRemainder(this, divisor, isMutable);
-    Q.digits.length = Q.precision;
-    R.digits.length = R.precision;
-    return [BigInt.toBigInt(Q, true), <BigInt>assign(BigInt.ZERO, R)];
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(this, divisor, isMutable);
+    return [BigInt.tryBigInt(Q), <BigInt>assign(BigInt.ZERO, R)];
   }
 
   public double(isMutable?: boolean): BigInt {
-    return BigInt.toBigInt(double(this, isMutable), true);
+    return BigInt.tryBigInt(double(this, isMutable));
   }
 
   public gcd(B: Integer, isMutable?: boolean): BigInt {
-    const A: Integer = gcd(this, B, isMutable);
-    A.digits.length = A.precision;
-    return BigInt.toBigInt(A, true);
+    return BigInt.tryBigInt(gcd(this, B, isMutable));
   }
 
   public getBase(): number {
     return this.base;
   }
 
-  public half(isMutable?: boolean): [BigInt, BigInt] {
-    let Q: Integer;
-    let R: Integer;
-    [Q, R] = halve(this, isMutable);
-    Q.digits.length = Q.precision;
-    return [BigInt.toBigInt(Q, true), new BigInt(R.precision)];
+  public halve(isMutable?: boolean): [BigInt, BigInt] {
+    const [Q, R]: [Integer, Integer] = halve(this, isMutable);
+    return [BigInt.tryBigInt(Q), new BigInt(R.precision)];
   }
 
   public static isBigInt(n: any): n is BigInt {
@@ -107,80 +98,70 @@ export class BigInt {
   }
 
   public isOdd(): boolean {
-    return !this.isEven();
+    return !isEven(this);
   }
 
-  //See: https://en.wikipedia.org/wiki/Least_common_multiple
   public lcm(B: Integer, isMutable?: boolean): BigInt {
-    const A: Integer = lcm(this, B, isMutable);
-    A.digits.length = A.precision;
-    return BigInt.toBigInt(A, true);
+    return BigInt.tryBigInt(lcm(this, B, isMutable));
   }
 
   public static max(A: Integer, B: Integer, isMutable?: boolean): BigInt {
-    return BigInt.toBigInt(max(A, B, isMutable), true);
+    return BigInt.tryBigInt(max(A, B, isMutable));
   }
 
   public max(B: Integer, isMutable?: boolean): BigInt {
-    const out: Integer = max(this, B, true);
-    if(isMutable && this !== out){
-      copy(this, B);
+    const C: Integer = max(this, B, isMutable);
+    if(C === this){
       return this;
     }
-    return BigInt.toBigInt(out, isMutable);
+    if(C === B){
+      return <BigInt>copy(this, C);
+    }
+    return <BigInt>assign(BigInt.ZERO, C);
   }
 
   public static min(A: Integer, B: Integer, isMutable?: boolean): BigInt {
-    return BigInt.toBigInt(min(A, B, isMutable), true);
+    return BigInt.tryBigInt(min(A, B, isMutable));
   }
 
-  public min(B: Integer, isMutable?: boolean): BigInt {
-    const out: Integer = min(this, B, true);
-    if(isMutable && this !== out){
-      copy(this, B);
+  public min(B: Integer, isMutable: boolean): BigInt {
+    const C: Integer = min(this, B, isMutable);
+    if(C === this){
       return this;
     }
-    return BigInt.toBigInt(out, isMutable);
+    if(C === B){
+      return <BigInt>copy(this, C);
+    }
+    return <BigInt>assign(BigInt.ZERO, C);
   }
 
   public minusminus(isMutable?: boolean): BigInt {
-    const A: Integer = decrement(this, isMutable);
-    A.digits.length = A.precision;
-    return BigInt.toBigInt(A, true);
+    return BigInt.tryBigInt(decrement(this, isMutable));
   }
 
   public multiply(multiplier: Integer, isMutable?: boolean): BigInt {
-    const A: Integer = multiply(this, multiplier, isMutable);
-    A.digits.length = A.precision;
-    return BigInt.toBigInt(A, true);
+    return BigInt.tryBigInt(multiply(this, multiplier, isMutable));
   }
 
   public negate(isMutable?: boolean): BigInt {
-    return BigInt.toBigInt(negate(this, isMutable), true);
+    return BigInt.tryBigInt(negate(this, isMutable));
   };
 
   public plusplus(isMutable?: boolean): BigInt {
-    return BigInt.toBigInt(increment(this, isMutable), true);
+    return BigInt.tryBigInt(increment(this, isMutable));
   }
 
   public pow(power: Integer, isMutable?: boolean): BigInt {
-    const A: Integer = pow(this, power, isMutable);
-    A.digits.length = A.precision;
-    return BigInt.toBigInt(A, true);
+    return BigInt.tryBigInt(pow(this, power, isMutable));
   }
 
   public remainder(divisor: Integer, isMutable?: boolean): BigInt {
     const R: BigInt = this.divideAndRemainder(divisor, isMutable)[1];
-    if(isMutable){
-      assign(this, R);
-    }
-    return this;
+    return (isMutable) ? <BigInt>assign(this, R) : R;
   }
 
   public setBase(base: number, isMutable?: boolean): BigInt {
-    const A: Integer = setBase(this, base, isMutable);
-    A.digits.length = A.precision;
-    return BigInt.toBigInt(A, true);
+    return BigInt.tryBigInt(setBase(this, base, isMutable));
   }
 
   public signum(): number {
@@ -188,22 +169,18 @@ export class BigInt {
   };
 
   public square(isMutable?: boolean): BigInt {
-    const A: Integer = square(this, isMutable);
-    A.digits.length = A.precision;
-    return BigInt.toBigInt(A, true);
+    return BigInt.tryBigInt(square(this, isMutable));
   }
 
   public subtract(subtrahend: Integer, isMutable?: boolean): BigInt {
-    const A: Integer = subtract(this, subtrahend, isMutable);
-    A.digits.length = A.precision;
-    return BigInt.toBigInt(A, true);
+    return BigInt.tryBigInt(subtract(this, subtrahend, isMutable));
   }
 
-  public static toBigInt(input: Integer | number | string, isMutable?: boolean): BigInt {
-    return (isMutable && BigInt.isBigInt(input)) ? input : new BigInt(input);
+  public toString(): string {
+    return toString(this);
   }
 
-  public toString(sep: string = null, cipher: ReadonlyArray<string> = null): string {
-    return toString(this, sep, cipher);
+  private static tryBigInt(A: BigInt | Integer): BigInt {
+    return BigInt.isBigInt(A) ? A : <BigInt>assign(BigInt.ZERO, A);
   }
 }
