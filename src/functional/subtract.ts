@@ -9,13 +9,12 @@ import {subtraction} from '../algorithm/subtraction';
 import {setZero, tryMutable} from '../util/intUtils';
 
 export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
+  A = tryMutable(A, isMutable);
 
   //If subtracting itself
   if(A === B){
-    return setZero((isMutable) ? A : {base: A.base});
+    return setZero(A);
   }
-
-  A = tryMutable(A, isMutable);
 
   //If B is zero
   if(B.precision === 0){
