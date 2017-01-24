@@ -1,6 +1,7 @@
 import {Integer} from '../integer';
 import {isEven} from './isEven';
 import {exponentiation} from '../algorithm/exponentiation';
+import {growArray} from '../util/arrayUtils';
 import {setOne, setZero, tryMutable} from '../util/intUtils';
 
 export function pow(A: Integer, B: Integer, isMutable?: boolean): Integer {
@@ -34,6 +35,16 @@ export function pow(A: Integer, B: Integer, isMutable?: boolean): Integer {
   if(C.precision === 1 && C.digits[0] === 1){
     return C;
   }
+
+  //Set new size
+  growArray(A.digits,
+
+    //Min new size
+    (A.precision - 1) * (B.base ** (B.precision - 1)) + 1,
+
+    //Max new size
+    A.precision * ((B.base ** B.precision) - 1)
+  );
 
   //C = C^B
   C.precision = exponentiation(

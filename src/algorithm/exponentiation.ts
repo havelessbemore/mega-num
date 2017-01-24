@@ -25,7 +25,7 @@ export function exponentiation(
 
     //If remainder
     if(remainder > 0){
-      C.length = maxC + maxA;
+      C.length = maxC - minA + maxA;
       maxC = karatsubaMultiplication(C, 0, maxC, A, minA, maxA, baseA);
     }
 
