@@ -18,11 +18,11 @@ module.exports = [{
   devtool: 'source-map',
 
   resolve: {
-    root: [
+    modules: [
       path.resolve('.')
     ],
     extensions: [
-      '.ts', '.js', '.tsx', '.jsx', ''
+      '.ts', '.js', '.tsx', '.jsx'
     ]
   },
 
@@ -39,16 +39,8 @@ module.exports = [{
   },
 
   plugins: [
-    //new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin()
-  ],
-
-  //Options for ts-loader
-  ts: {
-    compilerOptions: {
-      "declaration": false
-    }
-  }
+  ]
 }];
