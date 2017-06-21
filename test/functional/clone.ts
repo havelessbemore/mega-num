@@ -4,7 +4,7 @@ import rewire = require('rewire');
 import {Integer} from '../../src/integer';
 import {clone} from '../../src/functional/clone';
 import {toInteger} from '../../src/util/intUtils';
-const rewireClone: CloneDep & rewire.Rewire = rewire<CloneDep>('../../src/functional/clone');
+const rewireClone = rewire<CloneDep>('../../src/functional/clone');
 
 interface CloneDep {
   clone: (A: Integer) => Integer;
@@ -24,7 +24,7 @@ describe('clone', function(){
 
     //Create mock
     const dependency = rewireClone.__get__('copy_1');
-    const mock: Sinon.SinonMock = sinon.mock(dependency);
+    const mock: sinon.SinonMock = sinon.mock(dependency);
     mock.expects("copy").once().withExactArgs({}, input);
 
     //Rewire and run method

@@ -14,8 +14,8 @@ describe('toString', function(){
   });
 
   it('should return 0 in large base', function(){
-    const A: Integer = toInteger([], 0, false, Globals.DEFAULT_CIPHER.length + 1);
-    const expected: string = Globals.DEFAULT_CIPHER[0];
+    const A: Integer = toInteger([], 0, false, Globals.CIPHER.length + 1);
+    const expected: string = Globals.CIPHER[0];
     const actual: string = toString(A);
     assert.equal(expected, actual);
   });
@@ -28,8 +28,8 @@ describe('toString', function(){
   });
 
   it('should return 1 in large base', function(){
-    const A: Integer = toInteger([1], 1, false, Globals.DEFAULT_CIPHER.length + 1);
-    const expected: string = Globals.DEFAULT_CIPHER[1];
+    const A: Integer = toInteger([1], 1, false, Globals.CIPHER.length + 1);
+    const expected: string = Globals.CIPHER[1];
     const actual: string = toString(A);
     assert.equal(expected, actual);
   });
@@ -42,8 +42,8 @@ describe('toString', function(){
   });
 
   it('should return -1 in large base', function(){
-    const A: Integer = toInteger([1], 1, true, Globals.DEFAULT_CIPHER.length + 1);
-    const expected: string = '-' + Globals.DEFAULT_CIPHER[1];
+    const A: Integer = toInteger([1], 1, true, Globals.CIPHER.length + 1);
+    const expected: string = '-' + Globals.CIPHER[1];
     const actual: string = toString(A);
     assert.equal(expected, actual);
   });

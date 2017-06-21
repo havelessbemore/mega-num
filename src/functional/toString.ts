@@ -3,7 +3,7 @@ import {Integer} from '../integer';
 
 //Assumes input cipher is adequate for base
 export function toString(A: Integer): string {
-  const cipher = Globals.DEFAULT_CIPHER;
+  const cipher = Globals.CIPHER;
 
   //If zero
   if(A.precision === 0){

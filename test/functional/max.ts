@@ -4,7 +4,7 @@ import rewire = require('rewire');
 import {Integer} from '../../src/integer';
 import {toInteger} from '../../src/util/intUtils';
 import {max} from '../../src/functional/max';
-const rewired: MaxFunc & rewire.Rewire = rewire<MaxFunc>('../../src/functional/max');
+const rewired = rewire<MaxFunc>('../../src/functional/max');
 
 interface MaxFunc {
   max: (A: Integer, B: Integer, b?: boolean) => Integer;
@@ -31,7 +31,7 @@ describe('max', function(){
 
     //Create mock
     const dependency = rewired.__get__('compare_1');
-    const mock: Sinon.SinonMock = sinon.mock(dependency);
+    const mock: sinon.SinonMock = sinon.mock(dependency);
     mock.expects("compare").once().withExactArgs(A, B);
 
     //Rewire and run method

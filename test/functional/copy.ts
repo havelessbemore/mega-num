@@ -4,7 +4,7 @@ import rewire = require('rewire');
 import {Integer} from '../../src/integer';
 import {toInteger} from '../../src/util/intUtils';
 import {copy} from '../../src/functional/copy';
-const rewired: CopyFunc & rewire.Rewire = rewire<CopyFunc>('../../src/functional/copy');
+const rewired = rewire<CopyFunc>('../../src/functional/copy');
 
 interface CopyFunc {
   copy: (A: Integer, B: Integer) => Integer;
@@ -26,7 +26,7 @@ describe('copy', function(){
 
     //Create mock
     const dependency = rewired.__get__('intUtils_1');
-    const mock: Sinon.SinonMock = sinon.mock(dependency);
+    const mock: sinon.SinonMock = sinon.mock(dependency);
     mock.expects("copy").once().withExactArgs(target, source);
 
     //Rewire and run method

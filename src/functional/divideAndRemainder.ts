@@ -11,7 +11,7 @@ export function divideAndRemainder(A: Integer, B: Integer, isMutable?: boolean):
     throw new EvalError("Divide by zero");
   }
 
-  let C: Integer = tryMutable(A, isMutable);
+  const C: Integer = tryMutable(A, isMutable);
 
   //If self
   if(A === B){
@@ -54,7 +54,7 @@ export function divideAndRemainder(A: Integer, B: Integer, isMutable?: boolean):
   }
 
   //Choose best algorithm
-  let R: Integer = setOne({base: C.base});
+  const R: Integer = setOne({base: C.base});
   if(B.precision < 2){
     [C.precision, R.digits[0]] = singleDigitDivision(
       C.digits, 0, C.precision, B.digits[0], C.base

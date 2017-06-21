@@ -4,7 +4,7 @@ import rewire = require('rewire');
 import {Integer} from '../../src/integer';
 import {toInteger} from '../../src/util/intUtils';
 import {min} from '../../src/functional/min';
-const rewired: MinFunc & rewire.Rewire = rewire<MinFunc>('../../src/functional/min');
+const rewired = rewire<MinFunc>('../../src/functional/min');
 
 interface MinFunc {
   min: (A: Integer, B: Integer, b?: boolean) => Integer;
@@ -31,7 +31,7 @@ describe('min', function(){
 
     //Create mock
     const dependency = rewired.__get__('compare_1');
-    const mock: Sinon.SinonMock = sinon.mock(dependency);
+    const mock: sinon.SinonMock = sinon.mock(dependency);
     mock.expects("compare").once().withExactArgs(A, B);
 
     //Rewire and run method

@@ -203,6 +203,7 @@ describe('pow', function(){
 
     //Run method
     const actual: Integer = pow(A, B, true);
+    actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
@@ -216,6 +217,7 @@ describe('pow', function(){
 
     //Run method
     const actual: Integer = pow(A, B, true);
+    actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
@@ -229,6 +231,7 @@ describe('pow', function(){
 
     //Run method
     const actual: Integer = pow(A, B, true);
+    actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
@@ -317,6 +320,7 @@ describe('pow', function(){
 
     //Run method
     const actual: Integer = pow(A, B, true);
+    actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
@@ -344,6 +348,7 @@ describe('pow', function(){
 
     //Run method
     const actual: Integer = pow(A, B, true);
+    actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
@@ -357,19 +362,21 @@ describe('pow', function(){
 
     //Run method
     const actual: Integer = pow(A, B, true);
+    actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 9999999^2 in base 10', function(){
+  it('should return 9999999^2 in base 10000000', function(){
     const A: Integer = toInteger([9999999], 1, false, 10000000);
     const B: Integer = toInteger([2], 1, false, 10000000);
     const expected: Integer = toInteger([1,9999998], 2, false, 10000000);
 
     //Run method
     const actual: Integer = pow(A, B, true);
+    actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
@@ -489,5 +496,5 @@ describe('pow', function(){
     assert.equal(actual, A);
     assert.deepEqual(actual, expected);
   });
-
+  
 });

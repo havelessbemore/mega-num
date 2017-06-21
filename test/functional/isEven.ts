@@ -4,7 +4,7 @@ import rewire = require('rewire');
 import {Integer} from '../../src/integer';
 import {toInteger} from '../../src/util/intUtils';
 import {isEven} from '../../src/functional/isEven';
-const rewired: IsEvenFunc & rewire.Rewire = rewire<IsEvenFunc>('../../src/functional/isEven');
+const rewired = rewire<IsEvenFunc>('../../src/functional/isEven');
 
 interface IsEvenFunc {
   isEven: (A: Integer) => boolean;
@@ -30,7 +30,7 @@ describe('isEven', function(){
 
     //Create mock
     const dependency = rewired.__get__('isEven_1');
-    const mock: Sinon.SinonMock = sinon.mock(dependency);
+    const mock: sinon.SinonMock = sinon.mock(dependency);
     mock.expects("isEven").once().withExactArgs(A.digits, 0, A.precision, A.base);
 
     //Rewire and run method

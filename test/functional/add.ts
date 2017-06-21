@@ -4,7 +4,7 @@ import rewire = require('rewire');
 import {Integer} from '../../src/integer';
 import {add} from '../../src/functional/add';
 import {toInteger} from '../../src/util/intUtils';
-const rewireAdd: AddFunc & rewire.Rewire = rewire<AddFunc>('../../src/functional/add');
+const rewireAdd = rewire<AddFunc>('../../src/functional/add');
 
 interface AddFunc {
   add: (A: Integer, B: Integer, m?: boolean) => Integer;
@@ -29,7 +29,7 @@ describe('add', function(){
 
     //Create mock
     const dependency = rewireAdd.__get__('double_1');
-    const mock: Sinon.SinonMock = sinon.mock(dependency);
+    const mock: sinon.SinonMock = sinon.mock(dependency);
     mock.expects("double").once().withExactArgs(A, true);
 
     //Rewire and run method
@@ -84,11 +84,11 @@ describe('add', function(){
 
     //Create mocks
     const negate = rewireAdd.__get__('negate_1');
-    const negateMock: Sinon.SinonMock = sinon.mock(negate);
+    const negateMock: sinon.SinonMock = sinon.mock(negate);
     negateMock.expects('negate').twice().withExactArgs(A, true);
 
     const subtract = rewireAdd.__get__('subtract_1');
-    const subtractMock: Sinon.SinonMock = sinon.mock(subtract);
+    const subtractMock: sinon.SinonMock = sinon.mock(subtract);
     subtractMock.expects("subtract").once().withExactArgs(A, B, true);
 
     //Rewire and run method
@@ -106,6 +106,7 @@ describe('add', function(){
 
     //Run method
     const actual: Integer = add(A, B, true);
+    actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
@@ -132,7 +133,7 @@ describe('add', function(){
 
     //Create mocks
     const dependency = rewireAdd.__get__('addition_1');
-    const mock: Sinon.SinonMock = sinon.mock(dependency);
+    const mock: sinon.SinonMock = sinon.mock(dependency);
     mock.expects("addition").once().withExactArgs(
       C.digits, 0, C.precision, B.digits, 0, B.precision, B.base
     );
@@ -169,7 +170,7 @@ describe('add', function(){
 
     //Create mocks
     const dependency = rewireAdd.__get__('reverseAddition_1');
-    const mock: Sinon.SinonMock = sinon.mock(dependency);
+    const mock: sinon.SinonMock = sinon.mock(dependency);
     mock.expects("reverseAddition").once().withExactArgs(
       C.digits, 0, C.precision, B.digits, 0, B.precision, B.base
     );

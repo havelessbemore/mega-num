@@ -1,5 +1,4 @@
 import * as chai from 'chai';
-//import * as sinon from 'sinon';
 import {BigInt} from '../../src/oop/bigInt';
 
 function testState(n: BigInt, isNegative: boolean, digits: number[], precision: number): void {

@@ -29,7 +29,7 @@ export function setZero(A: any): Integer {
   return A;
 }
 
-export function tryMutable(A: Integer, isMutable: boolean = Globals.DEFAULT_IS_MUTABLE): Integer {
+export function tryMutable(A: Integer, isMutable: boolean = Globals.IS_MUTABLE): Integer {
   return (isMutable) ? A : copy({}, A);
 }
 

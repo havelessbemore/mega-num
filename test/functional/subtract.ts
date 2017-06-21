@@ -4,7 +4,7 @@ import rewire = require('rewire');
 import {Integer} from '../../src/integer';
 import {subtract} from '../../src/functional/subtract';
 import {toInteger} from '../../src/util/intUtils';
-const rewireSubtract: SubtractFunc & rewire.Rewire = rewire<SubtractFunc>('../../src/functional/subtract');
+const rewireSubtract = rewire<SubtractFunc>('../../src/functional/subtract');
 
 interface SubtractFunc {
   subtract: (A: Integer, B: Integer, m?: boolean) => Integer;
@@ -338,13 +338,14 @@ describe('subtract', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should set A to -B in A\'s base if A = 0', function(){
+  it("should set A to -B in A's base if A = 0", function(){
     const A: Integer = toInteger([], 0, false, 2);
     const B: Integer = toInteger([1,2,3], 3, false, 10);
     const expected: Integer = toInteger([1,0,0,0,0,0,1,0,1], 9, true, 2);
 
     //Run method
     const actual: Integer = subtract(A, B, true);
+    actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
@@ -370,11 +371,11 @@ describe('subtract', function(){
 
     //Create mocks
     const negate = rewireSubtract.__get__('negate_1');
-    const negateMock: Sinon.SinonMock = sinon.mock(negate);
+    const negateMock: sinon.SinonMock = sinon.mock(negate);
     negateMock.expects('negate').twice().withExactArgs(A, true);
 
     const add = rewireSubtract.__get__('add_1');
-    const addMock: Sinon.SinonMock = sinon.mock(add);
+    const addMock: sinon.SinonMock = sinon.mock(add);
     addMock.expects("add").once().withExactArgs(A, B, true);
 
     //Rewire and run method

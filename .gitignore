@@ -39,7 +39,7 @@ jspm_packages
 .DS_Store
 
 # Build files
-/lib
+build
 
 # Node Modules
 node_modules

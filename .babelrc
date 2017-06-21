@@ -1,14 +1,17 @@
 {
-  "presets": ["latest"],
+  "presets": [
+    "env", "babili"
+  ],
   "plugins": [
     ["transform-runtime", {
+      "helpers": true,
       "polyfill": false,
-      "regenerator": false
+      "regenerator": false,
     }]
   ],
   "env": {
     "prod": {
-      "presets": ["babili"]
+      "presets": []
     }
   }
 }

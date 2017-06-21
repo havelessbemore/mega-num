@@ -1,46 +1,57 @@
 //Config Examples: https://webpack.github.io/docs/examples.html
-var path = require('path');
-var webpack = require('webpack');
+const path = require('path');
+const webpack = require('webpack');
 
-module.exports = [{
-  name: "Browser",
-  target: "web",
-
-  entry: "./src/index",
-
-  output: {
-    path: path.join(__dirname, "dist"),
-    filename: "big.js",
-    library: "Big",
-    libraryTarget: "umd"
-  },
-
-  devtool: 'source-map',
-
-  resolve: {
-    modules: [
-      path.resolve('.')
-    ],
-    extensions: [
-      '.ts', '.js', '.tsx', '.jsx'
-    ]
-  },
-
+module.exports = {
+  entry: './src/index.ts',
+  externals: {},
+  // devtool: 'source-map',
   module: {
-    loaders: [{
+    rules: [{
+      test: /\.jsx?$/,
+      loaders: ['babel-loader'],
+      exclude: /node_modules/
+    }, {
       test: /\.tsx?$/,
       exclude: /node_modules/,
       loaders: ['babel-loader', 'ts-loader']
-    }, {
-      test: /\.jsx?$/,
-      loader: 'babel-loader',
-      exclude: /node_modules/
     }]
   },
-
+  node: {
+    Buffer: true,
+    console: true,
+    fs: 'empty',
+    global: true,
+    net: 'empty',
+    process: true,
+    tls: 'empty'
+  },
+  output: {
+    filename: 'big.min.js',
+    library: 'Big',
+    libraryTarget: 'umd',
+    path: path.resolve(__dirname, 'dist')
+  },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin()
-  ]
-}];
+    new webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      mangle: {
+        screw_ie8: true,
+        keep_fnames: true
+      },
+      compress: {
+        screw_ie8: true
+      },
+      comments: false
+    })
+  ],
+  resolve: {
+    extensions: ['.ts', '.js'],
+    modules: [path.join(__dirname, 'src'), 'node_modules']
+  },
+  target: 'web'
+};

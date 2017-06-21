@@ -48,7 +48,8 @@ export function pow(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
   //C = C^B
   A.precision = exponentiation(
-    A.digits, 0, A.precision, A.base, B.digits.slice(0,B.precision), 0, B.precision, B.base
+    A.digits, 0, A.precision, A.base,
+    B.digits.slice(0,B.precision), 0, B.precision, B.base
   );
 
   return A;

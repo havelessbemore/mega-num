@@ -11,7 +11,9 @@ export function growArray(A: any[], minNewLen: number, maxNewLen: number): void 
   let newLen: number = maxNewLen;
   if(newLen > Globals.MAX_PRECISION){
     if(minNewLen > Globals.MAX_PRECISION){
-      throw new RangeError("Array greater than supported array length");
+      throw new RangeError(
+        `Array length greater than supported length ${Globals.MAX_PRECISION}`
+      );
     }
     newLen = minNewLen;
   }
