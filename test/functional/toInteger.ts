@@ -67,7 +67,7 @@ describe('toInteger', function(){
   });
 
   it('should convert "-123" to Integer in default base', function(){
-    const expected: Integer = _toInteger([123], 1, true, Globals.BASE);
+    const expected: Integer = _toInteger([123], 1, true, Globals.DEFAULT_BASE);
     const actual: Integer = toInteger('-123');
     assert.deepEqual(expected, actual);
   });

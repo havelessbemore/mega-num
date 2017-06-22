@@ -27,5 +27,5 @@ export function toInteger(A: Integer | number | string, base?: number): Integer 
   B.precision = B.digits.length;
 
   //Convert to chosen base
-  return setBase(B, (base == null) ? Globals.BASE : base, true);
+  return setBase(B, (base == null) ? Globals.DEFAULT_BASE : base, true);
 }

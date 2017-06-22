@@ -106,7 +106,7 @@ describe('intUtils', function(){
     it('should use global as default mutable behavior', function(){
       const A: Integer = toInteger([1,2,3,4,5], 5, true, 123);
       const B: Integer = tryMutable(A);
-      if(Globals.IS_MUTABLE){
+      if(Globals.DEFAULT_IS_MUTABLE){
         assert.equal(A, B);
         assert.deepEqual(A, B);
         assert.equal(A.digits, B.digits);

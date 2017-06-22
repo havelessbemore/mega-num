@@ -31,7 +31,7 @@
     "generate-package": "node build/scripts/makePackage.js",
     "lint": "tsc && tslint 'src/**/*.ts'",
     "prepublish": "npm run lint",
-    "start": "webpack-dev-server --hot --inline --progress",
+    "start": "webpack-dev-server --hot --inline --progress --colors",
     "test": "tsc && mocha --opts mocha.opts",
     "webpack": "webpack -p --display-error-details"
   },
