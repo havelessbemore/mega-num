@@ -17,7 +17,7 @@ describe('add', function(){
     const expected: Integer = toInteger([4, 2], 2, false, 10);
 
     //Run method
-    const actual: Integer = add(A, A, true);
+    const actual: Integer = add(A, A);
 
     //Verify method
     assert.equal(actual, A);
@@ -30,10 +30,10 @@ describe('add', function(){
     //Create mock
     const dependency = rewireAdd.__get__('double_1');
     const mock: sinon.SinonMock = sinon.mock(dependency);
-    mock.expects("double").once().withExactArgs(A, true);
+    mock.expects("double").once().withExactArgs(A);
 
     //Rewire and run method
-    rewireAdd.__with__({double_1: dependency})(() => rewireAdd.add(A, A, true));
+    rewireAdd.__with__({double_1: dependency})(() => rewireAdd.add(A, A));
 
     //Verify method
     mock.verify();
@@ -45,7 +45,7 @@ describe('add', function(){
     const expected: Integer = toInteger([2, 1], 2, false, 10);
 
     //Run method
-    const actual: Integer = add(A, B, true);
+    const actual: Integer = add(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -58,7 +58,7 @@ describe('add', function(){
     const expected: Integer = toInteger([0, 1], 2, false, 12);
 
     //Run method
-    const actual: Integer = add(A, B, true);
+    const actual: Integer = add(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -71,7 +71,7 @@ describe('add', function(){
     const expected: Integer = toInteger([2], 1, false, 10);
 
     //Run method
-    const actual: Integer = add(A, B, true);
+    const actual: Integer = add(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -85,11 +85,11 @@ describe('add', function(){
     //Create mocks
     const negate = rewireAdd.__get__('negate_1');
     const negateMock: sinon.SinonMock = sinon.mock(negate);
-    negateMock.expects('negate').twice().withExactArgs(A, true);
+    negateMock.expects('negate').twice().withExactArgs(A);
 
     const subtract = rewireAdd.__get__('subtract_1');
     const subtractMock: sinon.SinonMock = sinon.mock(subtract);
-    subtractMock.expects("subtract").once().withExactArgs(A, B, true);
+    subtractMock.expects("subtract").once().withExactArgs(A, B);
 
     //Rewire and run method
     rewireAdd.__with__({subtract_1: subtract})(() => rewireAdd.add(A, B, true));
@@ -105,7 +105,7 @@ describe('add', function(){
     const expected: Integer = toInteger([5,7,9], 3, false, 10);
 
     //Run method
-    const actual: Integer = add(A, B, true);
+    const actual: Integer = add(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -119,7 +119,7 @@ describe('add', function(){
     const expected: Integer = toInteger([5,7,9,4], 4, false, 10);
 
     //Run method
-    const actual: Integer = add(A, B, true);
+    const actual: Integer = add(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -141,7 +141,7 @@ describe('add', function(){
     //Rewire and run method
     rewireAdd.__with__({addition_1: dependency})(() => {
       try{
-        rewireAdd.add(A, B, true);
+        rewireAdd.add(A, B);
       } catch(e){}
     });
 
@@ -155,7 +155,7 @@ describe('add', function(){
     const expected: Integer = toInteger([5,7,3,4], 4, false, 10);
 
     //Run method
-    const actual: Integer = add(A, B, true);
+    const actual: Integer = add(A, B);
 
     //Verify method
     assert.equal(actual, A);

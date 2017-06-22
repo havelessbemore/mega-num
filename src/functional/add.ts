@@ -7,15 +7,12 @@ import {subtract} from './subtract';
 import {addition} from '../algorithm/addition';
 import {reverseAddition} from '../algorithm/reverseAddition';
 import {growArray} from '../util/arrayUtils';
-import {tryMutable} from '../util/intUtils';
 
-export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
-  A = tryMutable(A, isMutable);
+export function add(A: Integer, B: Integer): Integer {
 
   //If self
   if(A === B){
-    double(A, true);
-    return A;
+    return double(A);
   }
 
   //If B is zero
@@ -28,22 +25,20 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
   //If C is zero
   if(A.precision === 0){
     copy(A, B);
-    setBase(A, base, true);
-    return A;
+    return setBase(A, base);
   }
 
   //If signs differ
   if(A.isNegative !== B.isNegative){
 
     //Change sign, subtract, change sign again
-    negate(A, true);
-    subtract(A, B, true);
-    negate(A, true);
-    return A;
+    negate(A);
+    subtract(A, B);
+    return negate(A);
   }
 
   //Normalize to B's base
-  setBase(A, B.base, true);
+  setBase(A, B.base);
 
   //If C < B
   if(A.precision < B.precision){
@@ -70,6 +65,5 @@ export function add(A: Integer, B: Integer, isMutable?: boolean): Integer {
   }
 
   //Change A back to original base
-  setBase(A, base, true);
-  return A;
+  return setBase(A, base);
 }

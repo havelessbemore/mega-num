@@ -29,7 +29,7 @@ export function compare(A: Integer, B: Integer): number {
     }
 
     //Convert A to B's base
-    setBase(A, B.base, true);
+    setBase(A, B.base);
   }
 
   //Compare A and B
@@ -39,7 +39,7 @@ export function compare(A: Integer, B: Integer): number {
   );
 
   //Change A back to original base (if needed)
-  setBase(A, base, true);
+  setBase(A, base);
 
   //Return result
   return out;

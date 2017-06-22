@@ -3,43 +3,41 @@ import {compare} from './compare';
 import {copy} from './copy';
 import {setBase} from './setBase';
 import {steinGCD} from '../algorithm/steinGCD';
-import {tryMutable} from '../util/intUtils';
 
-export function gcd(A: Integer, B: Integer, isMutable?: boolean): Integer {
-  const C: Integer = tryMutable(A, isMutable);
+export function gcd(A: Integer, B: Integer): Integer {
 
-  //Make C positive
-  C.isNegative = false;
+  //Make A positive
+  A.isNegative = false;
 
   //If GCD of self or B = 0
   if(A === B || B.precision === 0){
-    return C;
+    return A;
   }
 
-  //If C = 0
-  if(C.precision === 0){
-    copy(C, B);
-    C.isNegative = false;
-    return C;
+  //If A = 0
+  if(A.precision === 0){
+    copy(A, B);
+    A.isNegative = false;
+    return A;
   }
 
-  //If |C| > 0 && |B| > 0
-  const base: number = C.base;
+  //If |A| > 0 && |B| > 0
+  const base: number = A.base;
 
   //Normalize the bases
-  setBase(C, B.base, true);
+  setBase(A, B.base);
 
-  //If C != B
-  if(compare(C, B) !== 0){
+  //If A != B
+  if(compare(A, B) !== 0){
 
     //Calculate GCD
-    [C.digits,,C.precision] = steinGCD(
-      C.digits, 0, C.precision,
+    [A.digits,,A.precision] = steinGCD(
+      A.digits, 0, A.precision,
       B.digits.slice(0, B.precision), 0, B.precision,
-      C.base
+      A.base
     );
   }
 
-  //Return C to original base
-  return setBase(C, base, true);
+  //Return A to original base
+  return setBase(A, base);
 }

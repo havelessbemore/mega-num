@@ -8,12 +8,12 @@ describe('setBase', function(){
 
   it('should return error when base too low', function(){
     const A: Integer = toInteger([3,2,1], 3, false, 10);
-    expect(function(){setBase(A, Globals.MIN_BASE - 1, true)}).to.throw(RangeError);
+    expect(function(){setBase(A, Globals.MIN_BASE - 1)}).to.throw(RangeError);
   });
 
   it('should return error when base too high', function(){
     const A: Integer = toInteger([3,2,1], 3, false, 10);
-    expect(function(){setBase(A, Globals.MAX_BASE + 1, true)}).to.throw(RangeError);
+    expect(function(){setBase(A, Globals.MAX_BASE + 1)}).to.throw(RangeError);
   });
 
   it('should return zero when input is zero', function(){
@@ -21,7 +21,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([], 0, false, 2);
 
     //Run method
-    const actual: Integer = setBase(A, 2, true);
+    const actual: Integer = setBase(A, 2);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -34,7 +34,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([1], 1, false, 2);
 
     //Run method
-    const actual: Integer = setBase(A, 2, true);
+    const actual: Integer = setBase(A, 2);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -47,7 +47,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([0,1], 2, false, 2);
 
     //Run method
-    const actual: Integer = setBase(A, 2, true);
+    const actual: Integer = setBase(A, 2);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -60,7 +60,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([0,1,0,1], 4, false, 2);
 
     //Run method
-    const actual: Integer = setBase(A, 2, true);
+    const actual: Integer = setBase(A, 2);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -73,7 +73,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([0,0,0,0,1], 5, false, 2);
 
     //Run method
-    const actual: Integer = setBase(A, 2, true);
+    const actual: Integer = setBase(A, 2);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -86,7 +86,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([1,1,1,1,1], 5, false, 2);
 
     //Run method
-    const actual: Integer = setBase(A, 2, true);
+    const actual: Integer = setBase(A, 2);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -99,7 +99,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([2], 1, false, 19);
 
     //Run method
-    const actual: Integer = setBase(A, 19, true);
+    const actual: Integer = setBase(A, 19);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -112,7 +112,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([7], 1, false, 19);
 
     //Run method
-    const actual: Integer = setBase(A, 19, true);
+    const actual: Integer = setBase(A, 19);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -125,7 +125,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([0,1], 2, false, 19);
 
     //Run method
-    const actual: Integer = setBase(A, 19, true);
+    const actual: Integer = setBase(A, 19);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -138,7 +138,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([12,0,1], 3, false, 19);
 
     //Run method
-    const actual: Integer = setBase(A, 19, true);
+    const actual: Integer = setBase(A, 19);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -151,7 +151,7 @@ describe('setBase', function(){
     const expected: Integer = toInteger([18,18,18,18], 4, false, 19);
 
     //Run method
-    const actual: Integer = setBase(A, 19, true);
+    const actual: Integer = setBase(A, 19);
     actual.digits.length = actual.precision;
 
     //Verify method

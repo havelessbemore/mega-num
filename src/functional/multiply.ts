@@ -6,16 +6,14 @@ import {karatsubaMultiplication} from '../algorithm/karatsubaMultiplication';
 import {longMultiplication} from '../algorithm/longMultiplication';
 import {singleDigitMultiplication} from '../algorithm/singleDigitMultiplication';
 import {growArray} from '../util/arrayUtils';
-import {setZero, tryMutable} from '../util/intUtils';
+import {setZero} from '../util/intUtils';
 
-export function multiply(A: Integer, B: Integer, isMutable?: boolean): Integer {
+export function multiply(A: Integer, B: Integer): Integer {
 
   //If self
   if(A === B){
-    return square(A, isMutable);
+    return square(A);
   }
-
-  A = tryMutable(A, isMutable);
 
   //If A is zero
   if(A.precision === 0){
@@ -32,7 +30,7 @@ export function multiply(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
   //Normalize to B's base
   const base: number = A.base;
-  setBase(A, B.base, true);
+  setBase(A, B.base);
 
   //If B is single digit
   if(B.precision === 1){
@@ -84,5 +82,5 @@ export function multiply(A: Integer, B: Integer, isMutable?: boolean): Integer {
     }
   }
 
-  return setBase(A, base, true);
+  return setBase(A, base);
 }

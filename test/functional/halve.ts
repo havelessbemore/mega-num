@@ -11,7 +11,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -26,7 +26,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -41,7 +41,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -56,7 +56,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -71,7 +71,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -86,7 +86,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 2);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -101,7 +101,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 3);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -116,7 +116,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -131,7 +131,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 11);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -146,7 +146,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 179);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -161,7 +161,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([], 0, false, 179);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -176,7 +176,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 94906265);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -191,7 +191,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -206,7 +206,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method
@@ -221,7 +221,7 @@ describe('halve', function(){
     const expectedR: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const [actualQ, actualR]: [Integer, Integer] = halve(A, true);
+    const [actualQ, actualR]: [Integer, Integer] = halve(A);
     actualQ.digits.length = actualQ.precision;
 
     //Verify method

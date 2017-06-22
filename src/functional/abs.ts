@@ -1,8 +1,6 @@
 import {Integer} from '../integer';
-import {tryMutable} from '../util/intUtils';
 
-export function abs(A: Integer, isMutable?: boolean): Integer {
-  A = tryMutable(A, isMutable);
+export function abs(A: Integer): Integer {
   A.isNegative = false;
   return A;
 }

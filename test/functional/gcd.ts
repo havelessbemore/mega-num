@@ -10,7 +10,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([3,2,1], 1, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, A, true);
+    const actual: Integer = gcd(A, A);
 
     //Verify method
     assert.equal(actual, A);
@@ -23,7 +23,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([3,2,1], 1, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -36,7 +36,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([3,2,1], 3, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -50,7 +50,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -64,7 +64,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([6], 1, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -78,7 +78,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([6], 1, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -92,7 +92,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([4,1], 2, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -106,7 +106,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -120,7 +120,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([3], 1, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -134,7 +134,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([1,2], 2, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -149,7 +149,7 @@ describe('gcd', function(){
     const expected: Integer = toInteger([2], 1, false, 10);
 
     //Run method
-    const actual: Integer = gcd(A, B, true);
+    const actual: Integer = gcd(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method

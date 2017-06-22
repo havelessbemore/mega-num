@@ -1,10 +1,9 @@
 import {Integer} from '../integer';
 import {decrement as _decrement} from '../algorithm/decrement';
 import {increment} from '../algorithm/increment';
-import {setOne, tryMutable} from '../util/intUtils';
+import {setOne} from '../util/intUtils';
 
-export function decrement(A: Integer, isMutable?: boolean): Integer {
-  A = tryMutable(A, isMutable);
+export function decrement(A: Integer): Integer {
 
   //If negative
   if(A.isNegative){

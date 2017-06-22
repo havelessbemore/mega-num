@@ -2,10 +2,8 @@ import {Integer} from '../integer';
 import {karatsubaSquare} from '../algorithm/karatsubaSquare';
 import {longSquare} from '../algorithm/longSquare';
 import {growArray} from '../util/arrayUtils';
-import {tryMutable} from '../util/intUtils';
 
-export function square(A: Integer, isMutable?: boolean): Integer {
-  A = tryMutable(A, isMutable);
+export function square(A: Integer): Integer {
 
   //If zero
   if(A.precision === 0){

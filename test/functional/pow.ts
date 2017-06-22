@@ -15,7 +15,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -29,7 +29,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -43,7 +43,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -57,7 +57,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -75,7 +75,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -89,7 +89,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -103,7 +103,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -118,19 +118,19 @@ describe('pow', function(){
   it('should return 0^-1 in base 10', function(){
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([1], 1, true, 10);
-    expect(function(){pow(A, B, true)}).to.throw(EvalError);
+    expect(function(){pow(A, B)}).to.throw(EvalError);
   });
 
   it('should return 0^-2 in base 10', function(){
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([2], 1, true, 10);
-    expect(function(){pow(A, B, true)}).to.throw(EvalError);
+    expect(function(){pow(A, B)}).to.throw(EvalError);
   });
 
   it('should return 0^-123 in base 10', function(){
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([3,2,1], 3, true, 10);
-    expect(function(){pow(A, B, true)}).to.throw(EvalError);
+    expect(function(){pow(A, B)}).to.throw(EvalError);
   });
 
   ////////////////////////
@@ -143,7 +143,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -157,7 +157,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -171,7 +171,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -189,7 +189,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -202,7 +202,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([2], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -216,7 +216,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([3], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -230,7 +230,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([4,3,2,1], 4, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -249,7 +249,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -262,7 +262,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -275,7 +275,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -288,7 +288,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -305,7 +305,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([4], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -319,7 +319,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([6,1], 2, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -333,7 +333,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([8,0,8,5,7,7,4,5,8,6,3,0,2,7,3,3,2,2,9], 19, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -347,7 +347,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([6,1,6,1,5,5,9,0,7,3,7,0,4,4,7,6,4,4,8,1], 20, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -361,7 +361,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1,8], 2, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -375,7 +375,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([1,9999998], 2, false, 10000000);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -401,7 +401,7 @@ describe('pow', function(){
     ], 328, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -429,7 +429,7 @@ describe('pow', function(){
     ], 128, false, 373);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -447,7 +447,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([4], 1, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -461,7 +461,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([8], 1, true, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -475,7 +475,7 @@ describe('pow', function(){
     const expected: Integer = toInteger([8,0,8,5,7,7,4,5,8,6,3,0,2,7,3,3,2,2,9], 19, true, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -489,12 +489,12 @@ describe('pow', function(){
     const expected: Integer = toInteger([6,1,6,1,5,5,9,0,7,3,7,0,4,4,7,6,4,4,8,1], 20, false, 10);
 
     //Run method
-    const actual: Integer = pow(A, B, true);
+    const actual: Integer = pow(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
     assert.equal(actual, A);
     assert.deepEqual(actual, expected);
   });
-  
+
 });

@@ -10,7 +10,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([3,2,1], 3, false, 10);
 
     //Run method
-    const actual: Integer = lcm(A, A, true);
+    const actual: Integer = lcm(A, A);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -24,7 +24,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -38,7 +38,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([3,2,1], 3, false, 10);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -52,7 +52,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -66,7 +66,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([3,2,1], 3, false, 10);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -80,7 +80,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -94,7 +94,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([2,1], 2, false, 10);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -108,7 +108,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([2,4], 2, false, 10);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -122,7 +122,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([0,1,0,1,0,1], 6, false, 2);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -136,7 +136,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([0,2,1,1], 4, false, 3);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -150,7 +150,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([2,3,1], 3, false, 5);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -164,7 +164,7 @@ describe('lcm', function(){
     const expected: Integer = toInteger([10,2], 2, false, 16);
 
     //Run method
-    const actual: Integer = lcm(A, B, true);
+    const actual: Integer = lcm(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method

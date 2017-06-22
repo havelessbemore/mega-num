@@ -1,11 +1,10 @@
 import {Integer} from '../integer';
 import {decrement} from './decrement';
 import {halve as _halve} from '../algorithm/halve';
-import {setZero, setOne, tryMutable} from '../util/intUtils';
+import {setZero, setOne} from '../util/intUtils';
 
-export function halve(A: Integer, isMutable?: boolean): [Integer, Integer] {
+export function halve(A: Integer): [Integer, Integer] {
   const remainder: Integer = setZero({base: A.base});
-  A = tryMutable(A, isMutable);
 
   //If zero
   if(A.precision === 0){
@@ -24,7 +23,7 @@ export function halve(A: Integer, isMutable?: boolean): [Integer, Integer] {
   if(A.isNegative){
 
     //Round down (e.g. Math.floor(-49.5) = -50)
-    decrement(A, true);
+    decrement(A);
   }
 
   return [A, setOne(remainder)];

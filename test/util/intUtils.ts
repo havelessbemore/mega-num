@@ -1,8 +1,7 @@
 import {assert} from 'chai';
-import {Globals} from '../../src/globals';
 import {Integer} from '../../src/integer';
 import {
-  assign, copy, setOne, setZero, tryMutable
+  assign, copy, setOne, setZero
 } from '../../src/util/intUtils';
 
 function toInteger(digits: number[], precision: number, isNegative: boolean, base: number): Integer {
@@ -85,36 +84,4 @@ describe('intUtils', function(){
       assert.equal(A.base, base);
     });
   });
-
-  describe('tryMutable', function(){
-    it('should return input if mutable', function(){
-      const A: Integer = toInteger([1,2,3,4,5], 5, true, 123);
-      const B: Integer = tryMutable(A, true);
-      assert.equal(A, B);
-      assert.deepEqual(A, B);
-      assert.equal(A.digits, B.digits);
-    });
-
-    it('should return copy of input if immutable', function(){
-      const A: Integer = toInteger([1,2,3,4,5], 5, true, 123);
-      const B: Integer = tryMutable(A, false);
-      assert.notEqual(A, B);
-      assert.deepEqual(A, B);
-      assert.notEqual(A.digits, B.digits);
-    });
-
-    it('should use global as default mutable behavior', function(){
-      const A: Integer = toInteger([1,2,3,4,5], 5, true, 123);
-      const B: Integer = tryMutable(A);
-      if(Globals.DEFAULT_IS_MUTABLE){
-        assert.equal(A, B);
-        assert.deepEqual(A, B);
-        assert.equal(A.digits, B.digits);
-      } else {
-        assert.notEqual(A, B);
-        assert.deepEqual(A, B);
-        assert.notEqual(A.digits, B.digits);
-      }
-    });
-  })
 });

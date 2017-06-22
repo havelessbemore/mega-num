@@ -22,7 +22,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -35,7 +35,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -48,7 +48,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -61,7 +61,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([8], 1, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -74,7 +74,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([6,6,6,6,5,4], 6, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -87,7 +87,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([0,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,1], 19, false, 2);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -100,7 +100,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([1,2,4,2,0,0,4,8,0,6,0,0,7,4,7,9], 16, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -113,7 +113,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -126,7 +126,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([9,9,9,9,9,9,9], 7, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -140,7 +140,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([9,9,9,9,9,0,0,1], 8, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -157,7 +157,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([1], 1, true, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -170,7 +170,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([1], 1, true, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -183,7 +183,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([1], 1, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -197,7 +197,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([8], 1, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -210,7 +210,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([6,6,6,6,5,4], 6, true, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -223,7 +223,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([0,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,1], 19, true, 2);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -236,7 +236,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([1,2,4,2,0,0,4,8,0,6,0,0,7,4,7,9], 16, true, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -249,7 +249,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([1], 1, true, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -263,7 +263,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([9,9,9,9,9,9,9], 7, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -277,7 +277,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([9,9,9,9,9,0,0,1], 8, true, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -293,22 +293,10 @@ describe('subtract', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, A, true);
+    const actual: Integer = subtract(A, A);
 
     //Verify method
     assert.equal(actual, A);
-    assert.deepEqual(actual, expected);
-  });
-
-  it('should return zero if A === B', function(){
-    const A: Integer = toInteger([1,2,3], 3, false, 10);
-    const expected: Integer = toInteger([], 0, false, 10);
-
-    //Run method
-    const actual: Integer = subtract(A, A, false);
-
-    //Verify method
-    assert.notEqual(actual, A);
     assert.deepEqual(actual, expected);
   });
 
@@ -318,7 +306,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([1,2,3], 3, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -331,7 +319,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([1,2,3], 3, true, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -344,7 +332,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([1,0,0,0,0,0,1,0,1], 9, true, 2);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -358,7 +346,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([4], 1, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);
@@ -372,14 +360,14 @@ describe('subtract', function(){
     //Create mocks
     const negate = rewireSubtract.__get__('negate_1');
     const negateMock: sinon.SinonMock = sinon.mock(negate);
-    negateMock.expects('negate').twice().withExactArgs(A, true);
+    negateMock.expects('negate').twice().withExactArgs(A);
 
     const add = rewireSubtract.__get__('add_1');
     const addMock: sinon.SinonMock = sinon.mock(add);
-    addMock.expects("add").once().withExactArgs(A, B, true);
+    addMock.expects("add").once().withExactArgs(A, B);
 
     //Rewire and run method
-    rewireSubtract.__with__({add_1: add})(() => rewireSubtract.subtract(A, B, true));
+    rewireSubtract.__with__({add_1: add})(() => rewireSubtract.subtract(A, B));
 
     //Verify mocks
     negateMock.verify();
@@ -392,7 +380,7 @@ describe('subtract', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = subtract(A, B, true);
+    const actual: Integer = subtract(A, B);
 
     //Verify method
     assert.equal(actual, A);

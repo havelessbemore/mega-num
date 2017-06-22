@@ -14,7 +14,7 @@ describe('double', function(){
   it('should double input', function(){
     const input: Integer = toInteger([1,2], 2, true, 125);
     const expected: Integer = toInteger([2,4], 2, true, 125);
-    const actual: Integer = double(input, true);
+    const actual: Integer = double(input);
     assert.equal(actual, input);
     assert.deepEqual(actual, expected);
     assert.notEqual(actual.digits, expected.digits);
@@ -29,7 +29,7 @@ describe('double', function(){
     mock.expects("double").once().withExactArgs(A.digits, 0, A.precision, A.base);
 
     //Rewire and run method
-    rewired.__with__({double_1: dependency})(() => rewired.double(A, true));
+    rewired.__with__({double_1: dependency})(() => rewired.double(A));
 
     //Verify method
     mock.verify();

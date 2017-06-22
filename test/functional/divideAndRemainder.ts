@@ -8,14 +8,14 @@ describe('divideAndRemainder', function(){
   it('should throw error if A / 0', function(){
     const A: Integer = toInteger([1], 1, false, 10);
     const B: Integer = toInteger([], 0, false, 10);
-    expect(function(){divideAndRemainder(A,B,true)}).to.throw(EvalError);
+    expect(function(){divideAndRemainder(A,B)}).to.throw(EvalError);
   });
 
   it('should return 1 if A === B', function(){
     const A: Integer = toInteger([3,2,1], 3, false, 10);
     const expectedQ: Integer = toInteger([1], 1, false, 10);
     const expectedR: Integer = toInteger([], 0, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,A,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,A);
     assert.equal(A, Q);
     assert.deepEqual(Q, expectedQ);
     assert.deepEqual(R, expectedR);
@@ -26,7 +26,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([3,2,1], 3, false, 10);
     const expectedQ: Integer = toInteger([], 0, false, 10);
     const expectedR: Integer = toInteger([], 0, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     assert.deepEqual(Q, expectedQ);
     assert.deepEqual(R, expectedR);
@@ -37,7 +37,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([1], 1, false, 10);
     const expectedQ: Integer = toInteger([3,2,1], 3, false, 10);
     const expectedR: Integer = toInteger([], 0, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     assert.deepEqual(Q, expectedQ);
     assert.deepEqual(R, expectedR);
@@ -48,7 +48,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([2], 1, false, 10);
     const expectedQ: Integer = toInteger([], 0, false, 10);
     const expectedR: Integer = toInteger([1], 1, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     assert.deepEqual(Q, expectedQ);
     assert.deepEqual(R, expectedR);
@@ -59,7 +59,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([4,3,2,1], 4, false, 10);
     const expectedQ: Integer = toInteger([], 0, false, 10);
     const expectedR: Integer = toInteger([3,2,1], 3, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     assert.deepEqual(Q, expectedQ);
     assert.deepEqual(R, expectedR);
@@ -70,7 +70,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([4,3,2,1], 4, false, 10);
     const expectedQ: Integer = toInteger([], 0, false, 10);
     const expectedR: Integer = toInteger([3,2,1], 3, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     assert.deepEqual(Q, expectedQ);
     assert.deepEqual(R, expectedR);
@@ -81,7 +81,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([0,1], 2, false, 100);
     const expectedQ: Integer = toInteger([], 0, false, 10);
     const expectedR: Integer = toInteger([0,1], 2, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     assert.deepEqual(Q, expectedQ);
     assert.deepEqual(R, expectedR);
@@ -92,7 +92,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([0,1], 2, false, 100);
     const expectedQ: Integer = toInteger([1], 1, false, 10);
     const expectedR: Integer = toInteger([], 0, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -111,7 +111,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([2], 1, false, 10);
     const expectedQ: Integer = toInteger([1,6], 2, false, 10);
     const expectedR: Integer = toInteger([1], 1, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     A.digits.length = A.precision;
     assert.deepEqual(Q, expectedQ);
@@ -123,7 +123,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([2], 1, false, 10);
     const expectedQ: Integer = toInteger([1,6], 2, false, 10);
     const expectedR: Integer = toInteger([], 0, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     A.digits.length = A.precision;
     assert.deepEqual(Q, expectedQ);
@@ -135,7 +135,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([0,1], 2, false, 10);
     const expectedQ: Integer = toInteger([1], 1, false, 10);
     const expectedR: Integer = toInteger([], 0, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -148,7 +148,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([9,9], 2, false, 10);
     const expectedQ: Integer = toInteger([1], 1, false, 10);
     const expectedR: Integer = toInteger([], 0, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -161,7 +161,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([0,1], 2, false, 10);
     const expectedQ: Integer = toInteger([0,1], 2, false, 10);
     const expectedR: Integer = toInteger([], 0, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -174,7 +174,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([1,1], 2, false, 10);
     const expectedQ: Integer = toInteger([0,9], 2, false, 10);
     const expectedR: Integer = toInteger([9], 1, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -187,7 +187,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([3,2,1], 3, false, 10);
     const expectedQ: Integer = toInteger([1,8,0,0,3,1,8], 7, false, 10);
     const expectedR: Integer = toInteger([6,3], 2, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -200,7 +200,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([1,2,3], 3, false, 10);
     const expectedQ: Integer = toInteger([4,6,2,5,1,1,3], 7, false, 10);
     const expectedR: Integer = toInteger([5,5,2], 3, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -213,7 +213,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([1,1,1,0,0,1,0,1,1,1,0,1,0,0,1,0,0,0,1,1,0,1,1,1], 24, false, 2);
     const expectedQ: Integer = toInteger([0,1,1,1,1,1], 6, false, 2);
     const expectedR: Integer = toInteger([1,1,0,1,1,0,1,0,1,0,1,1,0,0,1,1,0,0,0,1,1], 21, false, 2);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -226,7 +226,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([1,1,1,1,2,1,2,0,2,0,1,0,2,0,0,1], 16, false, 3);
     const expectedQ: Integer = toInteger([2,2,0,2], 4, false, 3);
     const expectedR: Integer = toInteger([2,2,0,0,0,2,0,2,1,1,0,0,0,1], 14, false, 3);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -239,7 +239,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([1,0,2,5,2,4,5,4,2], 9, false, 7);
     const expectedQ: Integer = toInteger([6,1,1], 3, false, 7);
     const expectedR: Integer = toInteger([0,1,6,6,4,5,6,1], 8, false, 7);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -252,7 +252,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([9,8,7,0,0,0,6,5,4,0,0,0,3,2,1], 15, false, 10);
     const expectedQ: Integer = toInteger([0,1,2,3,0,0,0,4,5,6,0,0,0,7,8,9], 16, false, 10);
     const expectedR: Integer = toInteger([], 0, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -265,7 +265,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([3,6,8,5,8,4,5,1], 8, false, 10);
     const expectedQ: Integer = toInteger([2,6], 2, false, 10);
     const expectedR: Integer = toInteger([5,3,4,5,2,6,1], 7, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;
@@ -278,7 +278,7 @@ describe('divideAndRemainder', function(){
     const B: Integer = toInteger([1,6,4,4,8], 5, false, 10);
     const expectedQ: Integer = toInteger([7,4,5,8], 4, false, 10);
     const expectedR: Integer = toInteger([0,6,1,0,6], 5, false, 10);
-    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B,true);
+    const [Q, R]: [Integer, Integer] = divideAndRemainder(A,B);
     assert.equal(A, Q);
     Q.digits.length = Q.precision;
     R.digits.length = R.precision;

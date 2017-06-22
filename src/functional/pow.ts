@@ -2,10 +2,9 @@ import {Integer} from '../integer';
 import {isEven} from './isEven';
 import {exponentiation} from '../algorithm/exponentiation';
 import {growArray} from '../util/arrayUtils';
-import {setOne, setZero, tryMutable} from '../util/intUtils';
+import {setOne, setZero} from '../util/intUtils';
 
-export function pow(A: Integer, B: Integer, isMutable?: boolean): Integer {
-  A = tryMutable(A, isMutable);
+export function pow(A: Integer, B: Integer): Integer {
 
   //C^0 = 1
   if(B.precision === 0){

@@ -2,76 +2,74 @@ import {Integer} from '../integer';
 import {setBase} from './setBase';
 import {basicDivision} from '../algorithm/basicDivision';
 import {singleDigitDivision} from '../algorithm/singleDigitDivision';
-import {assign, setOne, setZero, tryMutable} from '../util/intUtils';
+import {assign, setOne, setZero} from '../util/intUtils';
 
-export function divideAndRemainder(A: Integer, B: Integer, isMutable?: boolean): [Integer, Integer] {
+export function divideAndRemainder(A: Integer, B: Integer): [Integer, Integer] {
 
   //If A / 0
   if(B.precision === 0){
     throw new EvalError("Divide by zero");
   }
 
-  const C: Integer = tryMutable(A, isMutable);
-
   //If self
   if(A === B){
-    return [setOne(C), setZero({base: C.base})];
+    return [setOne(A), setZero({base: A.base})];
   }
 
   //Divide signs
-  C.isNegative = C.isNegative !== B.isNegative;
+  A.isNegative = A.isNegative !== B.isNegative;
 
   //If 0 / B or B = 1
-  if(C.precision === 0 || (B.precision === 1 && B.digits[0] === 1)){
-    return [C, setZero({base: C.base})];
+  if(A.precision === 0 || (B.precision === 1 && B.digits[0] === 1)){
+    return [A, setZero({base: A.base})];
   }
 
-  //If C = 1
-  if(C.precision === 1 && C.digits[0] === 1){
-    return [setZero(C), setOne({base: C.base})];
+  //If A = 1
+  if(A.precision === 1 && A.digits[0] === 1){
+    return [setZero(A), setOne({base: A.base})];
   }
 
   //If different bases
-  const base: number = C.base;
+  const base: number = A.base;
   if(base !== B.base){
 
-    //If C's max length in B's base < B's length
+    //If A's max length in B's base < B's length
     const ratio: number = Math.log(base) / Math.log(B.base);
-    if(Math.ceil(C.precision * ratio) < B.precision){
-      const remainder: Integer = assign({}, C);
-      return [setZero(C), remainder];
+    if(Math.ceil(A.precision * ratio) < B.precision){
+      const remainder: Integer = assign({}, A);
+      return [setZero(A), remainder];
     }
 
     //Normalize bases
-    setBase(C, B.base, true);
+    setBase(A, B.base);
   }
 
-  //If C's length < B's length
-  if(C.precision < B.precision){
-    setBase(C, base, true);
-    const remainder: Integer = assign({}, C);
-    return [setZero(C), remainder];
+  //If A's length < B's length
+  if(A.precision < B.precision){
+    setBase(A, base);
+    const remainder: Integer = assign({}, A);
+    return [setZero(A), remainder];
   }
 
   //Choose best algorithm
-  const R: Integer = setOne({base: C.base});
+  const R: Integer = setOne({base: A.base});
   if(B.precision < 2){
-    [C.precision, R.digits[0]] = singleDigitDivision(
-      C.digits, 0, C.precision, B.digits[0], C.base
+    [A.precision, R.digits[0]] = singleDigitDivision(
+      A.digits, 0, A.precision, B.digits[0], A.base
     );
     if(R.digits[0] === 0){
       setZero(R);
     }
   } else {
     [
-      C.digits, R.digits, C.precision, R.precision
+      A.digits, R.digits, A.precision, R.precision
     ] = basicDivision(
-      C.digits, 0, C.precision, B.digits, 0, B.precision, C.base
+      A.digits, 0, A.precision, B.digits, 0, B.precision, A.base
     );
   }
 
-  //Return C and R
-  setBase(C, base, true);
-  setBase(R, base, true);
-  return [C, R];
+  //Return A and R
+  setBase(A, base);
+  setBase(R, base);
+  return [A, R];
 }

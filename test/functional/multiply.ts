@@ -10,7 +10,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([4], 1, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, A, true);
+    const actual: Integer = multiply(A, A);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -24,7 +24,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -38,7 +38,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([], 0, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -52,7 +52,7 @@ describe('multiply', function(){
       const expected: Integer = toInteger([1], 1, false, 10);
 
       //Run method
-      const actual: Integer = multiply(A, B, true);
+      const actual: Integer = multiply(A, B);
       actual.digits.length = actual.precision;
 
       //Verify method
@@ -66,7 +66,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([0,1], 2, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -80,7 +80,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([0,0,1], 3, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -94,7 +94,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([2,7], 2, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -108,7 +108,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([2,7], 2, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -122,7 +122,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([6,4,2], 3, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -136,7 +136,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([6,4,2], 3, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -150,7 +150,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([9,6,3], 3, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -164,7 +164,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([7,4,0,5,8,1,6,5], 8, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -178,7 +178,7 @@ describe('multiply', function(){
     const expected: Integer = toInteger([1,1,1,0,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,1,1,0,1,0,1,1], 26, false, 2);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method
@@ -210,7 +210,7 @@ describe('multiply', function(){
     ], 200, false, 10);
 
     //Run method
-    const actual: Integer = multiply(A, B, true);
+    const actual: Integer = multiply(A, B);
     actual.digits.length = actual.precision;
 
     //Verify method

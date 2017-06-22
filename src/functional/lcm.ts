@@ -2,46 +2,43 @@ import {Integer} from '../integer';
 import {copy} from './copy';
 import {setBase} from './setBase';
 import {lcm as _lcm} from '../algorithm/lcm';
-import {setZero, tryMutable} from '../util/intUtils';
+import {setZero} from '../util/intUtils';
 
 //See: https://en.wikipedia.org/wiki/Least_common_multiple
-export function lcm(A: Integer, B: Integer, isMutable?: boolean): Integer {
-  const C: Integer = tryMutable(A, isMutable);
+export function lcm(A: Integer, B: Integer): Integer {
 
-  //Make C positive
-  C.isNegative = false;
+  //Make A positive
+  A.isNegative = false;
 
   //If LCM of self or A = 0 or B = 1
   if(A === B || A.precision === 0 || (B.precision === 1 && B.digits[0] === 1)){
-    return C;
+    return A;
   }
 
   //If B is zero
   if(B.precision === 0){
-    setZero(C);
-    return C;
+    return setZero(A);
   }
 
-  const base: number = C.base;
+  const base: number = A.base;
 
-  //If C = 1
-  if(C.precision === 1 && C.digits[0] === 1){
-    copy(C, B);
-    C.isNegative = false;
+  //If A = 1
+  if(A.precision === 1 && A.digits[0] === 1){
+    copy(A, B);
+    A.isNegative = false;
 
-  //If C > 1 and B > 1
+  //If A > 1 and B > 1
   } else {
 
     //Normalize bases
-    setBase(C, B.base, true);
+    setBase(A, B.base);
 
     //Calculate LCM
-    [C.digits, C.precision] = _lcm(
-      C.digits, 0, C.precision, B.digits, 0, B.precision, C.base
+    [A.digits, A.precision] = _lcm(
+      A.digits, 0, A.precision, B.digits, 0, B.precision, A.base
     );
   }
 
-  //Change C to original base
-  setBase(C, base, true);
-  return C;
+  //Change A to original base
+  return setBase(A, base);
 }

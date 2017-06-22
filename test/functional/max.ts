@@ -14,14 +14,14 @@ describe('max', function(){
   it('should return A as max', function(){
     const A: Integer = toInteger([1,2,3,4,5], 5, false, 125);
     const B: Integer = toInteger([6,7,8], 3, false, 10);
-    const C: Integer = max(A, B, true);
+    const C: Integer = max(A, B);
     assert.equal(A, C);
   });
 
   it('should return B as max', function(){
     const A: Integer = toInteger([1,2], 2, false, 10);
     const B: Integer = toInteger([3,4], 2, false, 10);
-    const C: Integer = max(A, B, true);
+    const C: Integer = max(A, B);
     assert.equal(B, C);
   });
 

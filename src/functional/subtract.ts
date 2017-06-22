@@ -6,10 +6,9 @@ import {negate} from './negate';
 import {setBase} from './setBase';
 import {reverseSubtraction} from '../algorithm/reverseSubtraction';
 import {subtraction} from '../algorithm/subtraction';
-import {setZero, tryMutable} from '../util/intUtils';
+import {setZero} from '../util/intUtils';
 
-export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
-  A = tryMutable(A, isMutable);
+export function subtract(A: Integer, B: Integer): Integer {
 
   //If subtracting itself
   if(A === B){
@@ -28,23 +27,21 @@ export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
 
     //Copy B
     copy(A, B);
-    negate(A, true);
-    setBase(A, base, true);
-    return A;
+    negate(A);
+    return setBase(A, base);
   }
 
   //If signs differ
   if(A.isNegative !== B.isNegative){
 
     //Change sign, add, change sign again
-    negate(A, true);
-    add(A, B, true);
-    negate(A, true);
-    return A;
+    negate(A);
+    add(A, B);
+    return negate(A);
   }
 
   //Normalize to B's base
-  setBase(A, B.base, true);
+  setBase(A, B.base);
 
   //Compare A and B
   const c: number = compare(A, B);
@@ -59,7 +56,7 @@ export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
   if(c < 0){
 
     //Switch sign
-    negate(A, true);
+    negate(A);
 
     //Make room for subtraction
     if(A.digits.length < B.precision){
@@ -82,6 +79,5 @@ export function subtract(A: Integer, B: Integer, isMutable?: boolean): Integer {
     );
   }
 
-  setBase(A, base, true);
-  return A;
+  return setBase(A, base);
 }
