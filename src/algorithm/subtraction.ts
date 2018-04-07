@@ -13,7 +13,7 @@ export function subtraction(
   base: number
 ): number {
   let a: number = minA;
-  let borrow: number = 0;
+  let borrow = 0;
 
   //Subtract common digits
   while(minB < maxB){

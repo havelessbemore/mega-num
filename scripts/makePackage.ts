@@ -1,7 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-let packageJson: {[id: string]: any} = require(path.join(process.cwd(), './package.json'));
+// tslint:disable-next-line:no-any
+let packageJson: {[id: string]: any} =
+  require(path.join(process.cwd(), './package.json'));
 
 //Edit package.json
 packageJson = Object.assign({}, packageJson, {

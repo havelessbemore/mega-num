@@ -9,7 +9,7 @@ export function singleDigitMultiplication(
 ): number {
 
   //Multiply multiplicand by multiplier
-  let carry: number = 0;
+  let carry = 0;
   while(minA < maxA){
     let v: number = (A[minA] * multiplier) + carry;
     if(v < base){

@@ -8,7 +8,7 @@ export function halve(
 ): [number, number] {
 
   //Halve
-  let remainder: number = 0;
+  let remainder = 0;
   for(let i: number = maxA; i-- > minA; A[i] = A[i] >>> 1){
     A[i] = A[i] + (base & -remainder);
     remainder = A[i] & 1;

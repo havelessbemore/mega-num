@@ -18,7 +18,7 @@ export function steinGCD(
 ): [number[], number, number] {
 
   //Count and remove common factors of 2
-  let shifts: number = 0;
+  let shifts = 0;
   while(isEven(A, minA, maxA, base) && isEven(B, minB, maxB, base)){
     [maxA] = halve(A, minA, maxA, base);
     [maxB] = halve(B, minB, maxB, base);
@@ -37,8 +37,12 @@ export function steinGCD(
 
   //A will always be odd from now on
   //While A != B
-  let c: number;
-  while((c = compare(A, minA, maxA, B, minB, maxB)) !== 0){
+  while (true) {
+    let c = compare(A, minA, maxA, B, minB, maxB);
+
+    if (c === 0){
+      break;
+    }
 
     //Switch A and B iff A > B
     if(c > 0){

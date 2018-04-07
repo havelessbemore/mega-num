@@ -1,6 +1,6 @@
 {
   "presets": [
-    "env", "babili"
+    "env"
   ],
   "plugins": [
     ["transform-runtime", {
@@ -10,8 +10,14 @@
     }]
   ],
   "env": {
-    "prod": {
-      "presets": []
+    "production": {
+      "presets": [
+        ["minify", {
+          "mangle": {
+            "keepClassName": false
+          }
+        }]
+      ]
     }
   }
 }

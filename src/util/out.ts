@@ -1,4 +1,4 @@
-import chalk = require('chalk');
+import {default as chalk} from 'chalk';
 
 export class Out {
   private prefix: string;
@@ -7,12 +7,12 @@ export class Out {
     this.prefix = "";
   }
 
-  public group(name: string = ""): void {
+  group(name = ""): void {
     this.log(chalk.bold(name));
     this.indent(" | ");
   }
 
-  public groupEnd(): void {
+  groupEnd(): void {
     this.outdent(3);
     this.log("-");
   }
@@ -25,23 +25,28 @@ export class Out {
     this.prefix = this.prefix.slice(0, -spaces);
   }
 
-  public debug(...args: any[]): void {
+  // tslint:disable-next-line:no-any
+  debug(...args: any[]): void {
     console.log.call(undefined, chalk.cyan.call(undefined, this.prefix, ...args));
   }
 
-  public error(...args: any[]): void {
+  // tslint:disable-next-line:no-any
+  error(...args: any[]): void {
     console.error.call(undefined, chalk.red.call(undefined, this.prefix, ...args));
   }
 
-  public info(...args: any[]): void {
+  // tslint:disable-next-line:no-any
+  info(...args: any[]): void {
     console.info.call(undefined, chalk.blue.call(undefined, this.prefix, ...args));
   }
 
-  public log(...args: any[]): void {
+  // tslint:disable-next-line:no-any
+  log(...args: any[]): void {
     console.log.call(undefined, chalk.black.call(undefined, this.prefix, ...args));
   }
 
-  public warn(...args: any[]): void {
+  // tslint:disable-next-line:no-any
+  warn(...args: any[]): void {
     console.warn.call(undefined, chalk.yellow.call(undefined, this.prefix, ...args));
   }
 }

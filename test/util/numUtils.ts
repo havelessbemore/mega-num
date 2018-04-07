@@ -1,10 +1,10 @@
 import {assert, expect} from 'chai';
 import {max, min, strToDigits, zero} from '../../src/util/numUtils';
 
-describe('numUtils', function(){
+describe('numUtils', () => {
 
-  describe('max', function(){
-    it('should return the largest number', function(){
+  describe('max', () => {
+    it('should return the largest number', () => {
       assert.equal(max(0,0), 0);
       assert.equal(max(0,1), 1);
       assert.equal(max(2,0), 2);
@@ -14,8 +14,8 @@ describe('numUtils', function(){
     });
   });
 
-  describe('min', function(){
-    it('should return the lowest number', function(){
+  describe('min', () => {
+    it('should return the lowest number', () => {
       assert.equal(min(0,0), 0);
       assert.equal(min(0,1), 0);
       assert.equal(min(2,0), 0);
@@ -25,27 +25,27 @@ describe('numUtils', function(){
     });
   });
 
-  describe('strToDigits', function(){
-    it('should throw error if string is empty or just spaces', function(){
-      expect(function(){strToDigits("")}).to.throw(TypeError);
-      expect(function(){strToDigits("   ")}).to.throw(TypeError);
+  describe('strToDigits', () => {
+    it('should throw error if string is empty or just spaces', () => {
+      expect(() => strToDigits("")).to.throw(TypeError);
+      expect(() => strToDigits("   ")).to.throw(TypeError);
     });
 
-    it('should throw error if string value is not a number', function(){
-      expect(function(){strToDigits("ABC")}).to.throw(TypeError);
-      expect(function(){strToDigits("-+123")}).to.throw(TypeError);
-      expect(function(){strToDigits("123m456")}).to.throw(TypeError);
-      expect(function(){strToDigits("1.2.3.4")}).to.throw(TypeError);
+    it('should throw error if string value is not a number', () => {
+      expect(() => strToDigits("ABC")).to.throw(TypeError);
+      expect(() => strToDigits("-+123")).to.throw(TypeError);
+      expect(() => strToDigits("123m456")).to.throw(TypeError);
+      expect(() => strToDigits("1.2.3.4")).to.throw(TypeError);
     });
 
-    it('should return 0 if string is just zeros', function(){
+    it('should return 0 if string is just zeros', () => {
       assert.deepEqual<[number[], boolean]>(strToDigits("0"), [[], false]);
       assert.deepEqual<[number[], boolean]>(strToDigits("-0"), [[], false]);
       assert.deepEqual<[number[], boolean]>(strToDigits("+0"), [[], false]);
       assert.deepEqual<[number[], boolean]>(strToDigits("000"), [[], false]);
     });
 
-    it('should return correct integer value in base 10', function(){
+    it('should return correct integer value in base 10', () => {
       assert.deepEqual(strToDigits("1"), [[1], false]);
       assert.deepEqual(strToDigits("-1"), [[1], true]);
       assert.deepEqual(strToDigits("+1"), [[1], false]);
@@ -64,8 +64,8 @@ describe('numUtils', function(){
     });
   });
 
-  describe('zero', function(){
-    it('should set indices [min, max) of an array to zero', function(){
+  describe('zero', () => {
+    it('should set indices [min, max) of an array to zero', () => {
       let actual: number[] = [9,9,9,9,9,9,9,9,9];
       zero(actual, 2, 4);
       assert.deepEqual(actual, [9,9,0,0,9,9,9,9,9]);

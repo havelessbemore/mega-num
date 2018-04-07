@@ -22,7 +22,7 @@ export function compare(A: Integer, B: Integer): number {
     //Estimate number of digits of A if converted to B's base
     const ratio: number = Math.log(A.base) / Math.log(B.base);
     if(Math.ceil(A.precision * ratio) < B.precision){
-      return -1
+      return -1;
     }
     if(Math.ceil((A.precision - 1) * ratio) > B.precision){
       return 1;

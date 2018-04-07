@@ -10,14 +10,14 @@ export function setBase(
   }
 
   //Create new array
-  let maxB: number = 0;
+  let maxB = 0;
   const B: number[] = new Array(Math.ceil(
     (maxA - minA) * Math.log(curBase) / Math.log(newBase)
   ));
 
   //Return number in newBase
   do {
-    let remainder: number = 0;
+    let remainder = 0;
     for(let i: number = maxA; i > minA; remainder = remainder % newBase){
       remainder = remainder*curBase + A[--i];
       A[i] = 0 | (remainder / newBase);

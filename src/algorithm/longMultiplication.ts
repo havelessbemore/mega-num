@@ -34,7 +34,7 @@ export function longMultiplication(
   //For each digit in multiplicand
   const maxC: number = maxA + lenB;
   for(let a: number = minC; a < maxC; ++a){
-    let carry: number = 0;
+    let carry = 0;
     let i: number = a - lenB;
 
     //Multiply by multiplier

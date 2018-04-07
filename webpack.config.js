@@ -1,11 +1,17 @@
 //Config Examples: https://webpack.github.io/docs/examples.html
 const path = require('path');
 const webpack = require('webpack');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: './src/index.ts',
+
   externals: {},
-  // devtool: 'source-map',
+
+  devtool: 'source-map',
+
   module: {
     rules: [{
       test: /\.jsx?$/,
@@ -17,6 +23,7 @@ module.exports = {
       loaders: ['babel-loader', 'ts-loader']
     }]
   },
+
   node: {
     Buffer: true,
     console: true,
@@ -26,32 +33,35 @@ module.exports = {
     process: true,
     tls: 'empty'
   },
+
   output: {
     filename: 'big.min.js',
     library: 'Big',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist')
   },
+
   plugins: [
     new webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false
+      debug: false,
+      minimize: true
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      mangle: {
-        screw_ie8: true,
-        keep_fnames: true
-      },
-      compress: {
-        screw_ie8: true
-      },
-      comments: false
+    new UglifyJsPlugin({
+      extractComments: true,
+      sourceMap: true
+    }),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      defaultSizes: 'parsed',
+      openAnalyzer: false,
+      reportFilename: '../webpack_bundle_analyzer_report.html'
     })
   ],
+
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.json', '.js'],
     modules: [path.join(__dirname, 'src'), 'node_modules']
   },
+
   target: 'web'
 };

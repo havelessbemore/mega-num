@@ -13,7 +13,7 @@ export function isEven(
   }
 
   //If odd base
-  let xor: number = 0;
+  let xor = 0;
   do {
     xor = xor ^ A[minA++];
   } while(minA < maxA);

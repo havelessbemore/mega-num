@@ -11,6 +11,7 @@ function test(
   deepEqual(A, minA, maxA, C, minC, maxC);
 }
 
+// tslint:disable-next-line:no-any
 function deepEqual(A: any[], minA: number, maxA: number, B: any[], minB: number, maxB: number): void {
   if(maxA - minA !== maxB - minB){
     assert.fail(maxA - minA, maxB - minB, "Array lengths are not equal");
@@ -24,9 +25,9 @@ function deepEqual(A: any[], minA: number, maxA: number, B: any[], minB: number,
   }
 }
 
-describe('exponentiation', function(){
+describe('exponentiation', () => {
 
-  it('should return X^1 in base 10', function(){
+  it('should return X^1 in base 10', () => {
     test(
       [1], 0, 1, 10,
       [1], 0, 1, 10,
@@ -88,7 +89,7 @@ describe('exponentiation', function(){
     );
   });
 
-  it('should return 1^X in base 10', function(){
+  it('should return 1^X in base 10', () => {
     test(
       [1], 0, 1, 10,
       [2], 0, 1, 10,
@@ -150,55 +151,55 @@ describe('exponentiation', function(){
     );
   });
 
-  it('should return 2^2 in base 10', function(){
+  it('should return 2^2 in base 10', () => {
     test(
       [2], 0, 1, 10,
       [2], 0, 1, 10,
       [4], 0, 1
-    )
+    );
   });
 
-  it('should return 4^2 in base 10', function(){
+  it('should return 4^2 in base 10', () => {
     test(
       [4], 0, 1, 10,
       [2], 0, 1, 10,
       [6,1], 0, 2
-    )
+    );
   });
 
-  it('should return 2^63 in base 10', function(){
+  it('should return 2^63 in base 10', () => {
     test(
       [2], 0, 1, 10,
       [3,6], 0, 2, 10,
       [8,0,8,5,7,7,4,5,8,6,3,0,2,7,3,3,2,2,9], 0, 19
-    )
+    );
   });
 
-  it('should return 2^64 in base 10', function(){
+  it('should return 2^64 in base 10', () => {
     test(
       [2], 0, 1, 10,
       [4,6], 0, 2, 10,
       [6,1,6,1,5,5,9,0,7,3,7,0,4,4,7,6,4,4,8,1], 0, 20
-    )
+    );
   });
 
-  it('should return 9^2 in base 11', function(){
+  it('should return 9^2 in base 11', () => {
     test(
       [9], 0, 1, 11,
       [2], 0, 1, 11,
       [4,7], 0, 2
-    )
+    );
   });
 
-  it('should return 9999999^2 in base 10000000', function(){
+  it('should return 9999999^2 in base 10000000', () => {
     test(
       [9999999], 0, 1, 10000000,
       [2], 0, 1, 10000000,
       [1, 9999998], 0, 2
-    )
+    );
   });
 
-  it('should return 456^123 in base 10', function(){
+  it('should return 456^123 in base 10', () => {
     test(
       [6,5,4], 0, 3, 10,
       [3,2,1], 0, 3, 10,
@@ -215,10 +216,10 @@ describe('exponentiation', function(){
         2,2,0,2,0,3,3,3,8,5,9,9,0,0,1,7,9,6,2,5,0,3,7,9,4,4,4,1,5,5,
         0,9,8,1,8,2,3,9,7,0,9,3,8,9,9,0,6,0,3,4,4,2,5,9,8,2,1,1
       ], 0, 328
-    )
+    );
   });
 
-  it('should return 456^123 in base 373', function(){
+  it('should return 456^123 in base 373', () => {
     test(
       [83,1], 0, 2, 373,
       [123], 0, 1, 373,
@@ -237,6 +238,6 @@ describe('exponentiation', function(){
         22,280,175,122,313,313,345,329,52,101,
         192,232,181,205,159,294,294,2
       ], 0, 128
-    )
+    );
   });
 });

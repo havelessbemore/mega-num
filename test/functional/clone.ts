@@ -10,8 +10,8 @@ interface CloneDep {
   clone: (A: Integer) => Integer;
 }
 
-describe('clone', function(){
-  it('should clone source property values with target', function(){
+describe('clone', () => {
+  it('should clone source property values with target', () => {
     const input: Integer = toInteger([1,2,3,4,5], 5, true, 125);
     const output: Integer = clone(input);
     assert.notEqual(input, output);
@@ -19,7 +19,7 @@ describe('clone', function(){
     assert.notEqual(input.digits, output.digits);
   });
 
-  it('should use copy to clone', function(){
+  it('should use copy to clone', () => {
     const input: Integer = toInteger([1,2,3,4,5], 5, true, 125);
 
     //Create mock

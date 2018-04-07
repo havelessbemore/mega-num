@@ -10,7 +10,7 @@ function test(A: number[], B: number[], C: number[], base: number): void {
   assert.deepEqual(A, C);
 }
 
-describe('karatsubaMultiplication', function(){
+describe('karatsubaMultiplication', () => {
 
   it('should return 1*1 in base 10',
     () => test([1], [1], [1], 10)

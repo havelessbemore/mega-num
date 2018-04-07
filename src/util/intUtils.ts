@@ -1,5 +1,6 @@
 import {Integer} from '../integer';
 
+// tslint:disable-next-line:no-any
 export function assign(target: any, source: Integer): Integer {
   target.base = source.base;
   target.digits = source.digits;
@@ -8,12 +9,14 @@ export function assign(target: any, source: Integer): Integer {
   return target;
 }
 
+// tslint:disable-next-line:no-any
 export function copy(target: any, source: Integer): Integer {
   const A: Integer = assign(target, source);
   A.digits = A.digits.slice(0, A.precision);
   return A;
 }
 
+// tslint:disable-next-line:no-any
 export function setOne(A: any): Integer {
   A.precision = 1;
   A.digits = [1];
@@ -21,6 +24,7 @@ export function setOne(A: any): Integer {
   return A;
 }
 
+// tslint:disable-next-line:no-any
 export function setZero(A: any): Integer {
   A.precision = 0;
   A.digits = [];
@@ -34,10 +38,5 @@ export function toInteger(
   isNegative: boolean,
   base: number
 ): Integer {
-  return {
-    base: base,
-    digits: digits,
-    precision: precision,
-    isNegative: isNegative
-  };
+  return {base, digits, precision, isNegative};
 }

@@ -3,13 +3,13 @@ import {Integer} from '../../src/integer';
 import {pow} from '../../src/functional/pow';
 import {toInteger} from '../../src/util/intUtils';
 
-describe('pow', function(){
+describe('pow', () => {
 
   ////////////////////////
   // X^0 = 1
   ////////////////////////
 
-  it('should return 0^0 in base 10', function(){
+  it('should return 0^0 in base 10', () => {
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([], 0, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
@@ -23,7 +23,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 1^0 in base 10', function(){
+  it('should return 1^0 in base 10', () => {
     const A: Integer = toInteger([1], 1, false, 10);
     const B: Integer = toInteger([], 0, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
@@ -37,7 +37,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 2^0 in base 10', function(){
+  it('should return 2^0 in base 10', () => {
     const A: Integer = toInteger([2], 1, false, 10);
     const B: Integer = toInteger([], 0, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
@@ -51,7 +51,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 1234^0 in base 10', function(){
+  it('should return 1234^0 in base 10', () => {
     const A: Integer = toInteger([4,3,2,1], 4, false, 10);
     const B: Integer = toInteger([], 0, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
@@ -69,7 +69,7 @@ describe('pow', function(){
   // 0^|X| = 0
   ////////////////////////
 
-  it('should return 0^1 in base 10', function(){
+  it('should return 0^1 in base 10', () => {
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([1], 1, false, 10);
     const expected: Integer = toInteger([], 0, false, 10);
@@ -83,7 +83,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 0^2 in base 10', function(){
+  it('should return 0^2 in base 10', () => {
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([2], 1, false, 10);
     const expected: Integer = toInteger([], 0, false, 10);
@@ -97,7 +97,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 0^123 in base 10', function(){
+  it('should return 0^123 in base 10', () => {
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([3,2,1], 3, false, 10);
     const expected: Integer = toInteger([], 0, false, 10);
@@ -115,29 +115,29 @@ describe('pow', function(){
   // 0^-|X| = ERROR
   ////////////////////////
 
-  it('should return 0^-1 in base 10', function(){
+  it('should return 0^-1 in base 10', () => {
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([1], 1, true, 10);
-    expect(function(){pow(A, B)}).to.throw(EvalError);
+    expect(() => pow(A, B)).to.throw(EvalError);
   });
 
-  it('should return 0^-2 in base 10', function(){
+  it('should return 0^-2 in base 10', () => {
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([2], 1, true, 10);
-    expect(function(){pow(A, B)}).to.throw(EvalError);
+    expect(() => pow(A, B)).to.throw(EvalError);
   });
 
-  it('should return 0^-123 in base 10', function(){
+  it('should return 0^-123 in base 10', () => {
     const A: Integer = toInteger([], 0, false, 10);
     const B: Integer = toInteger([3,2,1], 3, true, 10);
-    expect(function(){pow(A, B)}).to.throw(EvalError);
+    expect(() => pow(A, B)).to.throw(EvalError);
   });
 
   ////////////////////////
   // Y^-|X| = 0
   ////////////////////////
 
-  it('should return 123^-1 in base 10', function(){
+  it('should return 123^-1 in base 10', () => {
     const A: Integer = toInteger([3,2,1], 3, false, 10);
     const B: Integer = toInteger([1], 1, true, 10);
     const expected: Integer = toInteger([], 0, false, 10);
@@ -151,7 +151,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 123^-2 in base 10', function(){
+  it('should return 123^-2 in base 10', () => {
     const A: Integer = toInteger([3,2,1], 3, false, 10);
     const B: Integer = toInteger([2], 1, true, 10);
     const expected: Integer = toInteger([], 0, false, 10);
@@ -165,7 +165,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 123^-123 in base 10', function(){
+  it('should return 123^-123 in base 10', () => {
     const A: Integer = toInteger([3,2,1], 3, false, 10);
     const B: Integer = toInteger([3,2,1], 3, true, 10);
     const expected: Integer = toInteger([], 0, false, 10);
@@ -183,7 +183,7 @@ describe('pow', function(){
   // X^1 = X
   ////////////////////////
 
-  it('should return 1^1 in base 10', function(){
+  it('should return 1^1 in base 10', () => {
     const A: Integer = toInteger([1], 1, false, 10);
     const B: Integer = toInteger([1], 1, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
@@ -196,7 +196,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 2^1 in base 10', function(){
+  it('should return 2^1 in base 10', () => {
     const A: Integer = toInteger([2], 1, false, 10);
     const B: Integer = toInteger([1], 1, false, 10);
     const expected: Integer = toInteger([2], 1, false, 10);
@@ -210,7 +210,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 3^1 in base 10', function(){
+  it('should return 3^1 in base 10', () => {
     const A: Integer = toInteger([3], 1, false, 10);
     const B: Integer = toInteger([1], 1, false, 10);
     const expected: Integer = toInteger([3], 1, false, 10);
@@ -224,7 +224,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 1234^1 in base 10', function(){
+  it('should return 1234^1 in base 10', () => {
     const A: Integer = toInteger([4,3,2,1], 4, false, 10);
     const B: Integer = toInteger([1], 1, false, 10);
     const expected: Integer = toInteger([4,3,2,1], 4, false, 10);
@@ -243,7 +243,7 @@ describe('pow', function(){
   ////////////////////////
 
 
-  it('should return 1^2 in base 10', function(){
+  it('should return 1^2 in base 10', () => {
     const A: Integer = toInteger([1], 1, false, 10);
     const B: Integer = toInteger([2], 1, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
@@ -256,7 +256,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 1^3 in base 10', function(){
+  it('should return 1^3 in base 10', () => {
     const A: Integer = toInteger([1], 1, false, 10);
     const B: Integer = toInteger([3], 1, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
@@ -269,7 +269,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 1^1024 in base 10', function(){
+  it('should return 1^1024 in base 10', () => {
     const A: Integer = toInteger([1], 1, false, 10);
     const B: Integer = toInteger([4,2,0,1], 4, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
@@ -282,7 +282,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 1^1023 in base 10', function(){
+  it('should return 1^1023 in base 10', () => {
     const A: Integer = toInteger([1], 1, false, 10);
     const B: Integer = toInteger([3,2,0,1], 4, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
@@ -299,7 +299,7 @@ describe('pow', function(){
   // |X|^Y
   ////////////////////////
 
-  it('should return 2^2 in base 10', function(){
+  it('should return 2^2 in base 10', () => {
     const A: Integer = toInteger([2], 1, false, 10);
     const B: Integer = toInteger([2], 1, false, 10);
     const expected: Integer = toInteger([4], 1, false, 10);
@@ -313,7 +313,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 4^2 in base 10', function(){
+  it('should return 4^2 in base 10', () => {
     const A: Integer = toInteger([4], 1, false, 10);
     const B: Integer = toInteger([2], 1, false, 10);
     const expected: Integer = toInteger([6,1], 2, false, 10);
@@ -327,7 +327,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 2^63 in base 10', function(){
+  it('should return 2^63 in base 10', () => {
     const A: Integer = toInteger([2], 1, false, 10);
     const B: Integer = toInteger([3,6], 2, false, 10);
     const expected: Integer = toInteger([8,0,8,5,7,7,4,5,8,6,3,0,2,7,3,3,2,2,9], 19, false, 10);
@@ -341,7 +341,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 2^64 in base 10', function(){
+  it('should return 2^64 in base 10', () => {
     const A: Integer = toInteger([2], 1, false, 10);
     const B: Integer = toInteger([4,6], 2, false, 10);
     const expected: Integer = toInteger([6,1,6,1,5,5,9,0,7,3,7,0,4,4,7,6,4,4,8,1], 20, false, 10);
@@ -355,7 +355,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 9^2 in base 10', function(){
+  it('should return 9^2 in base 10', () => {
     const A: Integer = toInteger([9], 1, false, 10);
     const B: Integer = toInteger([2], 1, false, 10);
     const expected: Integer = toInteger([1,8], 2, false, 10);
@@ -369,7 +369,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 9999999^2 in base 10000000', function(){
+  it('should return 9999999^2 in base 10000000', () => {
     const A: Integer = toInteger([9999999], 1, false, 10000000);
     const B: Integer = toInteger([2], 1, false, 10000000);
     const expected: Integer = toInteger([1,9999998], 2, false, 10000000);
@@ -383,7 +383,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 456^123 in base 10', function(){
+  it('should return 456^123 in base 10', () => {
     const A: Integer = toInteger([6,5,4], 3, false, 10);
     const B: Integer = toInteger([3,2,1], 3, false, 10);
     const expected: Integer = toInteger([
@@ -409,7 +409,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 456^123 in base 373', function(){
+  it('should return 456^123 in base 373', () => {
     const A: Integer = toInteger([83,1], 2, false, 373);
     const B: Integer = toInteger([123], 1, false, 373);
     const expected: Integer = toInteger([
@@ -441,7 +441,7 @@ describe('pow', function(){
   // (-|X|)^Y
   ////////////////////////
 
-  it('should return (-2)^2 in base 10', function(){
+  it('should return (-2)^2 in base 10', () => {
     const A: Integer = toInteger([2], 1, true, 10);
     const B: Integer = toInteger([2], 1, false, 10);
     const expected: Integer = toInteger([4], 1, false, 10);
@@ -455,7 +455,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return (-2)^3 in base 10', function(){
+  it('should return (-2)^3 in base 10', () => {
     const A: Integer = toInteger([2], 1, true, 10);
     const B: Integer = toInteger([3], 1, false, 10);
     const expected: Integer = toInteger([8], 1, true, 10);
@@ -469,7 +469,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return (-2)^63 in base 10', function(){
+  it('should return (-2)^63 in base 10', () => {
     const A: Integer = toInteger([2], 1, true, 10);
     const B: Integer = toInteger([3,6], 2, false, 10);
     const expected: Integer = toInteger([8,0,8,5,7,7,4,5,8,6,3,0,2,7,3,3,2,2,9], 19, true, 10);
@@ -483,7 +483,7 @@ describe('pow', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return (-2)^64 in base 10', function(){
+  it('should return (-2)^64 in base 10', () => {
     const A: Integer = toInteger([2], 1, true, 10);
     const B: Integer = toInteger([4,6], 2, false, 10);
     const expected: Integer = toInteger([6,1,6,1,5,5,9,0,7,3,7,0,4,4,7,6,4,4,8,1], 20, false, 10);

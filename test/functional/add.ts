@@ -10,9 +10,9 @@ interface AddFunc {
   add: (A: Integer, B: Integer, m?: boolean) => Integer;
 }
 
-describe('add', function(){
+describe('add', () => {
 
-  it('should double A if A === B', function(){
+  it('should double A if A === B', () => {
     const A: Integer = toInteger([2, 1], 2, false, 10);
     const expected: Integer = toInteger([4, 2], 2, false, 10);
 
@@ -24,7 +24,7 @@ describe('add', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should use double() correctly', function(){
+  it('should use double() correctly', () => {
     const A: Integer = toInteger([2, 1], 2, false, 10);
 
     //Create mock
@@ -39,7 +39,7 @@ describe('add', function(){
     mock.verify();
   });
 
-  it('should return A if B = 0', function(){
+  it('should return A if B = 0', () => {
     const A: Integer = toInteger([2, 1], 2, false, 10);
     const B: Integer = toInteger([], 0, false, 10);
     const expected: Integer = toInteger([2, 1], 2, false, 10);
@@ -52,7 +52,7 @@ describe('add', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should copy B and set to original base if A = 0', function(){
+  it('should copy B and set to original base if A = 0', () => {
     const A: Integer = toInteger([], 0, false, 12);
     const B: Integer = toInteger([2, 1], 2, false, 10);
     const expected: Integer = toInteger([0, 1], 2, false, 12);
@@ -65,7 +65,7 @@ describe('add', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should subtract if signs of A and B differ', function(){
+  it('should subtract if signs of A and B differ', () => {
     const A: Integer = toInteger([3], 1, false, 10);
     const B: Integer = toInteger([1], 1, true, 10);
     const expected: Integer = toInteger([2], 1, false, 10);
@@ -78,7 +78,7 @@ describe('add', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should use negate() and subtract() correctly if signs of A and B differ', function(){
+  it('should use negate() and subtract() correctly if signs of A and B differ', () => {
     const A: Integer = toInteger([3], 1, false, 10);
     const B: Integer = toInteger([2], 1, true, 10);
 
@@ -99,7 +99,7 @@ describe('add', function(){
     subtractMock.verify();
   });
 
-  it('should add A and B normally when A.length === B.length', function(){
+  it('should add A and B normally when A.length === B.length', () => {
     const A: Integer = toInteger([1,2,3], 3, false, 10);
     const B: Integer = toInteger([54,6], 2, false, 100);
     const expected: Integer = toInteger([5,7,9], 3, false, 10);
@@ -113,7 +113,7 @@ describe('add', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should add A and B normally when A.length > B.length', function(){
+  it('should add A and B normally when A.length > B.length', () => {
     const A: Integer = toInteger([1,2,3,4], 4, false, 10);
     const B: Integer = toInteger([54,6], 2, false, 100);
     const expected: Integer = toInteger([5,7,9,4], 4, false, 10);
@@ -126,7 +126,7 @@ describe('add', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should use addition() correctly when A.length >= B.length', function(){
+  it('should use addition() correctly when A.length >= B.length', () => {
     const A: Integer = toInteger([1,2,3], 3, false, 10);
     const B: Integer = toInteger([54,6], 2, false, 100);
     const C: Integer = toInteger([21,3], 2, false, 100);
@@ -149,7 +149,7 @@ describe('add', function(){
     mock.verify();
   });
 
-  it('should reverse add A and B when A.length < B.length', function(){
+  it('should reverse add A and B when A.length < B.length', () => {
     const A: Integer = toInteger([4,5], 2, false, 10);
     const B: Integer = toInteger([21,43], 2, false, 100);
     const expected: Integer = toInteger([5,7,3,4], 4, false, 10);
@@ -162,7 +162,7 @@ describe('add', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should use reverseAddition() correctly when A.length < B.length', function(){
+  it('should use reverseAddition() correctly when A.length < B.length', () => {
     const A: Integer = toInteger([4,5], 2, false, 10);
     const B: Integer = toInteger([21,43], 2, false, 100);
     const C: Integer = toInteger([54], 1, false, 100);

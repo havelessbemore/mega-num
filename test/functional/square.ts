@@ -3,9 +3,9 @@ import {Integer} from '../../src/integer';
 import {toInteger} from '../../src/util/intUtils';
 import {square} from '../../src/functional/square';
 
-describe('square', function(){
+describe('square', () => {
 
-  it('should return 0^2 in base 10', function(){
+  it('should return 0^2 in base 10', () => {
     const input: Integer = toInteger([], 0, false, 10);
     const expected: Integer = toInteger([], 0, false, 10);
     const actual: Integer = square(input);
@@ -13,7 +13,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 1^2 in base 10', function(){
+  it('should return 1^2 in base 10', () => {
     const input: Integer = toInteger([1], 1, false, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
     const actual: Integer = square(input);
@@ -22,7 +22,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return (-1)^2 in base 10', function(){
+  it('should return (-1)^2 in base 10', () => {
     const input: Integer = toInteger([1], 1, true, 10);
     const expected: Integer = toInteger([1], 1, false, 10);
     const actual: Integer = square(input);
@@ -31,7 +31,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 2^2 in base 10', function(){
+  it('should return 2^2 in base 10', () => {
     const input: Integer = toInteger([2], 1, false, 10);
     const expected: Integer = toInteger([4], 1, false, 10);
     const actual: Integer = square(input);
@@ -40,7 +40,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 4^2 in base 10', function(){
+  it('should return 4^2 in base 10', () => {
     const input: Integer = toInteger([4], 1, false, 10);
     const expected: Integer = toInteger([6,1], 2, false, 10);
     const actual: Integer = square(input);
@@ -49,7 +49,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 1234567^2 in base 10', function(){
+  it('should return 1234567^2 in base 10', () => {
     const input: Integer = toInteger([7,6,5,4,3,2,1], 7, false, 10);
     const expected: Integer = toInteger([9,8,4,7,7,6,5,5,1,4,2,5,1], 13, false, 10);
     const actual: Integer = square(input);
@@ -58,7 +58,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 9^2 in base 11', function(){
+  it('should return 9^2 in base 11', () => {
     const input: Integer = toInteger([9], 1, false, 11);
     const expected: Integer = toInteger([4,7], 2, false, 11);
     const actual: Integer = square(input);
@@ -67,7 +67,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 9999999^2 in base 10000000', function(){
+  it('should return 9999999^2 in base 10000000', () => {
     const input: Integer = toInteger([9999999], 1, false, 10000000);
     const expected: Integer = toInteger([1, 9999998], 2, false, 10000000);
     const actual: Integer = square(input);
@@ -76,7 +76,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 10000001^2 in base 10', function(){
+  it('should return 10000001^2 in base 10', () => {
     const input: Integer = toInteger([1,0,0,0,0,0,0,1], 8, false, 10);
     const expected: Integer = toInteger([1,0,0,0,0,0,0,2,0,0,0,0,0,0,1], 15, false, 10);
     const actual: Integer = square(input);
@@ -85,7 +85,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return 90000009^2 in base 10', function(){
+  it('should return 90000009^2 in base 10', () => {
     const input: Integer = toInteger([9,0,0,0,0,0,0,9], 8, false, 10);
     const expected: Integer = toInteger([1,8,0,0,0,0,0,2,6,1,0,0,0,0,1,8], 16, false, 10);
     const actual: Integer = square(input);
@@ -94,7 +94,7 @@ describe('square', function(){
     assert.deepEqual(actual, expected);
   });
 
-  it('should return [100 digit number] ^ 2 in base 10', function(){
+  it('should return [100 digit number] ^ 2 in base 10', () => {
     const input: Integer = toInteger([
       6,9,5,9,8,3,4,7,9,9,2,4,9,1,1,6,6,1,8,2,9,0,8,2,4,2,6,2,4,2,
       5,3,5,9,3,1,0,1,1,6,2,7,6,7,1,9,8,7,5,8,4,2,7,9,7,2,8,2,3,4,

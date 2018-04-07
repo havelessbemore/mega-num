@@ -10,22 +10,22 @@ interface MinFunc {
   min: (A: Integer, B: Integer, b?: boolean) => Integer;
 }
 
-describe('min', function(){
-  it('should return A as min', function(){
+describe('min', () => {
+  it('should return A as min', () => {
     const A: Integer = toInteger([6,7,8], 3, false, 10);
     const B: Integer = toInteger([1,2,3,4,5], 5, false, 125);
     const C: Integer = min(A, B);
     assert.equal(A, C);
   });
 
-  it('should return B as min', function(){
+  it('should return B as min', () => {
     const A: Integer = toInteger([3,4], 2, false, 10);
     const B: Integer = toInteger([1,2], 2, false, 10);
     const C: Integer = min(A, B);
     assert.equal(B, C);
   });
 
-  it('should use compare() to find min', function(){
+  it('should use compare() to find min', () => {
     const A: Integer = toInteger([1,2], 2, false, 10);
     const B: Integer = toInteger([3,4], 2, false, 10);
 

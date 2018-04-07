@@ -12,7 +12,7 @@ export function addition(
   B: ReadonlyArray<number>, minB: number, maxB: number,
   base: number
 ): number{
-  let carry: number = 0;
+  let carry = 0;
 
   //Add common digits
   while (minB < maxB){

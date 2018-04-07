@@ -43,7 +43,7 @@ export function longSquare(
     const digit: number = A[s++];
 
     //Square the digit
-    let carry: number = 0;
+    let carry = 0;
     A[d] = A[d] + digit * digit;
     if(A[d] >= base){
       carry = 0 | (A[d] / base);
@@ -55,7 +55,7 @@ export function longSquare(
     for(let m: number = s; m < newMax; ++o){
 
       //Multiply
-      let quotient: number = 0;
+      let quotient = 0;
       let product: number = A[m++] * digit;
       if(product >= base){
         quotient = 0 | (product / base);

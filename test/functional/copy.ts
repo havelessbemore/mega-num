@@ -10,8 +10,8 @@ interface CopyFunc {
   copy: (A: Integer, B: Integer) => Integer;
 }
 
-describe('copy', function(){
-  it('should copy source property values with target', function(){
+describe('copy', () => {
+  it('should copy source property values with target', () => {
     const source: Integer = toInteger([1,2,3,4,5], 5, true, 125);
     const target: Integer = toInteger([6,7,8], 3, false, 10);
     const actual: Integer = copy(target, source);
@@ -20,7 +20,7 @@ describe('copy', function(){
     assert.notEqual(actual.digits, source.digits);
   });
 
-  it('should use copy() correctly', function(){
+  it('should use copy() correctly', () => {
     const target: Integer = toInteger([1,2,3], 3, true, 10);
     const source: Integer = toInteger([1,2,3,4,5], 5, true, 125);
 

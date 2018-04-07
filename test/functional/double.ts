@@ -10,8 +10,8 @@ interface DoubleFunc {
   double: (A: Integer, b?: boolean) => Integer;
 }
 
-describe('double', function(){
-  it('should double input', function(){
+describe('double', () => {
+  it('should double input', () => {
     const input: Integer = toInteger([1,2], 2, true, 125);
     const expected: Integer = toInteger([2,4], 2, true, 125);
     const actual: Integer = double(input);
@@ -20,7 +20,7 @@ describe('double', function(){
     assert.notEqual(actual.digits, expected.digits);
   });
 
-  it('should use double() correctly', function(){
+  it('should use double() correctly', () => {
     const A: Integer = toInteger([1,2], 2, true, 125);
 
     //Create mock

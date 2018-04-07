@@ -7,7 +7,7 @@ export function double(
 ): number {
 
   //Double
-  let carry: number = 0;
+  let carry = 0;
   while(minA < maxA){
     let v: number = (A[minA] << 1) + carry;
     if(v < base){

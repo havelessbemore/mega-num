@@ -6,7 +6,7 @@ export function min(a: number, b: number): number {
   return (a > b) ? b : a;
 }
 
-export function strToDigits(s: String): [number[], boolean] {
+export function strToDigits(s: string): [number[], boolean] {
   s = s.trim();
 
   //Check if empty string
@@ -34,7 +34,7 @@ export function strToDigits(s: String): [number[], boolean] {
   //Convert to decimal array
   const digits: number[] = new Array<number>(precision);
   for(let i = 0, j = precision; j > 0; ++i){
-    digits[i] = 0 | <any>s[--j];
+    digits[i] = +s[--j];
   }
 
   return [digits, isNegative];

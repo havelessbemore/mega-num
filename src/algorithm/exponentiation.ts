@@ -13,7 +13,7 @@ export function exponentiation(
   A: number[], minA: number, maxA: number, baseA: number,
   B: number[], minB: number, maxB: number, baseB: number
 ): number {
-  let maxC: number = 1;
+  let maxC = 1;
   const C: number[] = [1];
 
   //Until power is 1

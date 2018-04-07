@@ -19,7 +19,7 @@ export function toString(A: Integer): string {
   }
 
   //Print with cipher
-  let i: number = 0;
+  let i = 0;
   let n: number = A.precision;
   const digits = A.digits;
   const strings = new Array(n);

@@ -10,22 +10,22 @@ interface IsEvenFunc {
   isEven: (A: Integer) => boolean;
 }
 
-describe('isEven', function(){
-  it('should return true if number is even', function(){
+describe('isEven', () => {
+  it('should return true if number is even', () => {
     assert.equal(true, isEven(toInteger([], 0, false, 10)));
     assert.equal(true, isEven(toInteger([2], 1, false, 10)));
     assert.equal(true, isEven(toInteger([0,1], 2, false, 10)));
     assert.equal(true, isEven(toInteger([1,3,5,7], 4, false, 11)));
   });
 
-  it('should return false if number is odd', function(){
+  it('should return false if number is odd', () => {
     assert.equal(false, isEven(toInteger([1], 1, false, 10)));
     assert.equal(false, isEven(toInteger([3], 1, false, 10)));
     assert.equal(false, isEven(toInteger([1,1], 2, false, 10)));
     assert.equal(false, isEven(toInteger([1,3,5,7,9], 5, false, 11)));
   });
 
-  it('should use isEven() correctly', function(){
+  it('should use isEven() correctly', () => {
     const A: Integer = toInteger([1,2], 2, true, 10);
 
     //Create mock

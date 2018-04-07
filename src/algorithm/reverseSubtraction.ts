@@ -10,7 +10,7 @@ export function reverseSubtraction(
 ): number {
 
   //Subtract common digits
-  let borrow: number = 0;
+  let borrow = 0;
   while(minA < maxA){
     let v: number = B[minB++] - borrow - A[minA];
     if (v < 0){

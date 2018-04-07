@@ -7,7 +7,7 @@ function test(A: number[], B: number[], base: number): void {
   assert.deepEqual(A, B);
 }
 
-describe('double', function(){
+describe('double', () => {
 
   it('should return 0*2 in base 10',
     () => test([0], [0], 10)

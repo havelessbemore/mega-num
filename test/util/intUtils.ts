@@ -5,18 +5,13 @@ import {
 } from '../../src/util/intUtils';
 
 function toInteger(digits: number[], precision: number, isNegative: boolean, base: number): Integer {
-  return {
-    base: base,
-    digits: digits,
-    precision: precision,
-    isNegative: isNegative
-  };
+  return {base, digits, precision, isNegative};
 }
 
-describe('intUtils', function(){
+describe('intUtils', () => {
 
-  describe('assign', function(){
-    it('should assign source property values to target', function(){
+  describe('assign', () => {
+    it('should assign source property values to target', () => {
       const source: Integer = toInteger([1,2,3,4,5], 5, true, 125);
       const target: Integer = toInteger([6,7,8], 3, false, 10);
       const actual: Integer = assign(target, source);
@@ -26,7 +21,7 @@ describe('intUtils', function(){
     });
   });
 
-  describe('copy', function(){
+  describe('copy', () => {
     const source: Integer = toInteger([1,2,3,4,5], 5, true, 125);
     const target: Integer = toInteger([6,7,8], 3, false, 10);
     const actual: Integer = copy(target, source);
@@ -35,8 +30,8 @@ describe('intUtils', function(){
     assert.notEqual(actual.digits, source.digits);
   });
 
-  describe('setOne', function(){
-    it('should set zero to one', function(){
+  describe('setOne', () => {
+    it('should set zero to one', () => {
       const input: Integer = toInteger([], 0, false, 10);
       const expected: Integer = toInteger([1], 1, false, 10);
       const actual: Integer = setOne(input);
@@ -44,7 +39,7 @@ describe('intUtils', function(){
       assert.deepEqual(actual, expected);
     });
 
-    it('should set X to one', function(){
+    it('should set X to one', () => {
       const input: Integer = toInteger([1,2,3,4,5], 5, true, 373);
       const expected: Integer = toInteger([1], 1, false, 373);
       const actual: Integer = setOne(input);
@@ -53,8 +48,8 @@ describe('intUtils', function(){
     });
   });
 
-  describe('setZero', function(){
-    it('should set one to zero', function(){
+  describe('setZero', () => {
+    it('should set one to zero', () => {
       const input: Integer = toInteger([1], 1, false, 125);
       const expected: Integer = toInteger([], 0, false, 125);
       const actual: Integer = setZero(input);
@@ -62,7 +57,7 @@ describe('intUtils', function(){
       assert.deepEqual(actual, expected);
     });
 
-    it('should set X to zero', function(){
+    it('should set X to zero', () => {
       const input: Integer = toInteger([1,2,3,4,5], 5, true, 125);
       const expected: Integer = toInteger([], 0, false, 125);
       const actual: Integer = setZero(input);
@@ -71,12 +66,12 @@ describe('intUtils', function(){
     });
   });
 
-  describe('toInteger', function(){
-    it('should wrap integer properties into an Integer object', function(){
+  describe('toInteger', () => {
+    it('should wrap integer properties into an Integer object', () => {
       const digits: number[] = [1,2,3];
-      const precision: number = 3;
-      const isNegative: boolean = false;
-      const base: number = 10;
+      const precision = 3;
+      const isNegative = false;
+      const base = 10;
       const A: Integer = toInteger(digits, precision, isNegative, base);
       assert.equal(A.digits, digits);
       assert.equal(A.precision, precision);
