@@ -25,12 +25,14 @@ describe('copy', () => {
     const source: Integer = toInteger([1,2,3,4,5], 5, true, 125);
 
     //Create mock
-    const dependency = rewired.__get__('intUtils_1');
-    const mock: sinon.SinonMock = sinon.mock(dependency);
+    const intUtil1 = rewired.__get__('intUtils_1');
+    const mock: sinon.SinonMock = sinon.mock(intUtil1);
     mock.expects("copy").once().withExactArgs(target, source);
 
     //Rewire and run method
-    rewired.__with__({intUtils_1: dependency})(() => rewired.copy(target, source));
+    rewired.__with__({
+      'intUtils_1.copy': intUtil1.copy
+    })(() => rewired.copy(target, source));
 
     //Verify method
     mock.verify();

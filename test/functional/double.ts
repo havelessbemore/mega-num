@@ -24,12 +24,14 @@ describe('double', () => {
     const A: Integer = toInteger([1,2], 2, true, 125);
 
     //Create mock
-    const dependency = rewired.__get__('double_1');
-    const mock: sinon.SinonMock = sinon.mock(dependency);
-    mock.expects("double").once().withExactArgs(A.digits, 0, A.precision, A.base);
+    const double1 = rewired.__get__('double_1');
+    const mock: sinon.SinonMock = sinon.mock(double1);
+    mock.expects('double').once().withExactArgs(A.digits, 0, A.precision, A.base);
 
     //Rewire and run method
-    rewired.__with__({double_1: dependency})(() => rewired.double(A));
+    rewired.__with__({
+      'double_1.double': double1.double
+    })(() => rewired.double(A));
 
     //Verify method
     mock.verify();

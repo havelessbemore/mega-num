@@ -23,12 +23,14 @@ describe('clone', () => {
     const input: Integer = toInteger([1,2,3,4,5], 5, true, 125);
 
     //Create mock
-    const dependency = rewireClone.__get__('copy_1');
-    const mock: sinon.SinonMock = sinon.mock(dependency);
+    const copy1 = rewireClone.__get__('copy_1');
+    const mock: sinon.SinonMock = sinon.mock(copy1);
     mock.expects("copy").once().withExactArgs({}, input);
 
     //Rewire and run method
-    rewireClone.__with__({copy_1: dependency})(() => rewireClone.clone(input));
+    rewireClone.__with__({
+      'copy_1.copy': copy1.copy
+    })(() => rewireClone.clone(input));
 
     //Verify method
     mock.verify();

@@ -35,8 +35,8 @@ module.exports = {
   },
 
   output: {
-    filename: 'big.min.js',
-    library: 'Big',
+    filename: 'mega-num.min.js',
+    library: 'MegaNum',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist')
   },

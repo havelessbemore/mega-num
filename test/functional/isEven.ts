@@ -29,12 +29,14 @@ describe('isEven', () => {
     const A: Integer = toInteger([1,2], 2, true, 10);
 
     //Create mock
-    const dependency = rewired.__get__('isEven_1');
-    const mock: sinon.SinonMock = sinon.mock(dependency);
+    const isEven1 = rewired.__get__('isEven_1');
+    const mock: sinon.SinonMock = sinon.mock(isEven1);
     mock.expects("isEven").once().withExactArgs(A.digits, 0, A.precision, A.base);
 
     //Rewire and run method
-    rewired.__with__({isEven_1: dependency})(() => rewired.isEven(A));
+    rewired.__with__({
+      'isEven_1.isEven': isEven1.isEven
+    })(() => rewired.isEven(A));
 
     //Verify method
     mock.verify();

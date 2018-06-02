@@ -1,2 +1,2 @@
-# big.js
+# mega-num
 A JavaScript BigInteger library

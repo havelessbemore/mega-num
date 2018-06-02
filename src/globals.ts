@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-namespace
 export namespace Globals {
   export const MIN_BASE = 2;
   export const MAX_BASE = 94906265; //2^26 < sqrt(Number.MAX_SAFE_INTEGER) < 2^27

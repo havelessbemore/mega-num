@@ -25,15 +25,17 @@ describe('add', () => {
   });
 
   it('should use double() correctly', () => {
-    const A: Integer = toInteger([2, 1], 2, false, 10);
+    const A: Integer = toInteger([8, 4], 2, false, 10);
 
     //Create mock
-    const dependency = rewireAdd.__get__('double_1');
-    const mock: sinon.SinonMock = sinon.mock(dependency);
-    mock.expects("double").once().withExactArgs(A);
+    const double1 = rewireAdd.__get__('double_1');
+    const mock: sinon.SinonMock = sinon.mock(double1);
+    mock.expects('double').once().withExactArgs(A);
 
     //Rewire and run method
-    rewireAdd.__with__({double_1: dependency})(() => rewireAdd.add(A, A));
+    rewireAdd.__with__({
+      'double_1.double': double1.double
+    })(() => rewireAdd.add(A, A));
 
     //Verify method
     mock.verify();
@@ -92,7 +94,9 @@ describe('add', () => {
     subtractMock.expects("subtract").once().withExactArgs(A, B);
 
     //Rewire and run method
-    rewireAdd.__with__({subtract_1: subtract})(() => rewireAdd.add(A, B, true));
+    rewireAdd.__with__({
+      'subtract_1.subtract': subtract.subtract
+    })(() => rewireAdd.add(A, B, true));
 
     //Verify mocks
     negateMock.verify();
@@ -132,14 +136,16 @@ describe('add', () => {
     const C: Integer = toInteger([21,3], 2, false, 100);
 
     //Create mocks
-    const dependency = rewireAdd.__get__('addition_1');
-    const mock: sinon.SinonMock = sinon.mock(dependency);
+    const addition1 = rewireAdd.__get__('addition_1');
+    const mock: sinon.SinonMock = sinon.mock(addition1);
     mock.expects("addition").once().withExactArgs(
       C.digits, 0, C.precision, B.digits, 0, B.precision, B.base
     );
 
     //Rewire and run method
-    rewireAdd.__with__({addition_1: dependency})(() => {
+    rewireAdd.__with__({
+      'addition_1.addition': addition1.addition
+    })(() => {
       try{
         rewireAdd.add(A, B);
       } catch(e){}
@@ -169,14 +175,16 @@ describe('add', () => {
     C.digits.length = 3;
 
     //Create mocks
-    const dependency = rewireAdd.__get__('reverseAddition_1');
-    const mock: sinon.SinonMock = sinon.mock(dependency);
+    const reverseAddition1 = rewireAdd.__get__('reverseAddition_1');
+    const mock: sinon.SinonMock = sinon.mock(reverseAddition1);
     mock.expects("reverseAddition").once().withExactArgs(
       C.digits, 0, C.precision, B.digits, 0, B.precision, B.base
     );
 
     //Rewire and run method
-    rewireAdd.__with__({reverseAddition_1: dependency})(() => {
+    rewireAdd.__with__({
+      'reverseAddition_1.reverseAddition': reverseAddition1.reverseAddition
+    })(() => {
       try{
         rewireAdd.add(A, B, true);
       } catch(e){}

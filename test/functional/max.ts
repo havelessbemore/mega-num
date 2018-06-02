@@ -30,12 +30,14 @@ describe('max', () => {
     const B: Integer = toInteger([3,4], 2, false, 10);
 
     //Create mock
-    const dependency = rewired.__get__('compare_1');
-    const mock: sinon.SinonMock = sinon.mock(dependency);
+    const compare1 = rewired.__get__('compare_1');
+    const mock: sinon.SinonMock = sinon.mock(compare1);
     mock.expects("compare").once().withExactArgs(A, B);
 
     //Rewire and run method
-    rewired.__with__({compare_1: dependency})(() => rewired.max(A, B, true));
+    rewired.__with__({
+      'compare_1.compare': compare1.compare
+    })(() => rewired.max(A, B, true));
 
     //Verify method
     mock.verify();

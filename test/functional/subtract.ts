@@ -367,7 +367,9 @@ describe('subtract', () => {
     addMock.expects("add").once().withExactArgs(A, B);
 
     //Rewire and run method
-    rewireSubtract.__with__({add_1: add})(() => rewireSubtract.subtract(A, B));
+    rewireSubtract.__with__({
+      'add_1.add': add.add
+    })(() => rewireSubtract.subtract(A, B));
 
     //Verify mocks
     negateMock.verify();
