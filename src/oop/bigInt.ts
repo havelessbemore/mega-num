@@ -18,10 +18,13 @@ import {negate} from '../functional/negate';
 import {pow} from '../functional/pow';
 import {signum} from '../functional/signum';
 import {setBase} from '../functional/setBase';
+import {shiftLeft} from '../functional/shiftLeft';
+import {shiftRight} from '../functional/shiftRight';
 import {subtract} from '../functional/subtract';
 import {square} from '../functional/square';
 import {isInteger} from '../functional/isInteger';
 import {toInteger} from '../functional/toInteger';
+import {toNumber} from '../functional/toNumber';
 import {toString} from '../functional/toString';
 import {assign} from '../util/intUtils';
 
@@ -165,6 +168,14 @@ export class BigInt implements Integer {
     return BigInt.tryBigInt(setBase(this, base));
   }
 
+  shiftLeft(shifts: Integer): BigInt {
+    return shiftLeft(this, BigInt.tryBigInt(shifts)) as BigInt;
+  }
+
+  shiftRight(shifts: Integer): BigInt {
+    return shiftRight(this, BigInt.tryBigInt(shifts)) as BigInt;
+  }
+
   signum(): number {
     return signum(this);
   }
@@ -175,6 +186,10 @@ export class BigInt implements Integer {
 
   subtract(subtrahend: Integer): BigInt {
     return BigInt.tryBigInt(subtract(this, subtrahend));
+  }
+
+  toNumber(): number {
+    return toNumber(this);
   }
 
   toString(): string {

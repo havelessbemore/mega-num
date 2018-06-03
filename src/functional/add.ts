@@ -8,6 +8,8 @@ import {addition} from '../algorithm/addition';
 import {reverseAddition} from '../algorithm/reverseAddition';
 import {growArray} from '../util/arrayUtils';
 
+//A = toInteger([3], 1, false, 10);
+//B = toInteger([1], 1, true, 10);
 export function add(A: Integer, B: Integer): Integer {
 
   //If self
@@ -22,7 +24,7 @@ export function add(A: Integer, B: Integer): Integer {
 
   const base: number = A.base;
 
-  //If C is zero
+  //If A is zero
   if(A.precision === 0){
     copy(A, B);
     return setBase(A, base);

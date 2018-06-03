@@ -22,10 +22,13 @@ export {multiply} from './functional/multiply';
 export {negate} from './functional/negate';
 export {pow} from './functional/pow';
 export {setBase} from './functional/setBase';
+export {shiftLeft} from './functional/shiftLeft';
+export {shiftRight} from './functional/shiftRight';
 export {signum} from './functional/signum';
 export {square} from './functional/square';
 export {subtract} from './functional/subtract';
 export {toInteger} from './functional/toInteger';
+export {toNumber} from './functional/toNumber';
 export {toString} from './functional/toString';
 
 //OOP

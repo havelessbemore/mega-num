@@ -28,9 +28,21 @@ describe('compare', () => {
     assert.equal(compare(A, B), -1);
   });
 
+  it('should return -1 if -A < -B if converted to same base', () => {
+    const A: Integer = toInteger([0,0,1], 3, true, 100);
+    const B: Integer = toInteger([0,0,0,1], 4, true, 10);
+    assert.equal(compare(A, B), -1);
+  });
+
   it('should return 1 if A > B if converted to same base', () => {
     const A: Integer = toInteger([0,0,0,1], 4, false, 10);
     const B: Integer = toInteger([99], 1, false, 100);
+    assert.equal(compare(A, B), 1);
+  });
+  
+  it('should return 1 if -A > -B if converted to same base', () => {
+    const A: Integer = toInteger([99], 1, true, 100);
+    const B: Integer = toInteger([0,0,0,1], 4, true, 10);
     assert.equal(compare(A, B), 1);
   });
 
@@ -58,12 +70,6 @@ describe('compare', () => {
     assert.equal(compare(A, B), -1);
   });
 
-  it('should return -1 when compare(3210, 1987654)', () => {
-    const A: Integer = toInteger([0,1,2,3], 4, false, 10);
-    const B: Integer = toInteger([4,5,6,7,8,9,1], 7, false, 10);
-    assert.equal(compare(A, B), -1);
-  });
-
   it('should return 1 when compare(1, 0)', () => {
     const A: Integer = toInteger([1], 1, false, 10);
     const B: Integer = toInteger([], 0, false, 10);
@@ -76,9 +82,27 @@ describe('compare', () => {
     assert.equal(compare(A, B), 1);
   });
 
+  it('should return -1 when compare(3210, 1987654)', () => {
+    const A: Integer = toInteger([0,1,2,3], 4, false, 10);
+    const B: Integer = toInteger([4,5,6,7,8,9,1], 7, false, 10);
+    assert.equal(compare(A, B), -1);
+  });
+
+  it('should return 1 when compare(-3210, -1987654)', () => {
+    const A: Integer = toInteger([0,1,2,3], 4, true, 10);
+    const B: Integer = toInteger([4,5,6,7,8,9,1], 7, true, 10);
+    assert.equal(compare(A, B), 1);
+  });
+
   it('should return 1 when compare(1987654, 3210)', () => {
     const A: Integer = toInteger([4,5,6,7,8,9,1], 7, false, 10);
     const B: Integer = toInteger([0,1,2,3], 4, false, 10);
     assert.equal(compare(A, B), 1);
+  });
+
+  it('should return -1 when compare(-1987654, -3210)', () => {
+    const A: Integer = toInteger([4,5,6,7,8,9,1], 7, true, 10);
+    const B: Integer = toInteger([0,1,2,3], 4, true, 10);
+    assert.equal(compare(A, B), -1);
   });
 });

@@ -44,7 +44,7 @@ export function subtract(A: Integer, B: Integer): Integer {
   setBase(A, B.base);
 
   //Compare A and B
-  const c: number = compare(A, B);
+  const c = A.isNegative ? compare(B, A) : compare(A, B);
 
   //If A == B
   if(c === 0){
