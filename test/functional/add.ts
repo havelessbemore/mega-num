@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {default as sinon} from 'sinon';
+import * as sinon from 'sinon';
 import rewire = require('rewire');
 import {Integer} from '../../src/integer';
 import {add} from '../../src/functional/add';
