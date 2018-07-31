@@ -47,7 +47,7 @@
     "@types/rewire": "^2.5.28",
     "@types/sinon": "^5.0.1",
     "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.4",
+    "babel-loader": "^7.1.5",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-minify": "^0.4.3",
@@ -59,12 +59,12 @@
     "remap-istanbul": "^0.11.0",
     "rewire": "^4.0.1",
     "sinon": "^6.1.4",
-    "ts-loader": "^4.1.0",
-    "ts-node": "^6.0.5",
+    "ts-loader": "^4.4.2",
+    "ts-node": "^7.0.0",
     "typescript": "^3.0.1",
-    "uglifyjs-webpack-plugin": "^1.2.4",
-    "webpack": "^4.5.0",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.16.3",
     "webpack-bundle-analyzer": "^2.11.1",
-    "webpack-cli": "^3.0.0"
+    "webpack-cli": "^3.1.0"
   }
 }
